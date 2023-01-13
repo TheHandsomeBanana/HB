@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HB.Utilities.Common\HB.Common.csproj" />
-    <ProjectReference Include="..\HB.Utilities.Logging\HB.Services.Logging.csproj" />
+    <ProjectReference Include="..\HB.Common\HB.Common.csproj" />
+    <ProjectReference Include="..\HB.Logging\HB.Services.Logging.csproj" />
   </ItemGroup>
 
 </Project>

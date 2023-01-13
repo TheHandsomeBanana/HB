@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HB.Utilities.Common\HB.Common.csproj" />
+    <ProjectReference Include="..\HB.Common\HB.Common.csproj" />
   </ItemGroup>
 
 </Project>

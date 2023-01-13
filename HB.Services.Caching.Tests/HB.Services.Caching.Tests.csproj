@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HB.Utilities.CachingService\HB.Services.Caching.csproj" />
+    <ProjectReference Include="..\HB.CachingService\HB.Services.Caching.csproj" />
   </ItemGroup>
 
 </Project>

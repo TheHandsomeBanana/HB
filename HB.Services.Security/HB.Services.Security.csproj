@@ -10,4 +10,8 @@
     <Folder Include="Cryptography\Keys\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HB.Common\HB.Common.csproj" />
+  </ItemGroup>
+
 </Project>
