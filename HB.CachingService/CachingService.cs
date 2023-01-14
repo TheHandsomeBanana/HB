@@ -22,6 +22,7 @@ namespace HB.Utilities.Services.Caching {
         public IReadOnlyList<CacheMetaInfo> CacheMetaInfos { get => cacheMetaInfos; }
 
         public CachingService(CachingServiceSettings cachingServiceSettings) {
+            LoadMetaInfo();
             this.cachingServiceSettings = cachingServiceSettings;
             timer.Interval = TIMER_INTERVAL;
             timer.Elapsed += Timer_Elapsed;
@@ -114,6 +115,16 @@ namespace HB.Utilities.Services.Caching {
         private void Outsource(CacheMetaInfo cacheMetaInfo) {
             using (FileStream fs = new FileStream(CachePath + cacheMetaInfo.Key + nameof(CacheMetaInfo), FileMode.OpenOrCreate, FileAccess.Write))
                 cacheMetaInfo.Serialize(fs);
+        }
+
+        private void LoadMetaInfo() {
+            IEnumerable<string> files = Directory.GetFiles(CachePath.TrimEnd('\\')).Where(e => e.EndsWith(nameof(CacheMetaInfo)));
+
+            foreach(string file in files) {
+                using(FileStream fs = new FileStream(file, FileMode.Open, FileAccess.Read)) {
+                    cacheMetaInfos.Add((CacheMetaInfo)SerializationHelper.Deserialize(fs, typeof(CacheMetaInfo), CacheType.Json));
+                }
+            }
         }
     }
 }

@@ -19,7 +19,7 @@ namespace HB.Services.Caching.Helper {
         }
 
         public static void Serialize(this CacheMetaInfo cacheMetaInfo, FileStream fs) {
-            Serialize(fs, cacheMetaInfo, cacheMetaInfo.CacheType);
+            Serialize(fs, cacheMetaInfo, CacheType.Json);
         }
 
         public static object Deserialize(FileStream fs, Type objectType, CacheType ct) {
