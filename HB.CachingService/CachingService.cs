@@ -10,7 +10,6 @@ using HB.Services.Caching.Helper;
 namespace HB.Utilities.Services.Caching {
     public class CachingService : ICachingService {
         private readonly System.Timers.Timer timer = new System.Timers.Timer();
-        private readonly CachingServiceSettings cachingServiceSettings;
 
         public const double TIMER_INTERVAL = 1000.0;
         public static readonly string CachePath = GlobalEnvironment.CachingService + "\\";
@@ -21,9 +20,8 @@ namespace HB.Utilities.Services.Caching {
         private List<CacheMetaInfo> cacheMetaInfos = new List<CacheMetaInfo>();
         public IReadOnlyList<CacheMetaInfo> CacheMetaInfos { get => cacheMetaInfos; }
 
-        public CachingService(CachingServiceSettings cachingServiceSettings) {
+        public CachingService() {
             LoadMetaInfo();
-            this.cachingServiceSettings = cachingServiceSettings;
             timer.Interval = TIMER_INTERVAL;
             timer.Elapsed += Timer_Elapsed;
             timer.Start();
