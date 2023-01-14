@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HB.Utilities.Services.Caching {
+    [Serializable]
     public struct CacheMetaInfo {
         public string Key { get; set; }
         public Type ObjectType { get; set; }

@@ -5,6 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Serialization;
 using HB.Common.Json;
 using HB.Common;
+using HB.Services.Caching.Helper;
 
 namespace HB.Utilities.Services.Caching {
     public class CachingService : ICachingService {
@@ -29,9 +30,13 @@ namespace HB.Utilities.Services.Caching {
 
         ~CachingService() {
             timer.Stop();
+            timer.Dispose();
 
             foreach (KeyValuePair<string, Cache> kvp in CacheTable)
                 Outsource(kvp.Key, kvp.Value);
+
+            foreach (CacheMetaInfo cacheMetaInfo in cacheMetaInfos)
+                Outsource(cacheMetaInfo);
         }
 
         public Cache Get(string key) {
@@ -49,7 +54,7 @@ namespace HB.Utilities.Services.Caching {
         }
 
         public void Reload(string key) {
-            if(cacheMetaInfos.All(e => e.Key != key))
+            if (cacheMetaInfos.All(e => e.Key != key))
                 throw new KeyNotFoundException($"{key} is not registered and cannot be reloaded.");
 
             if (!File.Exists(CachePath + key))
@@ -60,21 +65,7 @@ namespace HB.Utilities.Services.Caching {
                 byte[] buffer = new byte[fs.Length];
                 object cobj;
 
-                switch (metaInfo.CacheType) {
-                    case CacheType.Binary:
-#pragma warning disable SYSLIB0011 // Type or member is obsolete
-                        cobj = new BinaryFormatter().Deserialize(fs);
-#pragma warning restore SYSLIB0011 // Type or member is obsolete
-                        break;
-                    case CacheType.Xml:
-                        cobj = new XmlSerializer(metaInfo.ObjectType).Deserialize(fs) ?? throw new NullReferenceException("Xml deserialization returned null.");
-                        break;
-                    case CacheType.Json:
-                        cobj = new JsonSerializer().Deserialize(fs, metaInfo.ObjectType) ?? throw new NullReferenceException("Json deserialization returned null."); ;
-                        break;
-                    default:
-                        throw new NotSupportedException("Cache type is not supported.");
-                }
+                cobj = SerializationHelper.Deserialize(fs, metaInfo.ObjectType, metaInfo.CacheType);
 
                 cacheTable.Add(key, new Cache(cobj, metaInfo.CacheType, metaInfo.Lifetime));
             }
@@ -116,24 +107,13 @@ namespace HB.Utilities.Services.Caching {
         }
 
         private void Outsource(string key, Cache cache) {
-            using (FileStream fs = new FileStream(CachePath + key, FileMode.OpenOrCreate, FileAccess.Write)) {
-                switch (cache.CacheType) {
-                    case CacheType.Binary:
-#pragma warning disable SYSLIB0011 // Type or member is obsolete
-                        new BinaryFormatter().Serialize(fs, cache.Value);
-#pragma warning restore SYSLIB0011 // Type or member is obsolete
-                        break;
-                    case CacheType.Xml:
-                        new XmlSerializer(cache.Value.GetType()).Serialize(fs, cache.Value);
-                        break;
-                    case CacheType.Json:
-                        new JsonSerializer().Serialize(fs, cache.Value);
-                        break;
-                    default:
-                        break;
-                }
-            }
+            using (FileStream fs = new FileStream(CachePath + key, FileMode.OpenOrCreate, FileAccess.Write))
+                cache.Serialize(fs);
+        }
 
+        private void Outsource(CacheMetaInfo cacheMetaInfo) {
+            using (FileStream fs = new FileStream(CachePath + cacheMetaInfo.Key + nameof(CacheMetaInfo), FileMode.OpenOrCreate, FileAccess.Write))
+                cacheMetaInfo.Serialize(fs);
         }
     }
 }
