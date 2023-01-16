@@ -7,7 +7,7 @@ namespace HB.Services.Caching.Tests {
 
         [TestMethod]
         public void TestJson() {
-            CachingService cachingService = new CachingService(new CachingServiceSettings());
+            CachingService cachingService = new CachingService();
 
             cachingService.AddOrUpdate("Test", new Cache(cache, CacheType.Json, 10));
             Assert.IsTrue(cachingService.CacheTable.ContainsKey("Test"));
@@ -17,7 +17,7 @@ namespace HB.Services.Caching.Tests {
 
         [TestMethod]
         public void TestXml() {
-            CachingService cachingService = new CachingService(new CachingServiceSettings());
+            CachingService cachingService = new CachingService();
 
             cachingService.AddOrUpdate("Test", new Cache(cache, CacheType.Xml, 10));
             Assert.IsTrue(cachingService.CacheTable.ContainsKey("Test"));
@@ -27,7 +27,7 @@ namespace HB.Services.Caching.Tests {
 
         [TestMethod]
         public void TestBinary() {
-            CachingService cachingService = new CachingService(new CachingServiceSettings());
+            CachingService cachingService = new CachingService();
 
             cachingService.AddOrUpdate("Test", new Cache(cache, CacheType.Binary, 10));
             Assert.IsTrue(cachingService.CacheTable.ContainsKey("Test"));

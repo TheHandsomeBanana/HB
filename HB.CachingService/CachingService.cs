@@ -76,11 +76,15 @@ namespace HB.Utilities.Services.Caching {
                 throw new CacheException($"{key} is already registered.");
 
             cacheMetaInfos.Add(new CacheMetaInfo(key, value.Value.GetType(), value.CacheType, value.Seconds));
+            cacheTable.Add(key, value);
         }
 
         public void AddOrUpdate(string key, Cache value) {
             ArgumentNullException.ThrowIfNull(nameof(key));
             ArgumentNullException.ThrowIfNull(nameof(value));
+
+            if (CacheMetaInfos.Any(e => e.Key == key))
+                Reload(key);
 
             if (CacheTable.ContainsKey(key)) {
                 cacheTable[key] = value;
