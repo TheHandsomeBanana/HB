@@ -1,7 +1,9 @@
-﻿using HB.Services.Logging.Factory;
+﻿using HB.DependencyInjection.Attributes;
+using HB.Services.Logging.Factory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -44,7 +46,37 @@ namespace HB.Utilities.DependencyInjection {
         }
 
         public DIContainer Resolve() {
+            ResolveInternal();
+
             return new DIContainer(services.ToArray());
+        }
+
+        private void ResolveInternal() {       
+            foreach(Type t in Assembly.GetCallingAssembly().GetTypes().AsSpan()) {
+
+                foreach (PropertyInfo p in t.GetProperties())
+                    SetProperty(p);
+
+                foreach (FieldInfo f in t.GetFields())
+                    SetField(f);
+            }
+        }
+
+        private void SetProperty(PropertyInfo property) {
+            SingletonDependencyAttribute? attr = property.GetCustomAttribute<SingletonDependencyAttribute>();
+            if (attr == null)
+                return;
+
+            foreach(ServiceDescriptor sd in services) {
+
+                if(sd.ServiceType.IsAssignableFrom(property.PropertyType) || sd.ImplementationType.IsAssignableFrom(property.PropertyType)) {
+                }
+
+            }
+        }
+
+        private void SetField(FieldInfo field) {
+
         }
     }
 }
