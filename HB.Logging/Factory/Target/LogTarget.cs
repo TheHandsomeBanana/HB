@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HB.Services.Logging.Factory.Target {
-    public class LogTarget {
+    public struct LogTarget {
         public object Target { get; }
         public LogTarget(object target) {
             Validate(target);
