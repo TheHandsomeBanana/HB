@@ -1,4 +1,7 @@
 using HB.Utilities.Services.Caching;
+using Microsoft.Win32.SafeHandles;
+using Newtonsoft.Json;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace HB.Services.Caching.Tests {
     [TestClass]
@@ -6,39 +9,69 @@ namespace HB.Services.Caching.Tests {
         private readonly TestCache cache = new TestCache("test", 10, DateTime.Now);
 
         [TestMethod]
-        public void TestJson() {
+        public void TestJsonAdd() {
             CachingService cachingService = new CachingService();
 
-            cachingService.AddOrUpdate("Test", new Cache(cache, CacheType.Json, 10));
-            Assert.IsTrue(cachingService.CacheTable.ContainsKey("Test"));
-            Thread.Sleep(12000);
-            Assert.IsFalse(cachingService.CacheTable.ContainsKey("Test"));
+            cachingService.AddOrUpdate("TestJson", new Cache(cache, CacheType.Json, 6));
+            Assert.IsTrue(cachingService.CacheTable.ContainsKey("TestJson"));
+            Thread.Sleep(6010);
+            Assert.IsFalse(cachingService.CacheTable.ContainsKey("TestJson"));
+
+            cachingService.Dispose();
+        }
+
+
+        [TestMethod]
+        public void TestJsonGet() {
+            CachingService cachingService = new CachingService();
+
+            Cache test = cachingService.GetOrDefault("TestJson") ?? cachingService.GetOrReload("TestJson");
+            Assert.IsNotNull(test);
+
+            cachingService.Dispose();
         }
 
         [TestMethod]
-        public void TestXml() {
+        public void TestXmlAdd() {
             CachingService cachingService = new CachingService();
 
-            cachingService.AddOrUpdate("Test", new Cache(cache, CacheType.Xml, 10));
-            Assert.IsTrue(cachingService.CacheTable.ContainsKey("Test"));
-            Thread.Sleep(12000);
-            Assert.IsFalse(cachingService.CacheTable.ContainsKey("Test"));
+            cachingService.AddOrUpdate("TestXml", new Cache(cache, CacheType.Xml, 1));
+            Assert.IsTrue(cachingService.CacheTable.ContainsKey("TestXml"));
+            Thread.Sleep(2000);
+            Assert.IsFalse(cachingService.CacheTable.ContainsKey("TestXml"));
+
+            cachingService.Dispose();
         }
 
         [TestMethod]
-        public void TestBinary() {
+        public void TestXmlGet() {
             CachingService cachingService = new CachingService();
+            Cache? test = cachingService.GetOrDefault("TestXml") ?? cachingService.GetOrReload("TestXml");
+            Assert.IsNotNull(test);
 
-            cachingService.AddOrUpdate("Test", new Cache(cache, CacheType.Binary, 10));
-            Assert.IsTrue(cachingService.CacheTable.ContainsKey("Test"));
-            Thread.Sleep(12000);
-            Assert.IsFalse(cachingService.CacheTable.ContainsKey("Test"));
-
-            cachingService.Reload("Test");
-
-
+            cachingService.Dispose();
         }
 
+        [TestMethod]
+        public void TestBinaryAdd() {
+            CachingService cachingService = new CachingService();
+
+            cachingService.AddOrUpdate("TestBinary", new Cache(cache, CacheType.Binary, 5));
+            Assert.IsTrue(cachingService.CacheTable.ContainsKey("TestBinary"));
+            Thread.Sleep(5100);
+            Assert.IsFalse(cachingService.CacheTable.ContainsKey("TestBinary"));
+
+            cachingService.Dispose();
+        }
+
+        [TestMethod]
+        public void TestBinaryGet() {
+            CachingService cachingService = new CachingService();
+            Cache? test = cachingService.GetOrDefault("TestBinary") ?? cachingService.GetOrReload("TestBinary");
+            Assert.IsNotNull(test);
+
+            cachingService.Dispose();
+        }
     }
 
     [Serializable]
@@ -47,6 +80,12 @@ namespace HB.Services.Caching.Tests {
         public int Counter { get; set; }
         public DateTime Timestamp { get; set; }
 
+
+        public TestCache() {
+
+        }
+
+        [JsonConstructor]
         public TestCache(string message, int counter, DateTime timestamp) {
             Message = message;
             Counter = counter;

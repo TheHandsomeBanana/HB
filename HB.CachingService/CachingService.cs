@@ -6,13 +6,14 @@ using System.Xml.Serialization;
 using HB.Common.Json;
 using HB.Common;
 using HB.Services.Caching.Helper;
+using System.Reflection;
 
 namespace HB.Utilities.Services.Caching {
     public class CachingService : ICachingService {
         private readonly System.Timers.Timer timer = new System.Timers.Timer();
 
         public const double TIMER_INTERVAL = 1000.0;
-        public static readonly string CachePath = GlobalEnvironment.CachingService + "\\";
+        public readonly string CachePath = GlobalEnvironment.CachingService + "\\" + Assembly.GetCallingAssembly().GetName().Name + "\\";
 
         private Dictionary<string, Cache> cacheTable = new Dictionary<string, Cache>();
         public IReadOnlyDictionary<string, Cache> CacheTable { get => cacheTable; }
@@ -21,21 +22,13 @@ namespace HB.Utilities.Services.Caching {
         public IReadOnlyList<CacheMetaInfo> CacheMetaInfos { get => cacheMetaInfos; }
 
         public CachingService() {
+            if (!Directory.Exists(CachePath.TrimEnd('\\')))
+                Directory.CreateDirectory(CachePath.TrimEnd('\\'));
+
             LoadMetaInfo();
             timer.Interval = TIMER_INTERVAL;
             timer.Elapsed += Timer_Elapsed;
             timer.Start();
-        }
-
-        ~CachingService() {
-            timer.Stop();
-            timer.Dispose();
-
-            foreach (KeyValuePair<string, Cache> kvp in CacheTable)
-                Outsource(kvp.Key, kvp.Value);
-
-            foreach (CacheMetaInfo cacheMetaInfo in cacheMetaInfos)
-                Outsource(cacheMetaInfo);
         }
 
         public Cache Get(string key) {
@@ -50,6 +43,17 @@ namespace HB.Utilities.Services.Caching {
                 throw new ArgumentNullException(nameof(key));
 
             return cacheTable.ContainsKey(key) ? cacheTable[key] : default;
+        }
+
+        public Cache GetOrReload(string key) {
+            ArgumentException.ThrowIfNullOrEmpty(key, nameof(key));
+
+            Cache? temp = GetOrDefault(key);
+
+            if (temp == null)
+                Reload(key);
+
+            return Get(key);
         }
 
         public void Reload(string key) {
@@ -120,13 +124,24 @@ namespace HB.Utilities.Services.Caching {
         }
 
         private void LoadMetaInfo() {
-            IEnumerable<string> files = Directory.GetFiles(CachePath.TrimEnd('\\')).Where(e => e.EndsWith(nameof(CacheMetaInfo)));
+            IEnumerable<string> files = Directory.GetFiles(CachePath).Where(e => e.EndsWith(nameof(CacheMetaInfo)));
 
-            foreach(string file in files) {
-                using(FileStream fs = new FileStream(file, FileMode.Open, FileAccess.Read)) {
+            foreach (string file in files) {
+                using (FileStream fs = new FileStream(file, FileMode.Open, FileAccess.Read)) {
                     cacheMetaInfos.Add((CacheMetaInfo)SerializationHelper.Deserialize(fs, typeof(CacheMetaInfo), CacheType.Json));
                 }
             }
+        }
+
+        public void Dispose() {
+            timer.Stop();
+            timer.Dispose();
+
+            foreach (KeyValuePair<string, Cache> kvp in CacheTable)
+                Outsource(kvp.Key, kvp.Value);
+
+            foreach (CacheMetaInfo cacheMetaInfo in cacheMetaInfos)
+                Outsource(cacheMetaInfo);
         }
     }
 }

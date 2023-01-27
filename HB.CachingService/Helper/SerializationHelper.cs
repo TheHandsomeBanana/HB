@@ -45,7 +45,7 @@ namespace HB.Services.Caching.Helper {
 #pragma warning restore SYSLIB0011 // Type or member is obsolete
                     break;
                 case CacheType.Xml:
-                    new XmlSerializer(typeof(CacheMetaInfo)).Serialize(fs, value);
+                    new XmlSerializer(value.GetType()).Serialize(fs, value);
                     break;
                 case CacheType.Json:
                     new JsonSerializer().Serialize(fs, value);

@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HB.Utilities.DependencyInjection {
-    public class DIContainer {
+    public class DIContainer : IDisposable {
         private ServiceDescriptor[] services;
         internal DIContainer(ServiceDescriptor[] serviceDescriptors) {
             services = serviceDescriptors;
@@ -55,6 +55,11 @@ namespace HB.Utilities.DependencyInjection {
 
         public T GetService<T>() {
             return (T)GetService(typeof(T));
+        }
+
+        public void Dispose() {
+            foreach (ServiceDescriptor sd in services)
+                sd.Dispose();
         }
     }
 }

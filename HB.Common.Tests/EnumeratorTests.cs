@@ -12,6 +12,8 @@ namespace HB.Common.Tests {
             foreach (char c in 'a'..'x') {
                 Console.WriteLine(c);
             }
+
+            
         }
     }
 }

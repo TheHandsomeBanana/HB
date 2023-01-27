@@ -46,7 +46,7 @@ namespace HB.Utilities.DependencyInjection {
         }
 
         public DIContainer Resolve() {
-            ResolveInternal();
+            //ResolveInternal();
 
             return new DIContainer(services.ToArray());
         }

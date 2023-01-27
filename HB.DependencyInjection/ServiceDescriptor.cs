@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HB.Utilities.DependencyInjection {
-    internal class ServiceDescriptor {
+    internal class ServiceDescriptor : IDisposable {
         public Type ServiceType { get; }
         public Type ImplementationType { get; set; }
         public object? Implementation { get; internal set; }
@@ -29,6 +29,19 @@ namespace HB.Utilities.DependencyInjection {
             ImplementationType = implementationType;
             LifeTime = lifeTime;
             OptionalParams = optionalParams;
+        }
+
+        public void Dispose() {
+            if (LifeTime != ServiceLifetime.Singleton)
+                return;
+
+            (Implementation as IDisposable)?.Dispose();
+            
+            if (OptionalParams == null)
+                return;
+
+            foreach(object o in OptionalParams)
+                (o as IDisposable)?.Dispose();
         }
     }
 }
