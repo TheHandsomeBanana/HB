@@ -22,8 +22,7 @@ namespace HB.Utilities.Services.Caching {
         public IReadOnlyList<CacheMetaInfo> CacheMetaInfos { get => cacheMetaInfos; }
 
         public CachingService() {
-            if (!Directory.Exists(CachePath.TrimEnd('\\')))
-                Directory.CreateDirectory(CachePath.TrimEnd('\\'));
+            Directory.CreateDirectory(CachePath + "Meta");
 
             LoadMetaInfo();
             timer.Interval = TIMER_INTERVAL;
@@ -119,12 +118,12 @@ namespace HB.Utilities.Services.Caching {
         }
 
         private void Outsource(CacheMetaInfo cacheMetaInfo) {
-            using (FileStream fs = new FileStream(CachePath + cacheMetaInfo.Key + nameof(CacheMetaInfo), FileMode.OpenOrCreate, FileAccess.Write))
+            using (FileStream fs = new FileStream(CachePath + "Meta\\" + cacheMetaInfo.Key, FileMode.OpenOrCreate, FileAccess.Write))
                 cacheMetaInfo.Serialize(fs);
         }
 
         private void LoadMetaInfo() {
-            IEnumerable<string> files = Directory.GetFiles(CachePath).Where(e => e.EndsWith(nameof(CacheMetaInfo)));
+            IEnumerable<string> files = Directory.GetFiles(CachePath + "Meta\\");
 
             foreach (string file in files) {
                 using (FileStream fs = new FileStream(file, FileMode.Open, FileAccess.Read)) {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HB.Services.Security.DataHandling {
-    internal class SecurityStreamHandler {
+    public class SecurityStreamHandler {
         public SecurityStreamHandler(Stream stream) {
 
         }

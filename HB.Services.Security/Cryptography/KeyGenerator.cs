@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HB.Services.Security.Cryptography {
-    internal class KeyGenerator {
+    public class KeyGenerator {
+
     }
 }
