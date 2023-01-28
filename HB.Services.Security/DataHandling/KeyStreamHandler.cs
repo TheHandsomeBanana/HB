@@ -38,6 +38,9 @@ namespace HB.Services.Security.DataHandling {
             //    }
             //}
 
+            if (StreamMode == SecurityStreamMode.FileDialog)
+                throw new NotSupportedException($"{StreamMode} is currently not working.");
+
             string? json;
             if (InstantDisposal) {
                 Stream = new FileStream(FilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
@@ -79,6 +82,9 @@ namespace HB.Services.Security.DataHandling {
             //        Stream = new FileStream(sfd.FileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
             //    }
             //}
+
+            if (StreamMode == SecurityStreamMode.FileDialog)
+                throw new NotSupportedException($"{StreamMode} is currently not working.");
 
             byte[] json = GlobalEnvironment.GlobalEncoding.GetBytes(JsonConvert.SerializeObject(item));
 

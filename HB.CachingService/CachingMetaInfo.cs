@@ -11,6 +11,7 @@ namespace HB.Utilities.Services.Caching {
         public Type ObjectType { get; set; }
         public CacheType CacheType { get; set; }
         public double? Lifetime { get; set; }
+        
 
         public CacheMetaInfo(string key, Type objectType, CacheType cacheType, double? lifetime) {
             ArgumentException.ThrowIfNullOrEmpty(key, nameof(key));

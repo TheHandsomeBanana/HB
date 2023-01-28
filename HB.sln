@@ -23,7 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HB.Services.Caching.Tests",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HB.Services.Security", "HB.Services.Security\HB.Services.Security.csproj", "{FF1BFA0F-FCE2-4959-81B6-DEAF503776D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HB.Services.Security.Tests", "HB.Services.Security.Tests\HB.Services.Security.Tests.csproj", "{83505561-BF4C-4E61-A964-B339AF0BA592}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HB.Services.Security.Tests", "HB.Services.Security.Tests\HB.Services.Security.Tests.csproj", "{83505561-BF4C-4E61-A964-B339AF0BA592}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HB.Services.DiskStorage", "HB.Services.DiskStorage\HB.Services.DiskStorage.csproj", "{C753923D-70FE-43D9-B0E0-050AB187ABEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +73,10 @@ Global
 		{83505561-BF4C-4E61-A964-B339AF0BA592}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83505561-BF4C-4E61-A964-B339AF0BA592}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83505561-BF4C-4E61-A964-B339AF0BA592}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C753923D-70FE-43D9-B0E0-050AB187ABEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C753923D-70FE-43D9-B0E0-050AB187ABEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C753923D-70FE-43D9-B0E0-050AB187ABEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C753923D-70FE-43D9-B0E0-050AB187ABEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
