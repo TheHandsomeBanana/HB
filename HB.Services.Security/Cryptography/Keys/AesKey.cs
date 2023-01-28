@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HB.Services.Security.Cryptography.Keys {
-    public class Key {
-        public byte[] Content { get; set; }
+    public class AesKey : IKey {
+        public byte[] Key { get; set; }
         public byte[] IV { get; set; }
 
-        public Key(byte[] content, byte[] iV) {
-            Content = content;
+        public AesKey(byte[] key, byte[] iV) {
+            Key = key;
             IV = iV;
         }
     }
