@@ -10,10 +10,14 @@ namespace HB.Services.Security.Cryptography.Interfaces {
     public interface ICryptoService {
         public byte[] Encrypt(byte[] data, IKey key);
         public byte[] Decrypt(byte[] cipher, IKey key);
+
+        public IKey[] GenerateKeys(int keySize);
     }
 
     public interface ICryptoService<TKey> : ICryptoService where TKey : IKey {
         public byte[] Encrypt(byte[] data, TKey key);
         public byte[] Decrypt(byte[] cipher, TKey key);
+
+        public new TKey[] GenerateKeys(int keySize);
     }
 }

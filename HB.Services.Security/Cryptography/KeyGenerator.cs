@@ -18,17 +18,17 @@ namespace HB.Services.Security.Cryptography {
         public RsaKey[] GenerateRsaKeys(int keySizeInBits = 2048) {
             RSA rsa = RSA.Create(keySizeInBits);
 
-            return new RsaKey[] { new RsaKey(rsa.ExportRSAPublicKey(), true), new RsaKey(rsa.ExportRSAPrivateKey(), false) };
+            return new RsaKey[] { new RsaKey(rsa.ExportRSAPublicKey(), keySizeInBits, true), new RsaKey(rsa.ExportRSAPrivateKey(), keySizeInBits, false) };
         }
 
         public RsaKey GeneratePublicKey(int keySizeInBits = 2048) {
             RSA rsa = RSA.Create(keySizeInBits);
-            return new RsaKey(rsa.ExportRSAPublicKey(), true);
+            return new RsaKey(rsa.ExportRSAPublicKey(), keySizeInBits, true);
         }
         
         public RsaKey GeneratePrivateKey(int keySizeInBits = 2048) {
             RSA rsa = RSA.Create(keySizeInBits);
-            return new RsaKey(rsa.ExportRSAPrivateKey(), false);
+            return new RsaKey(rsa.ExportRSAPrivateKey(), keySizeInBits, false);
         }
     }
 }

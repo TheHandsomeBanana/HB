@@ -27,7 +27,7 @@ namespace HB.Services.Security.Cryptography {
         }
 
         public byte[] Decrypt(byte[] cipher, RsaKey key) {
-            RSA rsa = RSA.Create(2048);
+            RSA rsa = RSA.Create(key.KeySize);
             if (key.IsPublic)
                 throw new ArgumentException("Cannot decrypt with a public key.");
 
@@ -37,7 +37,7 @@ namespace HB.Services.Security.Cryptography {
         }
 
         public byte[] Encrypt(byte[] data, RsaKey key) {
-            RSA rsa = RSA.Create(2048);
+            RSA rsa = RSA.Create(key.KeySize);
             if (!key.IsPublic)
                 throw new ArgumentException("Cannot encrypt with a private key.");
 
@@ -46,6 +46,13 @@ namespace HB.Services.Security.Cryptography {
             return rsa.Encrypt(data, RSAEncryptionPadding.OaepSHA512);
         }
 
-       
+        public RsaKey[] GenerateKeys(int keySize = 2048) {
+            KeyGenerator keygen = new KeyGenerator();
+            return keygen.GenerateRsaKeys(keySize);
+        }
+
+        IKey[] ICryptoService.GenerateKeys(int keySize) {
+            return GenerateKeys(keySize);
+        }
     }
 }
