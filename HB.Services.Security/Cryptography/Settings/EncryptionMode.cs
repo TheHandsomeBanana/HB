@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HB.Services.Security.Cryptography.Keys {
-    public interface IKey {
-        public string Name { get; }
+namespace HB.Services.Security.Cryptography.Settings {
+    public enum EncryptionMode {
+        AES,
+        RSA
     }
 }

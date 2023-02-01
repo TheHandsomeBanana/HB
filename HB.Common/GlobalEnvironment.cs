@@ -10,7 +10,7 @@ namespace HB.Common {
         public static readonly string CachingService = BasePath + "\\CachingService";
         public static readonly string LoggingService = BasePath + "\\LoggingService";
         public static readonly string SecurityService = BasePath + "\\SecurityService";
-        public static Encoding GlobalEncoding { get; set; } = Encoding.UTF8;
+        public static Encoding Encoding { get; set; } = Encoding.UTF8;
 
         static GlobalEnvironment() {
             Directory.CreateDirectory(BasePath);

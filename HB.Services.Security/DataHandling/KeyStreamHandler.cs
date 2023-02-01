@@ -1,6 +1,4 @@
 ﻿using HB.Common;
-using HB.Common.Json;
-using HB.Common.Streams;
 using HB.Services.Security.Cryptography.Keys;
 using Newtonsoft.Json;
 using System;
@@ -11,8 +9,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Win32;
 using System.Security.Cryptography;
+using HB.Common.Serialization.Streams;
 
-namespace HB.Services.Security.DataHandling {
+namespace HB.Services.Security.DataHandling
+{
     public class KeyStreamHandler : SecurityStreamHandler, ISecurityStreamHandler<IKey> {
         private Type keyType;
 
@@ -44,11 +44,11 @@ namespace HB.Services.Security.DataHandling {
             string? json;
             if (InstantDisposal) {
                 Stream = new FileStream(FilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-                json = GlobalEnvironment.GlobalEncoding.GetString(Stream.Read());
+                json = GlobalEnvironment.Encoding.GetString(Stream.Read());
                 Stream.Dispose();
             }
             else {
-                json = GlobalEnvironment.GlobalEncoding.GetString(Stream.Read());
+                json = GlobalEnvironment.Encoding.GetString(Stream.Read());
                 Stream.Position = 0;
             }
 
@@ -62,11 +62,11 @@ namespace HB.Services.Security.DataHandling {
             string? json;
             if (InstantDisposal) {
                 Stream = new FileStream(FilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-                json = GlobalEnvironment.GlobalEncoding.GetString(await Stream.ReadAsync());
+                json = GlobalEnvironment.Encoding.GetString(await Stream.ReadAsync());
                 await Stream.DisposeAsync();
             }
             else {
-                json = GlobalEnvironment.GlobalEncoding.GetString(await Stream.ReadAsync());
+                json = GlobalEnvironment.Encoding.GetString(await Stream.ReadAsync());
                 Stream.Position = 0;
             }
 
@@ -86,7 +86,7 @@ namespace HB.Services.Security.DataHandling {
             if (StreamMode == SecurityStreamMode.FileDialog)
                 throw new NotSupportedException($"{StreamMode} is currently not working.");
 
-            byte[] json = GlobalEnvironment.GlobalEncoding.GetBytes(JsonConvert.SerializeObject(item));
+            byte[] json = GlobalEnvironment.Encoding.GetBytes(JsonConvert.SerializeObject(item));
 
             if (InstantDisposal) {
                 Stream = new FileStream(FilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
@@ -104,7 +104,7 @@ namespace HB.Services.Security.DataHandling {
             if (StreamMode == SecurityStreamMode.FileDialog)
                 throw new NotSupportedException($"{StreamMode} not supported in async execution.");
 
-            byte[] json = GlobalEnvironment.GlobalEncoding.GetBytes(JsonConvert.SerializeObject(item));
+            byte[] json = GlobalEnvironment.Encoding.GetBytes(JsonConvert.SerializeObject(item));
 
             if (InstantDisposal) {
                 Stream = new FileStream(FilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);

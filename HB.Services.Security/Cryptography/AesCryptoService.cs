@@ -1,5 +1,6 @@
 ﻿using HB.Common;
-using HB.Common.Streams;
+using HB.Common.Serialization;
+using HB.Common.Serialization.Streams;
 using HB.Services.Security.Cryptography.Interfaces;
 using HB.Services.Security.Cryptography.Keys;
 using System;
@@ -9,8 +10,45 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HB.Services.Security.Cryptography {
+namespace HB.Services.Security.Cryptography
+{
+
+    public class AesCryptoService<TValue> : IGenCryptoService<TValue, AesKey> {
+        private SerializerMode serializerMode;
+        public AesCryptoService(SerializerMode serializerMode) {
+            if (serializerMode == SerializerMode.Binary)
+                throw new NotSupportedException("Binary serialization is not supported.");
+
+            this.serializerMode = serializerMode;
+        }
+
+        public TValue Decrypt(byte[] cipher, AesKey key) {
+            throw new NotImplementedException();
+        }
+
+        public TValue Decrypt(byte[] cipher, IKey key) {
+            throw new NotImplementedException();
+        }
+
+        public byte[] Encrypt(TValue data, AesKey key) {
+            throw new NotImplementedException();
+        }
+
+        public byte[] Encrypt(TValue data, IKey key) {
+            throw new NotImplementedException();
+        }
+
+        public AesKey[] GenerateKeys(int keySize) {
+            throw new NotImplementedException();
+        }
+
+        IKey[] IGenCryptoService<TValue>.GenerateKeys(int keySize) {
+            throw new NotImplementedException();
+        }
+    }
+
     public class AesCryptoService : ICryptoService<AesKey> {
+
         public byte[] Decrypt(byte[] cipher, IKey key) {
             ArgumentNullException.ThrowIfNull(cipher, nameof(cipher));
             if (!(key is AesKey))
@@ -97,5 +135,6 @@ namespace HB.Services.Security.Cryptography {
         IKey[] ICryptoService.GenerateKeys(int keySize) {
             return GenerateKeys(keySize);
         }
+
     }
 }

@@ -1,4 +1,4 @@
-﻿using HB.Common.Json;
+﻿using HB.Common.Serialization.Json;
 using HB.Utilities.Services.Caching;
 using Newtonsoft.Json;
 using System;
@@ -11,7 +11,8 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace HB.Services.Caching.Helper {
+namespace HB.Services.Caching.Helper
+{
     internal static class SerializationHelper {
 
         public static void Serialize(this Cache cache, FileStream fs) {

@@ -1,9 +1,10 @@
-using HB.Common.Streams;
+using HB.Common.Serialization.Streams;
 using HB.Services.Security.Cryptography;
 using HB.Services.Security.Cryptography.Keys;
 using System.Text;
 
-namespace HB.Services.Security.Tests {
+namespace HB.Services.Security.Tests
+{
     [TestClass]
     public class CryptographyTests {
         [TestMethod]

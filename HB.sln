@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HB.Services.Logging.Tests",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HB.DependencyInjection.Tests", "HB.DependencyInjection.Tests\HB.DependencyInjection.Tests.csproj", "{42799FA6-2BDA-4978-A2E2-0663C8B8087B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HB.Services.Caching", "HB.CachingService\HB.Services.Caching.csproj", "{1E68DD5A-F04B-43FE-A3C1-0D09981C3ED2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HB.Services.Caching", "HB.Services.Caching\HB.Services.Caching.csproj", "{1E68DD5A-F04B-43FE-A3C1-0D09981C3ED2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HB.Services.Caching.Tests", "HB.Services.Caching.Tests\HB.Services.Caching.Tests.csproj", "{E9542FDE-6471-402A-B3EB-E233106C2B49}"
 EndProject
@@ -25,7 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HB.Services.Security", "HB.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HB.Services.Security.Tests", "HB.Services.Security.Tests\HB.Services.Security.Tests.csproj", "{83505561-BF4C-4E61-A964-B339AF0BA592}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HB.Services.DiskStorage", "HB.Services.DiskStorage\HB.Services.DiskStorage.csproj", "{C753923D-70FE-43D9-B0E0-050AB187ABEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HB.Services.DiskStorage", "HB.Services.DiskStorage\HB.Services.DiskStorage.csproj", "{C753923D-70FE-43D9-B0E0-050AB187ABEC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HB.Services.DiskStorage.Tests", "HB.Services.DiskStorage.Tests\HB.Services.DiskStorage.Tests.csproj", "{0ECBD0A8-6156-434D-A0A2-AA14582909B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,6 +79,10 @@ Global
 		{C753923D-70FE-43D9-B0E0-050AB187ABEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C753923D-70FE-43D9-B0E0-050AB187ABEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C753923D-70FE-43D9-B0E0-050AB187ABEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0ECBD0A8-6156-434D-A0A2-AA14582909B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0ECBD0A8-6156-434D-A0A2-AA14582909B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0ECBD0A8-6156-434D-A0A2-AA14582909B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0ECBD0A8-6156-434D-A0A2-AA14582909B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,6 +93,7 @@ Global
 		{42799FA6-2BDA-4978-A2E2-0663C8B8087B} = {FAF9B09D-E07E-4A4B-B5C1-B574F95E82EB}
 		{E9542FDE-6471-402A-B3EB-E233106C2B49} = {FAF9B09D-E07E-4A4B-B5C1-B574F95E82EB}
 		{83505561-BF4C-4E61-A964-B339AF0BA592} = {FAF9B09D-E07E-4A4B-B5C1-B574F95E82EB}
+		{0ECBD0A8-6156-434D-A0A2-AA14582909B3} = {FAF9B09D-E07E-4A4B-B5C1-B574F95E82EB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {348FD10A-BDEA-4E04-A904-E4F03D144D91}

@@ -1,4 +1,5 @@
-﻿using HB.Services.Security.Cryptography.Interfaces;
+﻿using HB.Common.Serialization;
+using HB.Services.Security.Cryptography.Interfaces;
 using HB.Services.Security.Cryptography.Keys;
 using System;
 using System.Collections.Generic;
@@ -8,8 +9,41 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HB.Services.Security.Cryptography {
-    public class RsaCryptoService : ICryptoService<RsaKey> {
+    public class RsaCryptoService<TValue> : IGenCryptoService<TValue, RsaKey> {
+        private SerializerMode serializerMode;
+        public RsaCryptoService(SerializerMode serializerMode) {
+            if (serializerMode == SerializerMode.Binary)
+                throw new NotSupportedException("Binary serialization is not supported.");
 
+            this.serializerMode = serializerMode;
+        }
+
+        public TValue Decrypt(byte[] cipher, RsaKey key) {
+            throw new NotImplementedException();
+        }
+
+        public TValue Decrypt(byte[] cipher, IKey key) {
+            throw new NotImplementedException();
+        }
+
+        public byte[] Encrypt(TValue data, RsaKey key) {
+            throw new NotImplementedException();
+        }
+
+        public byte[] Encrypt(TValue data, IKey key) {
+            throw new NotImplementedException();
+        }
+
+        public RsaKey[] GenerateKeys(int keySize) {
+            throw new NotImplementedException();
+        }
+
+        IKey[] IGenCryptoService<TValue>.GenerateKeys(int keySize) {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class RsaCryptoService : ICryptoService<RsaKey> {
         public byte[] Decrypt(byte[] cipher, IKey key) {
             ArgumentNullException.ThrowIfNull(cipher, nameof(cipher));
             if (!(key is RsaKey))
@@ -54,5 +88,7 @@ namespace HB.Services.Security.Cryptography {
         IKey[] ICryptoService.GenerateKeys(int keySize) {
             return GenerateKeys(keySize);
         }
+
+       
     }
 }

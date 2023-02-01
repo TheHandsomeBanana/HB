@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HB.Common\HB.Common.csproj" />
+    <ProjectReference Include="..\HB.Services.Security\HB.Services.Security.csproj" />
   </ItemGroup>
 
 </Project>

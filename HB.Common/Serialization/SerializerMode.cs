@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HB.Services.DiskStorage.Objects {
-    public enum MemorySerializerType {
+namespace HB.Common.Serialization {
+    public enum SerializerMode {
+        None,
         Json,
-        Xml
+        Xml,
+        Binary
     }
 }

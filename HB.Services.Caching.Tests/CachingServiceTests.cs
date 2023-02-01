@@ -1,3 +1,4 @@
+using HB.Services.Caching;
 using HB.Utilities.Services.Caching;
 using Microsoft.Win32.SafeHandles;
 using Newtonsoft.Json;

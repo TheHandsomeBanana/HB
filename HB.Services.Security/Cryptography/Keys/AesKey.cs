@@ -9,6 +9,8 @@ namespace HB.Services.Security.Cryptography.Keys {
         public byte[] Key { get; set; }
         public byte[] IV { get; set; }
 
+        public string Name => nameof(AesKey);
+
         public AesKey(byte[] key, byte[] iV) {
             Key = key;
             IV = iV;

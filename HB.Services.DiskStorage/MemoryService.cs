@@ -1,9 +1,10 @@
-﻿using HB.Services.DiskStorage.Objects;
-
-namespace HB.Services.DiskStorage {
+﻿namespace HB.Services.DiskStorage
+{
     public class MemoryService : IMemoryService {
         public MemoryObject ReadMemory(string location) {
-            throw new NotImplementedException();
+            using(FileStream fs = new FileStream(location, FileMode.Open, FileAccess.Read)) {
+
+            }
         }
 
         public MemoryObject<TMemoryObject> ReadMemory<TMemoryObject>(string location) {

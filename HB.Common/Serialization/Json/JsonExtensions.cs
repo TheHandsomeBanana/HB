@@ -6,15 +6,18 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace HB.Common.Json {
-    public static class JsonExtensions {
+namespace HB.Common.Serialization.Json
+{
+    public static class JsonExtensions
+    {
         /// <summary>
         /// Serialized the given <paramref name="value"/> and writes the JSON structure to a file with the given <see cref="FileStream"/> <paramref name="fs"/>.
         /// </summary>
         /// <param name="serializer"></param>
         /// <param name="fs"></param>
         /// <param name="value"></param>
-        public static void Serialize(this JsonSerializer serializer, FileStream fs, object value) {
+        public static void Serialize(this JsonSerializer serializer, FileStream fs, object value)
+        {
             using (StreamWriter sw = new StreamWriter(fs))
                 serializer.Serialize(sw, value);
         }
@@ -26,7 +29,8 @@ namespace HB.Common.Json {
         /// <param name="fs"></param>
         /// <param name="objectType"></param>
         /// <returns></returns>
-        public static object? Deserialize(this JsonSerializer serializer, FileStream fs, Type objectType) {
+        public static object? Deserialize(this JsonSerializer serializer, FileStream fs, Type objectType)
+        {
             using (StreamReader sr = new StreamReader(fs))
                 return serializer.Deserialize(sr, objectType);
         }

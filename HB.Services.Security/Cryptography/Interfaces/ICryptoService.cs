@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace HB.Services.Security.Cryptography.Interfaces {
     public interface ICryptoService {
+
         public byte[] Encrypt(byte[] data, IKey key);
         public byte[] Decrypt(byte[] cipher, IKey key);
 
