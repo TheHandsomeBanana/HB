@@ -135,12 +135,16 @@ namespace HB.Services.DiskStorage {
 
             switch (serializerMode) {
                 case SerializerMode.Json:
-                    return JsonConvert.SerializeObject(memoryObj);
+                    serializedObj = JsonConvert.SerializeObject(memoryObj);
+                    break;
                 case SerializerMode.Xml:
-                    return XmlConvert.SerializeObject(memoryObj);
+                    serializedObj = XmlConvert.SerializeObject(memoryObj);
+                    break;
                 default:
                     throw new NotSupportedException($"{serializerMode} is not supported.");
             }
+
+            return serializedObj;
         }
 
         public string? Serialize(IKey key) {

@@ -1,6 +1,10 @@
-﻿using HB.Common.Serialization;
+﻿using HB.Common;
+using HB.Common.Serialization;
 using HB.Services.Security.Cryptography.Interfaces;
 using HB.Services.Security.Cryptography.Keys;
+using HB.Services.Security.Exceptions;
+using HB_Utilities.Common.Serialization;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,27 +23,80 @@ namespace HB.Services.Security.Cryptography {
         }
 
         public TValue Decrypt(byte[] cipher, RsaKey key) {
-            throw new NotImplementedException();
+            RSA rsa = RSA.Create(key.KeySize);
+            if (key.IsPublic)
+                throw new ArgumentException("Cannot decrypt with a public key.");
+
+            rsa.ImportRSAPrivateKey(key.Key, out int bytesRead);
+            byte[] targetBuffer = rsa.Decrypt(cipher, RSAEncryptionPadding.OaepSHA512);
+
+            TValue? target;
+            string targetString = GlobalEnvironment.Encoding.GetString(targetBuffer);
+            switch (serializerMode) {
+                case SerializerMode.Json:
+                    target = JsonConvert.DeserializeObject<TValue>(targetString);
+                    break;
+                case SerializerMode.Xml:
+                    target = XmlConvert.DeserializeObject<TValue>(targetString);
+                    break;
+                default:
+                    throw new NotSupportedException($"{serializerMode} is not supported.");
+            }
+
+            if (target == null)
+                throw new CryptoServiceException("Decryption failed, deserialized target is null.");
+
+            return target;
         }
 
         public TValue Decrypt(byte[] cipher, IKey key) {
-            throw new NotImplementedException();
+            ArgumentNullException.ThrowIfNull(cipher, nameof(cipher));
+            if (!(key is RsaKey))
+                throw new ArgumentException($"The provided key is not an {nameof(RsaKey)}.");
+
+            return Decrypt(cipher, (RsaKey)key);
         }
 
         public byte[] Encrypt(TValue data, RsaKey key) {
-            throw new NotImplementedException();
+            string? targetString;
+
+            switch (serializerMode) {
+                case SerializerMode.Json:
+                    targetString = JsonConvert.SerializeObject(data);
+                    break;
+                case SerializerMode.Xml:
+                    targetString = XmlConvert.SerializeObject(data);
+                    break;
+                default:
+                    throw new NotSupportedException($"{serializerMode} is not supported.");
+            }
+
+            if (targetString == null)
+                throw new CryptoServiceException("Encryption failed, serialized data is null");
+
+            RSA rsa = RSA.Create(key.KeySize);
+            if (!key.IsPublic)
+                throw new ArgumentException("Cannot encrypt with a private key.");
+
+            rsa.ImportRSAPublicKey(key.Key, out int bytesRead);
+
+            return rsa.Encrypt(GlobalEnvironment.Encoding.GetBytes(targetString), RSAEncryptionPadding.OaepSHA512);
         }
 
         public byte[] Encrypt(TValue data, IKey key) {
-            throw new NotImplementedException();
+            ArgumentNullException.ThrowIfNull(data, nameof(data));
+            if (!(key is RsaKey))
+                throw new ArgumentException($"The provided key is not an {nameof(RsaKey)}.");
+
+            return Encrypt(data, (RsaKey)key);
         }
 
         public RsaKey[] GenerateKeys(int keySize) {
-            throw new NotImplementedException();
+            return KeyGenerator.GenerateRsaKeys(keySize);
         }
 
         IKey[] IGenCryptoService<TValue>.GenerateKeys(int keySize) {
-            throw new NotImplementedException();
+            return GenerateKeys(keySize);
         }
     }
 
@@ -88,6 +145,6 @@ namespace HB.Services.Security.Cryptography {
             return GenerateKeys(keySize);
         }
 
-       
+
     }
 }

@@ -3,6 +3,9 @@ using HB.Common.Serialization;
 using HB.Common.Serialization.Streams;
 using HB.Services.Security.Cryptography.Interfaces;
 using HB.Services.Security.Cryptography.Keys;
+using HB.Services.Security.Exceptions;
+using HB_Utilities.Common.Serialization;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,27 +26,92 @@ namespace HB.Services.Security.Cryptography
         }
 
         public TValue Decrypt(byte[] cipher, AesKey key) {
-            throw new NotImplementedException();
+            ICryptoTransform decryptor = Aes.Create().CreateDecryptor(key.Key, key.IV);
+            TValue? target;
+
+            using (MemoryStream ms = new MemoryStream(cipher)) {
+                using (CryptoStream cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read)) {
+                    byte[] cipherBuffer = cs.Read(cipher.Length);
+
+                    // Remove trailing null chars
+                    int i = cipherBuffer.Length - 1;
+                    while (i >= 0 && cipherBuffer[i] == '\0')
+                        i--;
+
+                    byte[] targetBuffer = new byte[i + 1];
+                    Array.Copy(cipherBuffer, targetBuffer, i + 1);
+
+                    string targetString = GlobalEnvironment.Encoding.GetString(targetBuffer);
+                    switch (serializerMode) {
+                        case SerializerMode.Json:
+                            target = JsonConvert.DeserializeObject<TValue>(targetString);
+                            break;
+                        case SerializerMode.Xml:
+                            target = XmlConvert.DeserializeObject<TValue>(targetString);
+                            break;
+                        default:
+                            throw new NotSupportedException($"{serializerMode} is not supported.");
+                    }
+                }
+            }
+
+            if (target == null)
+                throw new CryptoServiceException("Decryption failed, deserialized target is null.");
+
+            return target;
         }
 
         public TValue Decrypt(byte[] cipher, IKey key) {
-            throw new NotImplementedException();
+            ArgumentNullException.ThrowIfNull(cipher, nameof(cipher));
+            if (!(key is AesKey))
+                throw new ArgumentException($"The provided key is not an {nameof(AesKey)}.");
+
+            return Decrypt(cipher, (AesKey)key);
         }
 
         public byte[] Encrypt(TValue data, AesKey key) {
-            throw new NotImplementedException();
+            string? targetString;
+
+            switch (serializerMode) {
+                case SerializerMode.Json:
+                    targetString = JsonConvert.SerializeObject(data);
+                    break;
+                case SerializerMode.Xml:
+                    targetString = XmlConvert.SerializeObject(data);
+                    break;
+                default:
+                    throw new NotSupportedException($"{serializerMode} is not supported.");
+            }
+
+            if (targetString == null)
+                throw new CryptoServiceException("Encryption failed, serialized data is null");
+
+            ICryptoTransform encryptor = Aes.Create().CreateEncryptor(key.Key, key.IV);
+
+            using (MemoryStream ms = new MemoryStream()) {
+                using (CryptoStream cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write)) {
+                    cs.Write(GlobalEnvironment.Encoding.GetBytes(targetString));
+                    cs.FlushFinalBlock();
+                }
+
+                return ms.ToArray();
+            }
         }
 
         public byte[] Encrypt(TValue data, IKey key) {
-            throw new NotImplementedException();
+            ArgumentNullException.ThrowIfNull(data, nameof(data));
+            if (!(key is AesKey))
+                throw new ArgumentException($"The provided key is not an {nameof(AesKey)}.");
+
+            return Encrypt(data, (AesKey)key);
         }
 
         public AesKey[] GenerateKeys(int keySize) {
-            throw new NotImplementedException();
+            return new AesKey[] { KeyGenerator.GenerateAesKey(keySize) };
         }
 
         IKey[] IGenCryptoService<TValue>.GenerateKeys(int keySize) {
-            throw new NotImplementedException();
+            return GenerateKeys(keySize);
         }
     }
 

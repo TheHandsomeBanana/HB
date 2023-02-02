@@ -26,9 +26,9 @@ namespace HB.Services.DiskStorage.Tests {
             MemoryService memoryService = new MemoryService();
             MemoryObject<TestClass> memoryObj = new MemoryObject<TestClass>(new TestClass("test"), SerializerMode.Xml);
 
-            memoryService.WriteMemory(memoryObj, jsonFile);
+            memoryService.WriteMemory(memoryObj, xmlFile);
 
-            TestClass? result = memoryService.ReadMemory<TestClass>(jsonFile, SerializerMode.Xml).Deserialize();
+            TestClass? result = memoryService.ReadMemory<TestClass>(xmlFile, SerializerMode.Xml).Deserialize();
 
             Assert.IsNotNull(result);
             Assert.AreEqual("test", result.Message);
@@ -58,6 +58,22 @@ namespace HB.Services.DiskStorage.Tests {
             memoryService.WriteMemory(memoryObj, jsonFile);
 
             TestClass? result = memoryService.ReadMemory(jsonFile, SerializerMode.Json).Deserialize(typeof(TestClass), key) as TestClass;
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual("test", result.Message);
+        }
+
+        [TestMethod]
+        public void JsonTestWithCryptoServiceRSA() {
+            MemoryService memoryService = new MemoryService();
+            MemoryObject<TestClass> memoryObj = new MemoryObject<TestClass>(new TestClass("test"), SerializerMode.Json);
+            IKey[] rsaKeys = KeyGenerator.GenerateRsaKeys();
+
+            memoryObj.Serialize(rsaKeys[0]);
+
+            memoryService.WriteMemory(memoryObj, jsonFile);
+
+            TestClass? result = memoryService.ReadMemory<TestClass>(jsonFile, SerializerMode.Json).Deserialize(rsaKeys[1]);
 
             Assert.IsNotNull(result);
             Assert.AreEqual("test", result.Message);

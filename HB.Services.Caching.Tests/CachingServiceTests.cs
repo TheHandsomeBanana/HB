@@ -1,3 +1,4 @@
+using HB.Common.Serialization;
 using HB.Services.Caching;
 using HB.Utilities.Services.Caching;
 using Microsoft.Win32.SafeHandles;
@@ -13,7 +14,7 @@ namespace HB.Services.Caching.Tests {
         public void TestJsonAdd() {
             CachingService cachingService = new CachingService();
 
-            cachingService.AddOrUpdate("TestJson", new Cache(cache, CacheType.Json, 6));
+            cachingService.AddOrUpdate("TestJson", new Cache(cache, SerializerMode.Json, 6));
             Assert.IsTrue(cachingService.CacheTable.ContainsKey("TestJson"));
             Thread.Sleep(6010);
             Assert.IsFalse(cachingService.CacheTable.ContainsKey("TestJson"));
@@ -36,7 +37,7 @@ namespace HB.Services.Caching.Tests {
         public void TestXmlAdd() {
             CachingService cachingService = new CachingService();
 
-            cachingService.AddOrUpdate("TestXml", new Cache(cache, CacheType.Xml, 1));
+            cachingService.AddOrUpdate("TestXml", new Cache(cache, SerializerMode.Xml, 1));
             Assert.IsTrue(cachingService.CacheTable.ContainsKey("TestXml"));
             Thread.Sleep(2000);
             Assert.IsFalse(cachingService.CacheTable.ContainsKey("TestXml"));
@@ -57,7 +58,7 @@ namespace HB.Services.Caching.Tests {
         public void TestBinaryAdd() {
             CachingService cachingService = new CachingService();
 
-            cachingService.AddOrUpdate("TestBinary", new Cache(cache, CacheType.Binary, 5));
+            cachingService.AddOrUpdate("TestBinary", new Cache(cache, SerializerMode.Binary, 5));
             Assert.IsTrue(cachingService.CacheTable.ContainsKey("TestBinary"));
             Thread.Sleep(5100);
             Assert.IsFalse(cachingService.CacheTable.ContainsKey("TestBinary"));

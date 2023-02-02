@@ -21,14 +21,12 @@ namespace HB.Services.Security.Cryptography {
             return new RsaKey[] { new RsaKey(rsa.ExportRSAPublicKey(), keySizeInBits, true), new RsaKey(rsa.ExportRSAPrivateKey(), keySizeInBits, false) };
         }
 
-        public static RsaKey GeneratePublicKey(int keySizeInBits = 2048) {
-            RSA rsa = RSA.Create(keySizeInBits);
-            return new RsaKey(rsa.ExportRSAPublicKey(), keySizeInBits, true);
+        public static RsaKey GeneratePublicKey(RSA rsa) {
+            return new RsaKey(rsa.ExportRSAPublicKey(), rsa.KeySize, true);
         }
         
-        public static RsaKey GeneratePrivateKey(int keySizeInBits = 2048) {
-            RSA rsa = RSA.Create(keySizeInBits);
-            return new RsaKey(rsa.ExportRSAPrivateKey(), keySizeInBits, false);
+        public static RsaKey GeneratePrivateKey(RSA rsa) {
+            return new RsaKey(rsa.ExportRSAPrivateKey(), rsa.KeySize, false);
         }
     }
 }

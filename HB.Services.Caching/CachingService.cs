@@ -6,6 +6,7 @@ using System.Xml.Serialization;
 using HB.Common;
 using HB.Services.Caching.Helper;
 using System.Reflection;
+using HB.Common.Serialization;
 
 namespace HB.Utilities.Services.Caching {
     public class CachingService : ICachingService {
@@ -126,7 +127,7 @@ namespace HB.Utilities.Services.Caching {
 
             foreach (string file in files) {
                 using (FileStream fs = new FileStream(file, FileMode.Open, FileAccess.Read)) {
-                    cacheMetaInfos.Add((CacheMetaInfo)SerializationHelper.Deserialize(fs, typeof(CacheMetaInfo), CacheType.Json));
+                    cacheMetaInfos.Add((CacheMetaInfo)SerializationHelper.Deserialize(fs, typeof(CacheMetaInfo), SerializerMode.Json));
                 }
             }
         }

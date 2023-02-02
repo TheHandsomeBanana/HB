@@ -1,4 +1,5 @@
-﻿using HB.Common.Serialization.Json;
+﻿using HB.Common.Serialization;
+using HB.Common.Serialization.Json;
 using HB.Utilities.Services.Caching;
 using Newtonsoft.Json;
 using System;
@@ -20,35 +21,35 @@ namespace HB.Services.Caching.Helper
         }
 
         public static void Serialize(this CacheMetaInfo cacheMetaInfo, FileStream fs) {
-            Serialize(fs, cacheMetaInfo, CacheType.Json);
+            Serialize(fs, cacheMetaInfo, SerializerMode.Json);
         }
 
-        public static object Deserialize(FileStream fs, Type objectType, CacheType ct) {
+        public static object Deserialize(FileStream fs, Type objectType, SerializerMode ct) {
             switch (ct) {
-                case CacheType.Binary:
+                case SerializerMode.Binary:
 #pragma warning disable SYSLIB0011 // Type or member is obsolete
                     return new BinaryFormatter().Deserialize(fs);
 #pragma warning restore SYSLIB0011 // Type or member is obsolete
-                case CacheType.Xml:
+                case SerializerMode.Xml:
                     return new XmlSerializer(objectType).Deserialize(fs) ?? throw new NullReferenceException("Xml deserialization returned null.");
-                case CacheType.Json:
+                case SerializerMode.Json:
                     return new JsonSerializer().Deserialize(fs, objectType) ?? throw new NullReferenceException("Json deserialization returned null."); ;
                 default:
                     throw new NotSupportedException("Cache type is not supported.");
             }
         }
 
-        private static void Serialize(FileStream fs, object value, CacheType ct) {
+        private static void Serialize(FileStream fs, object value, SerializerMode ct) {
             switch (ct) {
-                case CacheType.Binary:
+                case SerializerMode.Binary:
 #pragma warning disable SYSLIB0011 // Type or member is obsolete
                     new BinaryFormatter().Serialize(fs, value);
 #pragma warning restore SYSLIB0011 // Type or member is obsolete
                     break;
-                case CacheType.Xml:
+                case SerializerMode.Xml:
                     new XmlSerializer(value.GetType()).Serialize(fs, value);
                     break;
-                case CacheType.Json:
+                case SerializerMode.Json:
                     new JsonSerializer().Serialize(fs, value);
                     break;
                 default:

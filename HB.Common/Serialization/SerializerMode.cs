@@ -9,6 +9,7 @@ namespace HB.Common.Serialization {
         None,
         Json,
         Xml,
+        [Obsolete("Usage of binary formatting is dangerous and should not be used.")]
         Binary
     }
 }
