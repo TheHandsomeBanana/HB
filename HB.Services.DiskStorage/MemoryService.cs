@@ -1,38 +1,74 @@
-﻿namespace HB.Services.DiskStorage
-{
+﻿using HB.Common.Serialization;
+using HB.Common.Serialization.Streams;
+
+namespace HB.Services.DiskStorage {
     public class MemoryService : IMemoryService {
-        public MemoryObject ReadMemory(string location) {
-            using(FileStream fs = new FileStream(location, FileMode.Open, FileAccess.Read)) {
+        public MemoryObject ReadMemory(string location, SerializerMode serializerMode) {
+            string content;
+            using (StreamReader sr = new StreamReader(location))
+                content = sr.ReadToEnd();
 
-            }
+            return new MemoryObject(content, serializerMode);
         }
 
-        public MemoryObject<TMemoryObject> ReadMemory<TMemoryObject>(string location) {
-            throw new NotImplementedException();
+        public MemoryObject<TMemoryObject> ReadMemory<TMemoryObject>(string location, SerializerMode serializerMode) {
+            string content;
+            using (StreamReader sr = new StreamReader(location))
+                content = sr.ReadToEnd();
+
+            return new MemoryObject<TMemoryObject>(content, serializerMode);
         }
 
-        public Task<MemoryObject> ReadMemoryAsync(string location) {
-            throw new NotImplementedException();
+        public async Task<MemoryObject> ReadMemoryAsync(string location, SerializerMode serializerMode) {
+            string content;
+            using (StreamReader sr = new StreamReader(location))
+                content = await sr.ReadToEndAsync();
+
+            return new MemoryObject(content, serializerMode);
         }
 
-        public Task<MemoryObject<TMemoryObject>> ReadMemoryAsync<TMemoryObject>(string location) {
-            throw new NotImplementedException();
+        public async Task<MemoryObject<TMemoryObject>> ReadMemoryAsync<TMemoryObject>(string location, SerializerMode serializerMode) {
+            string content;
+            using (StreamReader sr = new StreamReader(location))
+                content = await sr.ReadToEndAsync();
+
+            return new MemoryObject<TMemoryObject>(content, serializerMode);
         }
 
         public void WriteMemory(MemoryObject memoryObject, string location) {
-            throw new NotImplementedException();
+            if (!memoryObject.IsSerialized)
+                memoryObject.Serialize();
+
+            using(StreamWriter sw = new StreamWriter(location)) {
+                sw.Write(memoryObject.SerializedObj);
+            }
         }
 
         public void WriteMemory<TMemoryObject>(MemoryObject<TMemoryObject> memoryObject, string location) {
-            throw new NotImplementedException();
+            if (!memoryObject.IsSerialized)
+                memoryObject.Serialize();
+
+            using (StreamWriter sw = new StreamWriter(location)) {
+                sw.Write(memoryObject.SerializedObj);
+            }
         }
 
-        public Task WriteMemoryAsync(MemoryObject memoryObject, string location) {
-            throw new NotImplementedException();
+        public async Task WriteMemoryAsync(MemoryObject memoryObject, string location) {
+            if (!memoryObject.IsSerialized)
+                memoryObject.Serialize();
+
+            using (StreamWriter sw = new StreamWriter(location)) {
+                await sw.WriteAsync(memoryObject.SerializedObj);
+            }
         }
 
-        public Task WriteMemoryAsync<TMemoryObject>(MemoryObject<TMemoryObject> memoryObject, string location) {
-            throw new NotImplementedException();
+        public async Task WriteMemoryAsync<TMemoryObject>(MemoryObject<TMemoryObject> memoryObject, string location) {
+            if (!memoryObject.IsSerialized)
+                memoryObject.Serialize();
+
+            using (StreamWriter sw = new StreamWriter(location)) {
+                await sw.WriteAsync(memoryObject.SerializedObj);
+            }
         }
     }
 }

@@ -20,6 +20,12 @@ namespace HB.Services.DiskStorage {
         private object? memoryObj;
         private SerializerMode serializerType;
 
+
+        public object? MemoryObj => memoryObj;
+        public string? SerializedObj => serializedObj;
+        public bool IsSerialized => serializedObj != null;
+        public bool IsDeserialized => memoryObj != null;
+
         public MemoryObject(object memoryObj, SerializerMode serializerType) {
             this.memoryObj = memoryObj;
             this.serializerType = serializerType;
@@ -29,8 +35,6 @@ namespace HB.Services.DiskStorage {
             this.serializedObj = serializedObj;
             this.serializerType = serializerType;
         }
-
-        public object? Get() => memoryObj;
 
         public string? Serialize() {
             serializedObj = SerializeInternal();
@@ -110,6 +114,11 @@ namespace HB.Services.DiskStorage {
         private TObjectType? memoryObj;
         private SerializerMode serializerMode;
 
+        public TObjectType? MemoryObj => memoryObj;
+        public string? SerializedObj => serializedObj;
+        public bool IsSerialized => serializedObj != null;
+        public bool IsDeserialized => memoryObj != null;
+
         public MemoryObject(TObjectType memoryObj, SerializerMode serializerType) {
             this.memoryObj = memoryObj;
             this.serializerMode = serializerType;
@@ -119,8 +128,6 @@ namespace HB.Services.DiskStorage {
             this.serializedObj = serializedObj;
             this.serializerMode = serializerType;
         }
-
-        public TObjectType? Get() => memoryObj;
 
         public string? Serialize() {
             if (memoryObj == null)
