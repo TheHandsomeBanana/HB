@@ -81,8 +81,7 @@ namespace HB.Services.Security.Cryptography {
         }
 
         public RsaKey[] GenerateKeys(int keySize = 2048) {
-            KeyGenerator keygen = new KeyGenerator();
-            return keygen.GenerateRsaKeys(keySize);
+            return KeyGenerator.GenerateRsaKeys(keySize);
         }
 
         IKey[] ICryptoService.GenerateKeys(int keySize) {

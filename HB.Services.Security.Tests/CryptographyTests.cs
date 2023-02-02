@@ -9,8 +9,7 @@ namespace HB.Services.Security.Tests
     public class CryptographyTests {
         [TestMethod]
         public void TestAesCryptoServiceString() {
-            KeyGenerator keyGenerator = new KeyGenerator();
-            AesKey key = keyGenerator.GenerateAesKey();
+            AesKey key = KeyGenerator.GenerateAesKey();
 
             AesCryptoService aes = new AesCryptoService();
             string testdata = "This is a teststring";

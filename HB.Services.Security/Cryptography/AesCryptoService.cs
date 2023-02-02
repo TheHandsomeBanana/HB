@@ -128,8 +128,7 @@ namespace HB.Services.Security.Cryptography
         }
 
         public AesKey[] GenerateKeys(int keySize = 256) {
-            KeyGenerator keygen = new KeyGenerator();
-            return new AesKey[] { keygen.GenerateAesKey(keySize) };
+            return new AesKey[] { KeyGenerator.GenerateAesKey(keySize) };
         }
 
         IKey[] ICryptoService.GenerateKeys(int keySize) {

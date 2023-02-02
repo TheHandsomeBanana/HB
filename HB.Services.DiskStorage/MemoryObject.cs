@@ -31,7 +31,7 @@ namespace HB.Services.DiskStorage {
             this.serializerType = serializerType;
         }
 
-        public MemoryObject(string serializedObj, SerializerMode serializerType) {
+        internal MemoryObject(string serializedObj, SerializerMode serializerType) {
             this.serializedObj = serializedObj;
             this.serializerType = serializerType;
         }
@@ -124,7 +124,7 @@ namespace HB.Services.DiskStorage {
             this.serializerMode = serializerType;
         }
 
-        public MemoryObject(string serializedObj, SerializerMode serializerType) {
+        internal MemoryObject(string serializedObj, SerializerMode serializerType) {
             this.serializedObj = serializedObj;
             this.serializerMode = serializerType;
         }

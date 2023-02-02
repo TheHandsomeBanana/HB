@@ -16,7 +16,7 @@ namespace HB.Services.Security.Tests {
             using (FileStream fs = new FileStream("test", FileMode.OpenOrCreate, FileAccess.ReadWrite)) {
                 KeyStreamHandler keyHandler = new KeyStreamHandler(fs, typeof(AesKey));
 
-                keyHandler.Write(new KeyGenerator().GenerateAesKey());
+                keyHandler.Write(KeyGenerator.GenerateAesKey());
                 IKey? key = keyHandler.Read();
 
                 Assert.IsNotNull(key);
