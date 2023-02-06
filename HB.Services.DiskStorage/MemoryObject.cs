@@ -1,10 +1,10 @@
 ﻿using HB.Common;
 using HB.Common.Serialization;
+using HB.Common.Serialization.Xml;
 using HB.Services.Security.Cryptography;
 using HB.Services.Security.Cryptography.Interfaces;
 using HB.Services.Security.Cryptography.Keys;
 using HB.Services.Security.Cryptography.Settings;
-using HB_Utilities.Common.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
@@ -14,7 +14,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace HB.Services.DiskStorage {
+namespace HB.Services.DiskStorage
+{
     public struct MemoryObject {
         private string? serializedObj;
         private object? memoryObj;

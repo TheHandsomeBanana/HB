@@ -1,9 +1,9 @@
 ﻿using HB.Common;
 using HB.Common.Serialization;
+using HB.Common.Serialization.Xml;
 using HB.Services.Security.Cryptography.Interfaces;
 using HB.Services.Security.Cryptography.Keys;
 using HB.Services.Security.Exceptions;
-using HB_Utilities.Common.Serialization;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HB.Services.Security.Cryptography {
+namespace HB.Services.Security.Cryptography
+{
     public class RsaCryptoService<TValue> : IGenCryptoService<TValue, RsaKey> {
         private SerializerMode serializerMode;
         public RsaCryptoService(SerializerMode serializerMode) {
