@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HB.Services.DiskStorage {
+namespace HB.Services.Storage {
     public interface IExtendedMemoryService {
         public TObject ReadMemory<TObject>(string location, SerializerMode serializerMode);
         public TObject ReadMemory<TObject>(string location, SerializerMode serializerMode, IKey key);

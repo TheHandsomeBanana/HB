@@ -1,8 +1,9 @@
 using HB.Common.Serialization;
 using HB.Services.Security.Cryptography;
 using HB.Services.Security.Cryptography.Keys;
+using HB.Services.Storage;
 
-namespace HB.Services.DiskStorage.Tests {
+namespace HB.Services.Storage.Tests {
     [TestClass]
     public class MemoryTests {
         private const string jsonFile = "testjson";

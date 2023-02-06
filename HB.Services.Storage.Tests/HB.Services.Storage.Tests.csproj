@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HB.Services.DiskStorage\HB.Services.DiskStorage.csproj" />
+    <ProjectReference Include="..\HB.Services.Storage\HB.Services.Storage.csproj" />
   </ItemGroup>
 
 </Project>

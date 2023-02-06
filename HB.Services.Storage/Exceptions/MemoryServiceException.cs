@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HB.Services.DiskStorage.Exceptions {
+namespace HB.Services.Storage.Exceptions {
     public class MemoryServiceException : InternalException {
         public MemoryServiceException(string? message) : base(message) {
         }

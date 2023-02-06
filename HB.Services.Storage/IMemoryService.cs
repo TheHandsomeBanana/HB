@@ -5,8 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HB.Services.DiskStorage
-{
+namespace HB.Services.Storage {
     public interface IMemoryService {
         public MemoryObject ReadMemory(string location, SerializerMode serializerMode);
         public Task<MemoryObject> ReadMemoryAsync(string location, SerializerMode serializerMode);

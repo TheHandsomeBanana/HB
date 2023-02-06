@@ -14,8 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace HB.Services.DiskStorage
-{
+namespace HB.Services.Storage {
     public struct MemoryObject {
         private string? serializedObj;
         private object? memoryObj;
@@ -130,12 +129,12 @@ namespace HB.Services.DiskStorage
 
         public MemoryObject(TObjectType memoryObj, SerializerMode serializerType) {
             this.memoryObj = memoryObj;
-            this.serializerMode = serializerType;
+            serializerMode = serializerType;
         }
 
         internal MemoryObject(string serializedObj, SerializerMode serializerType) {
             this.serializedObj = serializedObj;
-            this.serializerMode = serializerType;
+            serializerMode = serializerType;
         }
 
         public string? Serialize() {

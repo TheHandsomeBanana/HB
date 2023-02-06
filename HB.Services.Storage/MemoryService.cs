@@ -1,9 +1,9 @@
 ﻿using HB.Common.Serialization;
 using HB.Common.Serialization.Streams;
-using HB.Services.DiskStorage.Exceptions;
+using HB.Services.Storage.Exceptions;
 using HB.Services.Security.Cryptography.Keys;
 
-namespace HB.Services.DiskStorage {
+namespace HB.Services.Storage {
     public class MemoryService : IMemoryService, IExtendedMemoryService {
         public MemoryObject ReadMemory(string location, SerializerMode serializerMode) {
             string content;
@@ -37,7 +37,7 @@ namespace HB.Services.DiskStorage {
             if (!memoryObject.IsSerialized)
                 memoryObject.Serialize();
 
-            using(StreamWriter sw = new StreamWriter(location)) {
+            using (StreamWriter sw = new StreamWriter(location)) {
                 sw.Write(memoryObject.SerializedObj);
             }
         }
@@ -86,22 +86,22 @@ namespace HB.Services.DiskStorage {
         public void WriteMemory<TObject>(string location, TObject obj, SerializerMode serializerMode) {
             MemoryObject<TObject> mo = new MemoryObject<TObject>(obj, serializerMode);
             mo.Serialize();
-            WriteMemory<TObject>(mo, location);
+            WriteMemory(mo, location);
         }
         public void WriteMemory<TObject>(string location, TObject obj, SerializerMode serializerMode, IKey key) {
             MemoryObject<TObject> mo = new MemoryObject<TObject>(obj, serializerMode);
             mo.Serialize(key);
-            WriteMemory<TObject>(mo, location);
+            WriteMemory(mo, location);
         }
         public async Task WriteMemoryAsync<TObject>(string location, TObject obj, SerializerMode serializerMode) {
             MemoryObject<TObject> mo = new MemoryObject<TObject>(obj, serializerMode);
             mo.Serialize();
-            await WriteMemoryAsync<TObject>(mo, location);
+            await WriteMemoryAsync(mo, location);
         }
         public async Task WriteMemoryAsync<TObject>(string location, TObject obj, SerializerMode serializerMode, IKey key) {
             MemoryObject<TObject> mo = new MemoryObject<TObject>(obj, serializerMode);
             mo.Serialize(key);
-            await WriteMemoryAsync<TObject>(mo, location);
+            await WriteMemoryAsync(mo, location);
         }
     }
 }
