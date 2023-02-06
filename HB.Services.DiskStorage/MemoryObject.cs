@@ -15,14 +15,14 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace HB.Services.DiskStorage {
-    public class MemoryObject {
+    public struct MemoryObject {
         private string? serializedObj;
         private object? memoryObj;
         private SerializerMode serializerType;
 
 
-        public object? MemoryObj => memoryObj;
-        public string? SerializedObj => serializedObj;
+        internal object? MemoryObj => memoryObj;
+        internal string? SerializedObj => serializedObj;
         public bool IsSerialized => serializedObj != null;
         public bool IsDeserialized => memoryObj != null;
 
@@ -38,6 +38,10 @@ namespace HB.Services.DiskStorage {
 
         public string? Serialize() {
             serializedObj = SerializeInternal();
+
+            if (serializedObj != null)
+                memoryObj = null;
+
             return serializedObj;
         }
 
@@ -45,6 +49,8 @@ namespace HB.Services.DiskStorage {
             string? obj = SerializeInternal();
             if (obj == null)
                 return null;
+
+            memoryObj = null;
 
             ICryptoService cryptoService = InitCryptoService(key.Name);
             serializedObj = Convert.ToBase64String(cryptoService.Encrypt(GlobalEnvironment.Encoding.GetBytes(obj), key));
@@ -94,6 +100,8 @@ namespace HB.Services.DiskStorage {
                     throw new NotSupportedException($"{serializerType} is not supported.");
             }
 
+            serializedObj = null;
+
             return memoryObj;
         }
 
@@ -109,7 +117,7 @@ namespace HB.Services.DiskStorage {
         }
     }
 
-    public class MemoryObject<TObjectType> {
+    public struct MemoryObject<TObjectType> {
         private string? serializedObj;
         private TObjectType? memoryObj;
         private SerializerMode serializerMode;

@@ -63,7 +63,7 @@ namespace HB.Services.Security.Cryptography
 
         public TValue Decrypt(byte[] cipher, IKey key) {
             ArgumentNullException.ThrowIfNull(cipher, nameof(cipher));
-            if (!(key is AesKey))
+            if (key is not AesKey)
                 throw new ArgumentException($"The provided key is not an {nameof(AesKey)}.");
 
             return Decrypt(cipher, (AesKey)key);
@@ -100,7 +100,7 @@ namespace HB.Services.Security.Cryptography
 
         public byte[] Encrypt(TValue data, IKey key) {
             ArgumentNullException.ThrowIfNull(data, nameof(data));
-            if (!(key is AesKey))
+            if (key is not AesKey)
                 throw new ArgumentException($"The provided key is not an {nameof(AesKey)}.");
 
             return Encrypt(data, (AesKey)key);
@@ -119,7 +119,7 @@ namespace HB.Services.Security.Cryptography
 
         public byte[] Decrypt(byte[] cipher, IKey key) {
             ArgumentNullException.ThrowIfNull(cipher, nameof(cipher));
-            if (!(key is AesKey))
+            if (key is not AesKey)
                 throw new ArgumentException($"The provided key is not an {nameof(AesKey)}.");
 
             return Decrypt(cipher, (AesKey)key);
@@ -127,7 +127,7 @@ namespace HB.Services.Security.Cryptography
 
         public byte[] Encrypt(byte[] data, IKey key) {
             ArgumentNullException.ThrowIfNull(data, nameof(data));
-            if (!(key is AesKey))
+            if (key is not AesKey)
                 throw new ArgumentException($"The provided key is not an {nameof(AesKey)}.");
 
             return Encrypt(data, (AesKey)key);

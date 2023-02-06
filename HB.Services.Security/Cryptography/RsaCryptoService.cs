@@ -51,7 +51,7 @@ namespace HB.Services.Security.Cryptography {
 
         public TValue Decrypt(byte[] cipher, IKey key) {
             ArgumentNullException.ThrowIfNull(cipher, nameof(cipher));
-            if (!(key is RsaKey))
+            if (key is not RsaKey)
                 throw new ArgumentException($"The provided key is not an {nameof(RsaKey)}.");
 
             return Decrypt(cipher, (RsaKey)key);
@@ -85,7 +85,7 @@ namespace HB.Services.Security.Cryptography {
 
         public byte[] Encrypt(TValue data, IKey key) {
             ArgumentNullException.ThrowIfNull(data, nameof(data));
-            if (!(key is RsaKey))
+            if (key is not RsaKey)
                 throw new ArgumentException($"The provided key is not an {nameof(RsaKey)}.");
 
             return Encrypt(data, (RsaKey)key);
@@ -103,7 +103,7 @@ namespace HB.Services.Security.Cryptography {
     public class RsaCryptoService : ICryptoService<RsaKey> {
         public byte[] Decrypt(byte[] cipher, IKey key) {
             ArgumentNullException.ThrowIfNull(cipher, nameof(cipher));
-            if (!(key is RsaKey))
+            if (key is not RsaKey)
                 throw new ArgumentException($"The provided key is not an {nameof(RsaKey)}.");
 
             return Decrypt(cipher, (RsaKey)key);
@@ -111,7 +111,7 @@ namespace HB.Services.Security.Cryptography {
 
         public byte[] Encrypt(byte[] data, IKey key) {
             ArgumentNullException.ThrowIfNull(data, nameof(data));
-            if (!(key is RsaKey))
+            if (key is not RsaKey)
                 throw new ArgumentException($"The provided key is not an {nameof(RsaKey)}.");
 
             return Encrypt(data, (RsaKey)key);

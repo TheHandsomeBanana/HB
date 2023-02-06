@@ -13,9 +13,9 @@ namespace HB.Services.DiskStorage
         public void WriteMemory(MemoryObject memoryObject, string location);
         public Task WriteMemoryAsync(MemoryObject memoryObject, string location);
 
-        public MemoryObject<TMemoryObject> ReadMemory<TMemoryObject>(string location, SerializerMode serializerMode);
-        public Task<MemoryObject<TMemoryObject>> ReadMemoryAsync<TMemoryObject>(string location, SerializerMode serializerMode);
-        public void WriteMemory<TMemoryObject>(MemoryObject<TMemoryObject> memoryObject, string location);
-        public Task WriteMemoryAsync<TMemoryObject>(MemoryObject<TMemoryObject> memoryObject, string location);
+        public MemoryObject<TObject> ReadMemory<TObject>(string location, SerializerMode serializerMode);
+        public Task<MemoryObject<TObject>> ReadMemoryAsync<TObject>(string location, SerializerMode serializerMode);
+        public void WriteMemory<TObject>(MemoryObject<TObject> memoryObject, string location);
+        public Task WriteMemoryAsync<TObject>(MemoryObject<TObject> memoryObject, string location);
     }
 }
