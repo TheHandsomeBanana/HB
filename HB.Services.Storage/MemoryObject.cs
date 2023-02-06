@@ -122,8 +122,8 @@ namespace HB.Services.Storage {
         private TObjectType? memoryObj;
         private SerializerMode serializerMode;
 
-        public TObjectType? MemoryObj => memoryObj;
-        public string? SerializedObj => serializedObj;
+        internal TObjectType? MemoryObj => memoryObj;
+        internal string? SerializedObj => serializedObj;
         public bool IsSerialized => serializedObj != null;
         public bool IsDeserialized => memoryObj != null;
 
