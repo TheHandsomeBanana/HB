@@ -26,7 +26,7 @@ namespace HB.Services.Security.Tests
 
             
             byte[] testdata;
-            using (FileStream fs = new FileStream("D:\\Bilder\\ObitoDeathWP.jpg", FileMode.Open, FileAccess.Read)) {
+            using (FileStream fs = new FileStream("../../../assets/testpicture.png", FileMode.Open, FileAccess.Read)) {
                 testdata = fs.Read();
             }
 
