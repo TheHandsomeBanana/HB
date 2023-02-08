@@ -71,7 +71,7 @@ namespace HB.Services.Storage {
             MemoryObject<TObject> mo = ReadMemory<TObject>(location, serializerMode);
             return mo.Deserialize() ?? throw new MemoryServiceException("Failed reading memory.");
         }
-        public TObject ReadMemory<TObject>(string location, SerializerMode serializerMode, IKey key) {
+        TObject IExtendedMemoryService.ReadMemory<TObject>(string location, SerializerMode serializerMode, IKey key) {
             MemoryObject<TObject> mo = ReadMemory<TObject>(location, serializerMode);
             return mo.Deserialize(key) ?? throw new MemoryServiceException("Failed reading memory.");
         }
@@ -79,26 +79,26 @@ namespace HB.Services.Storage {
             MemoryObject<TObject> mo = await ReadMemoryAsync<TObject>(location, serializerMode);
             return mo.Deserialize() ?? throw new MemoryServiceException("Failed reading memory.");
         }
-        public async Task<TObject> ReadMemoryAsync<TObject>(string location, SerializerMode serializerMode, IKey key) {
+        async Task<TObject> IExtendedMemoryService.ReadMemoryAsync<TObject>(string location, SerializerMode serializerMode, IKey key) {
             MemoryObject<TObject> mo = await ReadMemoryAsync<TObject>(location, serializerMode);
             return mo.Deserialize(key) ?? throw new MemoryServiceException("Failed reading memory.");
         }
-        public void WriteMemory<TObject>(string location, TObject obj, SerializerMode serializerMode) {
+        void IExtendedMemoryService.WriteMemory<TObject>(string location, TObject obj, SerializerMode serializerMode) {
             MemoryObject<TObject> mo = new MemoryObject<TObject>(obj, serializerMode);
             mo.Serialize();
             WriteMemory(mo, location);
         }
-        public void WriteMemory<TObject>(string location, TObject obj, SerializerMode serializerMode, IKey key) {
+        void IExtendedMemoryService.WriteMemory<TObject>(string location, TObject obj, SerializerMode serializerMode, IKey key) {
             MemoryObject<TObject> mo = new MemoryObject<TObject>(obj, serializerMode);
             mo.Serialize(key);
             WriteMemory(mo, location);
         }
-        public async Task WriteMemoryAsync<TObject>(string location, TObject obj, SerializerMode serializerMode) {
+        async Task IExtendedMemoryService.WriteMemoryAsync<TObject>(string location, TObject obj, SerializerMode serializerMode) {
             MemoryObject<TObject> mo = new MemoryObject<TObject>(obj, serializerMode);
             mo.Serialize();
             await WriteMemoryAsync(mo, location);
         }
-        public async Task WriteMemoryAsync<TObject>(string location, TObject obj, SerializerMode serializerMode, IKey key) {
+        async Task IExtendedMemoryService.WriteMemoryAsync<TObject>(string location, TObject obj, SerializerMode serializerMode, IKey key) {
             MemoryObject<TObject> mo = new MemoryObject<TObject>(obj, serializerMode);
             mo.Serialize(key);
             await WriteMemoryAsync(mo, location);
