@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HB.Logging\HB.Services.Logging.csproj" />
+    <ProjectReference Include="..\HB.Services.Logging\HB.Services.Logging.csproj" />
   </ItemGroup>
 
 </Project>
