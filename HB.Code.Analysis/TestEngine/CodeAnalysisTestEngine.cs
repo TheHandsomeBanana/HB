@@ -19,9 +19,9 @@ namespace HB.Code.Analysis.TestEngine {
         protected SemanticModel? SemanticModel { get; private set; }
         protected SyntaxNode? SyntaxNode { get; private set; }
         
-        private List<CodeAnalysisTest<TValue>> tests { get; } = new List<CodeAnalysisTest<TValue>>();
+        private readonly List<CodeAnalysisTest<TValue>> tests = new();
         protected IReadOnlyList<CodeAnalysisTest<TValue>> Tests { get => tests; }
-        protected List<string> Errors { get; } = new List<string>();
+        protected List<string> Errors { get; } = new();
 
         public CodeAnalysisTestEngine(string solutionPath, string projectName) {
             Solution = GetSolution(solutionPath);
