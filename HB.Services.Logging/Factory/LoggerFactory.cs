@@ -26,14 +26,16 @@ namespace HB.Services.Logging.Factory {
                 GlobalLogTargets[i] = new LogTarget(globalTargets[i]);
         }
 
-        public ILogger CreateLogger(Type loggerType, Action<ILoggingBuilder> builder) {
+        public ILogger CreateLogger(Type? loggerType, Action<ILoggingBuilder> builder) {
             LoggingBuilder loggingBuilder = new LoggingBuilder();
             builder.Invoke(loggingBuilder);
 
             Logger logger = new Logger(loggerType);
             logger.LogTargets = loggingBuilder.LogTargets.Concat(GlobalLogTargets).ToArray();
 
-            capturedLoggerTypes.Add(loggerType);
+            if (loggerType != null)
+                capturedLoggerTypes.Add(loggerType);
+
             return logger;
         }
 

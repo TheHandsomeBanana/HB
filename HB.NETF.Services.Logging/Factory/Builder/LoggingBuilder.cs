@@ -17,6 +17,8 @@ namespace HB.NETF.Services.Logging.Factory.Builder {
         }
 
         #region Target Handler
+        public ILoggingBuilder UseGlobalTargetsOnly() => this;
+
         public ILoggingBuilder AddTarget(object target) {
             LogTarget logTarget = new LogTarget(target);
             logTargets.Add(logTarget);

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace HB.NETF.Services.Logging.Factory.Builder {
     public interface ILoggingBuilder {
+        ILoggingBuilder UseGlobalTargetsOnly();
         ILoggingBuilder AddTarget(object target);
         ILoggingBuilder AddTarget(Action<LogStatement> action);
         ILoggingBuilder AddTarget(Action<string> action);

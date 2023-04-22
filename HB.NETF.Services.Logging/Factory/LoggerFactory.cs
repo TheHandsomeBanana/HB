@@ -21,7 +21,7 @@ namespace HB.NETF.Services.Logging.Factory {
 
         public LoggerFactory(params object[] globalTargets) : this() {
             GlobalLogTargets = new LogTarget[globalTargets.Length];
-            for(int i = 0; i < globalTargets.Length; i++)
+            for (int i = 0; i < globalTargets.Length; i++)
                 GlobalLogTargets[i] = new LogTarget(globalTargets[i]);
         }
 
@@ -32,7 +32,9 @@ namespace HB.NETF.Services.Logging.Factory {
             Logger logger = new Logger(loggerType);
             logger.LogTargets = loggingBuilder.LogTargets.Concat(GlobalLogTargets).ToArray();
 
-            capturedLoggerTypes.Add(loggerType);
+            if (loggerType != null)
+                capturedLoggerTypes.Add(loggerType);
+
             return logger;
         }
 

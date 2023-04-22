@@ -6,52 +6,45 @@ using System.Text;
 namespace HB.Services.Logging {
     internal class Logger<T> : Logger, ILogger<T> where T : new() {
         public Logger() : base() {
-            Type t = typeof(T);
-            if (t.FullName == null)
-                throw new LoggerException($"Type {t.Name} is invalid.");
-
-            GenericType = t;
+            GenericType = typeof(T);
         }
     }
 
     internal class Logger : ILogger {
         internal LogTarget[] LogTargets { get; set; }
-        public Type GenericType { get; set; }
+        public Type? GenericType { get; set; }
         public DateTimeKind TimeKind { get; private set; } = DateTimeKind.Local;
 
         protected Logger() {
             LogTargets = new LogTarget[0];
         }
-        internal Logger(Type t) {
-            if (t.FullName == null)
-                throw new LoggerException($"Type {t.Name} is invalid.");
-
+        internal Logger(Type? t) {
             GenericType = t;
             LogTargets = new LogTarget[0];
         }
 
         public void LogDebug(string message) {
-            LogInternal(new LogStatement(GenericType.FullName, message, LogSeverity.Debug, GetCurrentTime()));
+            LogInternal(new LogStatement(GetBoundedType(), message, LogSeverity.Debug, GetCurrentTime()));
         }
 
         public void LogTrace(string message) {
-            LogInternal(new LogStatement(GenericType.FullName, message, LogSeverity.Trace, GetCurrentTime()));
+            LogInternal(new LogStatement(GetBoundedType(), message, LogSeverity.Trace, GetCurrentTime()));
         }
 
         public void LogInformation(string message) {
-            LogInternal(new LogStatement(GenericType.FullName, message, LogSeverity.Information, GetCurrentTime()));
+            LogInternal(new LogStatement(GetBoundedType(), message, LogSeverity.Information, GetCurrentTime()));
         }
 
         public void LogWarning(string message) {
-            LogInternal(new LogStatement(GenericType.FullName, message, LogSeverity.Warning, GetCurrentTime()));
+            LogInternal(new LogStatement(GetBoundedType(), message, LogSeverity.Warning, GetCurrentTime()));
         }
 
         public void LogError(string message) {
-            LogInternal(new LogStatement(GenericType.FullName, message, LogSeverity.Error, GetCurrentTime()));
+            LogInternal(new LogStatement(GetBoundedType(), message, LogSeverity.Error, GetCurrentTime()));
         }
 
         public void LogCritical(string message) {
-            LogInternal(new LogStatement(GenericType.FullName, message, LogSeverity.Critical, GetCurrentTime()));
+            LogInternal(new LogStatement(GetBoundedType(), message, LogSeverity.Critical, GetCurrentTime()));
         }
 
         private void LogInternal(LogStatement log) {
@@ -92,6 +85,7 @@ namespace HB.Services.Logging {
                     return DateTime.Now;
             }
         }
+        private string GetBoundedType() => GenericType?.FullName ?? GenericType?.Name ?? "unbound";
         #endregion
     }
 }
