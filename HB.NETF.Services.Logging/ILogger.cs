@@ -16,6 +16,6 @@ namespace HB.NETF.Services.Logging {
     }
 
     public interface ILogger<out T> : ILogger where T : new() {
-        Type GenericType { get; }
+        string Category { get; }
     }
 }

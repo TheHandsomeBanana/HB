@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HB.NETF.Services.Storage {
-    public interface IExtendedMemoryService {
+    public interface ISimplifiedMemoryService {
         TObject ReadMemory<TObject>(string location, SerializerMode serializerMode);
         TObject ReadMemory<TObject>(string location, SerializerMode serializerMode, IKey key);
         Task<TObject> ReadMemoryAsync<TObject>(string location, SerializerMode serializerMode);

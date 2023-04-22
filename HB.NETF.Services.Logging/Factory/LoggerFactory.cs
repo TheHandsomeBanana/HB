@@ -10,30 +10,35 @@ using HB.NETF.Services.Logging.Factory.Target;
 
 namespace HB.NETF.Services.Logging.Factory {
     public class LoggerFactory : ILoggerFactory {
-        private List<Type> capturedLoggerTypes;
-        public IReadOnlyList<Type> CapturedLoggerTypes { get => capturedLoggerTypes; }
+        private List<string> capturedLoggerCategories;
         public LogTarget[] GlobalLogTargets { get; }
+        public IReadOnlyList<string> CapturedLoggerCategories => capturedLoggerCategories;
 
         public LoggerFactory() {
-            capturedLoggerTypes = new List<Type>();
+            capturedLoggerCategories = new List<string>();
             GlobalLogTargets = new LogTarget[0];
         }
 
-        public LoggerFactory(params object[] globalTargets) : this() {
-            GlobalLogTargets = new LogTarget[globalTargets.Length];
-            for (int i = 0; i < globalTargets.Length; i++)
-                GlobalLogTargets[i] = new LogTarget(globalTargets[i]);
-        }
-
-        public ILogger CreateLogger(Type loggerType, Action<ILoggingBuilder> builder) {
+        /// <summary>
+        /// Adds Global Log Targets to factory (each logger will write to these targets)
+        /// </summary>
+        /// <param name="builder"></param>
+        public LoggerFactory(Action<ILoggingBuilder> builder) {
             LoggingBuilder loggingBuilder = new LoggingBuilder();
             builder.Invoke(loggingBuilder);
 
-            Logger logger = new Logger(loggerType);
+            GlobalLogTargets = loggingBuilder.LogTargets.ToArray();
+        }
+
+        public ILogger CreateLogger(string category, Action<ILoggingBuilder> builder) {
+            LoggingBuilder loggingBuilder = new LoggingBuilder();
+            builder.Invoke(loggingBuilder);
+
+            Logger logger = new Logger(category);
             logger.LogTargets = loggingBuilder.LogTargets.Concat(GlobalLogTargets).ToArray();
 
-            if (loggerType != null)
-                capturedLoggerTypes.Add(loggerType);
+            if (category != null)
+                capturedLoggerCategories.Add(category);
 
             return logger;
         }
@@ -45,8 +50,12 @@ namespace HB.NETF.Services.Logging.Factory {
             Logger<T> logger = new Logger<T>();
             logger.LogTargets = loggingBuilder.LogTargets.Concat(GlobalLogTargets).ToArray();
 
-            capturedLoggerTypes.Add(typeof(T));
+            capturedLoggerCategories.Add(nameof(T));
             return logger;
+        }
+
+        public ILogger CreateLogger(Type loggerType, Action<ILoggingBuilder> builder) {
+            throw new NotImplementedException();
         }
     }
 }

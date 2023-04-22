@@ -11,12 +11,12 @@ using HB.Common.Enumerators;
 
 namespace HB.Services.Logging.Factory {
     public class LoggerFactory : ILoggerFactory {
-        private List<Type> capturedLoggerTypes;
-        public IReadOnlyList<Type> CapturedLoggerTypes { get => capturedLoggerTypes; }
+        private List<string> capturedLoggerCategories;
+        public IReadOnlyList<string> CapturedLoggerCategories { get => capturedLoggerCategories; }
         public LogTarget[] GlobalLogTargets { get; }
 
         public LoggerFactory() {
-            capturedLoggerTypes = new List<Type>();
+            capturedLoggerCategories = new List<string>();
             GlobalLogTargets = new LogTarget[0];
         }
 
@@ -26,15 +26,15 @@ namespace HB.Services.Logging.Factory {
                 GlobalLogTargets[i] = new LogTarget(globalTargets[i]);
         }
 
-        public ILogger CreateLogger(Type? loggerType, Action<ILoggingBuilder> builder) {
+        public ILogger CreateLogger(string? category, Action<ILoggingBuilder> builder) {
             LoggingBuilder loggingBuilder = new LoggingBuilder();
             builder.Invoke(loggingBuilder);
 
-            Logger logger = new Logger(loggerType);
+            Logger logger = new Logger(category);
             logger.LogTargets = loggingBuilder.LogTargets.Concat(GlobalLogTargets).ToArray();
 
-            if (loggerType != null)
-                capturedLoggerTypes.Add(loggerType);
+            if (category != null)
+                capturedLoggerCategories.Add(category);
 
             return logger;
         }
@@ -46,7 +46,7 @@ namespace HB.Services.Logging.Factory {
             Logger<T> logger = new Logger<T>();
             logger.LogTargets = loggingBuilder.LogTargets.Concat(GlobalLogTargets).ToArray();
 
-            capturedLoggerTypes.Add(typeof(T));
+            capturedLoggerCategories.Add(nameof(T));
             return logger;
         }
     }

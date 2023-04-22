@@ -6,7 +6,8 @@ using System.IO;
 using System.Threading.Tasks;
 
 namespace HB.NETF.Services.Storage {
-    public class MemoryService : IMemoryService, IExtendedMemoryService {
+    public class MemoryService : IMemoryService, ISimplifiedMemoryService {
+        public const string MemoryExtension = ".hbmf";
         public MemoryObject ReadMemory(string location, SerializerMode serializerMode) {
             string content;
             using (StreamReader sr = new StreamReader(location))
@@ -69,7 +70,7 @@ namespace HB.NETF.Services.Storage {
         }
 
 
-        TObject IExtendedMemoryService.ReadMemory<TObject>(string location, SerializerMode serializerMode) {
+        TObject ISimplifiedMemoryService.ReadMemory<TObject>(string location, SerializerMode serializerMode) {
             MemoryObject<TObject> mo = ReadMemory<TObject>(location, serializerMode);
             TObject result = mo.Deserialize();
             if (result == null)
@@ -77,7 +78,7 @@ namespace HB.NETF.Services.Storage {
 
             return result;
         }
-        TObject IExtendedMemoryService.ReadMemory<TObject>(string location, SerializerMode serializerMode, IKey key) {
+        TObject ISimplifiedMemoryService.ReadMemory<TObject>(string location, SerializerMode serializerMode, IKey key) {
             MemoryObject<TObject> mo = ReadMemory<TObject>(location, serializerMode);
             TObject result = mo.Deserialize(key);
             if (result == null)
@@ -85,7 +86,7 @@ namespace HB.NETF.Services.Storage {
 
             return result;
         }
-        async Task<TObject> IExtendedMemoryService.ReadMemoryAsync<TObject>(string location, SerializerMode serializerMode) {
+        async Task<TObject> ISimplifiedMemoryService.ReadMemoryAsync<TObject>(string location, SerializerMode serializerMode) {
             MemoryObject<TObject> mo = await ReadMemoryAsync<TObject>(location, serializerMode);
             TObject result = mo.Deserialize();
             if (result == null)
@@ -93,7 +94,7 @@ namespace HB.NETF.Services.Storage {
 
             return result;
         }
-        async Task<TObject> IExtendedMemoryService.ReadMemoryAsync<TObject>(string location, SerializerMode serializerMode, IKey key) {
+        async Task<TObject> ISimplifiedMemoryService.ReadMemoryAsync<TObject>(string location, SerializerMode serializerMode, IKey key) {
             MemoryObject<TObject> mo = await ReadMemoryAsync<TObject>(location, serializerMode);
             TObject result = mo.Deserialize(key);
             if (result == null)
@@ -101,22 +102,22 @@ namespace HB.NETF.Services.Storage {
 
             return result;
         }
-        void IExtendedMemoryService.WriteMemory<TObject>(string location, TObject obj, SerializerMode serializerMode) {
+        void ISimplifiedMemoryService.WriteMemory<TObject>(string location, TObject obj, SerializerMode serializerMode) {
             MemoryObject<TObject> mo = new MemoryObject<TObject>(obj, serializerMode);
             mo.Serialize();
             WriteMemory(mo, location);
         }
-        void IExtendedMemoryService.WriteMemory<TObject>(string location, TObject obj, SerializerMode serializerMode, IKey key) {
+        void ISimplifiedMemoryService.WriteMemory<TObject>(string location, TObject obj, SerializerMode serializerMode, IKey key) {
             MemoryObject<TObject> mo = new MemoryObject<TObject>(obj, serializerMode);
             mo.Serialize(key);
             WriteMemory(mo, location);
         }
-        async Task IExtendedMemoryService.WriteMemoryAsync<TObject>(string location, TObject obj, SerializerMode serializerMode) {
+        async Task ISimplifiedMemoryService.WriteMemoryAsync<TObject>(string location, TObject obj, SerializerMode serializerMode) {
             MemoryObject<TObject> mo = new MemoryObject<TObject>(obj, serializerMode);
             mo.Serialize();
             await WriteMemoryAsync(mo, location);
         }
-        async Task IExtendedMemoryService.WriteMemoryAsync<TObject>(string location, TObject obj, SerializerMode serializerMode, IKey key) {
+        async Task ISimplifiedMemoryService.WriteMemoryAsync<TObject>(string location, TObject obj, SerializerMode serializerMode, IKey key) {
             MemoryObject<TObject> mo = new MemoryObject<TObject>(obj, serializerMode);
             mo.Serialize(key);
             await WriteMemoryAsync(mo, location);

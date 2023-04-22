@@ -45,7 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\MemoryServiceException.cs" />
-    <Compile Include="IExtendedMemoryService.cs" />
+    <Compile Include="ISimplifiedMemoryService.cs" />
     <Compile Include="IMemoryService.cs" />
     <Compile Include="MemoryObject.cs" />
     <Compile Include="MemoryService.cs" />

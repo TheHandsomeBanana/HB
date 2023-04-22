@@ -9,45 +9,45 @@ using HB.NETF.Common.Serialization.Streams;
 namespace HB.NETF.Services.Logging {
     internal class Logger<T> : Logger, ILogger<T> where T : new() {
         public Logger() : base() {
-            GenericType = typeof(T);
+            Category = nameof(T);
         }
     }
 
     internal class Logger : ILogger {
         internal LogTarget[] LogTargets { get; set; }
-        public Type GenericType { get; set; }
+        public string Category { get; set; }
         public DateTimeKind TimeKind { get; private set; } = DateTimeKind.Local;
 
         protected Logger() {
             LogTargets = new LogTarget[0];
         }
-        internal Logger(Type t) {
-            GenericType = t;
+        internal Logger(string category) {
+            Category = category;
             LogTargets = new LogTarget[0];
         }
 
         public void LogDebug(string message) {
-            LogInternal(new LogStatement(GetBoundedType(), message, LogSeverity.Debug, GetCurrentTime()));
+            LogInternal(new LogStatement(GetCategory(), message, LogSeverity.Debug, GetCurrentTime()));
         }
 
         public void LogTrace(string message) {
-            LogInternal(new LogStatement(GetBoundedType(), message, LogSeverity.Trace, GetCurrentTime()));
+            LogInternal(new LogStatement(GetCategory(), message, LogSeverity.Trace, GetCurrentTime()));
         }
 
         public void LogInformation(string message) {
-            LogInternal(new LogStatement(GetBoundedType(), message, LogSeverity.Information, GetCurrentTime()));
+            LogInternal(new LogStatement(GetCategory(), message, LogSeverity.Information, GetCurrentTime()));
         }
 
         public void LogWarning(string message) {
-            LogInternal(new LogStatement(GetBoundedType(), message, LogSeverity.Warning, GetCurrentTime()));
+            LogInternal(new LogStatement(GetCategory(), message, LogSeverity.Warning, GetCurrentTime()));
         }
 
         public void LogError(string message) {
-            LogInternal(new LogStatement(GetBoundedType(), message, LogSeverity.Error, GetCurrentTime()));
+            LogInternal(new LogStatement(GetCategory(), message, LogSeverity.Error, GetCurrentTime()));
         }
 
         public void LogCritical(string message) {
-            LogInternal(new LogStatement(GetBoundedType(), message, LogSeverity.Critical, GetCurrentTime()));
+            LogInternal(new LogStatement(GetCategory(), message, LogSeverity.Critical, GetCurrentTime()));
         }
 
         private void LogInternal(LogStatement log) {
@@ -89,7 +89,7 @@ namespace HB.NETF.Services.Logging {
             }
         }
 
-        private string GetBoundedType() => GenericType?.FullName ?? GenericType?.Name ?? "unbound";
+        private string GetCategory() => Category ?? "No Category";
         #endregion
     }
 }

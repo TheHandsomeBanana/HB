@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace HB.NETF.Services.Logging.Factory {
     public interface ILoggerFactory {
-        IReadOnlyList<Type> CapturedLoggerTypes { get; }
+        IReadOnlyList<string> CapturedLoggerCategories { get; }
         LogTarget[] GlobalLogTargets { get; }
-        ILogger CreateLogger(Type loggerType, Action<ILoggingBuilder> builder);
+        ILogger CreateLogger(string category, Action<ILoggingBuilder> builder);
         ILogger<T> CreateLogger<T>(Action<ILoggingBuilder> builder) where T : new();
     }
 }
