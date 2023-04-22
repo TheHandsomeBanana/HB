@@ -59,6 +59,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DependencyInjection\DIBuilder.cs" />
+    <Compile Include="DependencyInjection\IDependencyConfig.cs" />
     <Compile Include="DependencyInjection\DIContainer.cs" />
     <Compile Include="Exceptions\InternalException.cs" />
     <Compile Include="GlobalEnvironment.cs" />
