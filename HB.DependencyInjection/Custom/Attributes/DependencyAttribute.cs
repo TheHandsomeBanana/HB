@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HB.DependencyInjection.Attributes {
+namespace HB.DependencyInjection.Custom.Attributes
+{
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-    public class SingletonDependencyAttribute : Attribute {
+    public class SingletonDependencyAttribute : Attribute
+    {
 
     }
 }

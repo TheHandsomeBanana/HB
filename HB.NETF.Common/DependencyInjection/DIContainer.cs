@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HB.NETF.Common.DependencyInjection {
-    public class DIContainer {      
+    public static class DIContainer {      
         
         public static IServiceProvider ServiceProvider { get; private set; }
 
