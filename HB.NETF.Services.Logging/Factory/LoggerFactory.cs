@@ -53,9 +53,5 @@ namespace HB.NETF.Services.Logging.Factory {
             capturedLoggerCategories.Add(nameof(T));
             return logger;
         }
-
-        public ILogger CreateLogger(Type loggerType, Action<ILoggingBuilder> builder) {
-            throw new NotImplementedException();
-        }
     }
 }
