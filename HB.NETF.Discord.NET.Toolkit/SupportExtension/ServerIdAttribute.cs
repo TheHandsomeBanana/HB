@@ -13,5 +13,9 @@ namespace HB.NETF.Discord.NET.Toolkit.SupportExtension {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     public class ServerIdAttribute : Attribute {
         public ulong ServerId { get; set; }
+
+        public ServerIdAttribute(ulong serverId) {
+            ServerId = serverId;
+        }
     }
 }
