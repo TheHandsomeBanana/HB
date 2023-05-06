@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Discord;
-using Discord.Net;
 
 namespace HB.NETF.Discord.NET.Toolkit.SupportExtension {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-    public class ServerIdAttribute : Attribute {
-        public ulong ServerId { get; set; }
+    public class ServerNameAttribute : Attribute {
+        public string ServerName { get; set; }
 
-        public ServerIdAttribute(ulong serverId) {
-            ServerId = serverId;
+        public ServerNameAttribute(string serverName) {
+            ServerName = serverName;
         }
     }
 }
