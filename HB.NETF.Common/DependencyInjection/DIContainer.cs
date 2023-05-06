@@ -19,5 +19,13 @@ namespace HB.NETF.Common.DependencyInjection {
         public static void BuildServiceProvider(DIBuilder builder) { 
             ServiceProvider = builder.Services.BuildServiceProvider();
         }
+
+        public static TService GetService<TService>() {
+            object service = ServiceProvider.GetService(typeof(TService));
+            if (service == null)
+                return default;
+
+            return (TService)service;
+        }
     }
 }
