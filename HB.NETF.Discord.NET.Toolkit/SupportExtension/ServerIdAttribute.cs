@@ -7,7 +7,7 @@ using Discord;
 using Discord.Net;
 
 namespace HB.NETF.Discord.NET.Toolkit.SupportExtension {
-    [AttributeUsage(AttributeTargets.Assembly)]
+    [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Class)]
     public class ServerIdAttribute : Attribute {
         public ulong ServerId { get; set; }
 
