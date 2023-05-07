@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace HB.NETF.Discord.NET.Toolkit.SupportExtension {
     [AttributeUsage(AttributeTargets.Assembly)]
-    public class ServerNamesAttribute : Attribute {
-        public string[] ServerNames { get; set; }
+    public class ServerIdListAttribute : Attribute {
+        public ulong[] ServerIds { get; set; }
 
-        public ServerNamesAttribute(params string[] serverNames) {
-            ServerNames = serverNames;
+        public ServerIdListAttribute(params ulong[] serverIds) {
+            ServerIds = serverIds;
         }
     }
 }
