@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HB.NETF.Discord.NET.Toolkit.SupportExtension {
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+    [AttributeUsage(AttributeTargets.Assembly)]
     public class ServerNameAttribute : Attribute {
         public string ServerName { get; set; }
 

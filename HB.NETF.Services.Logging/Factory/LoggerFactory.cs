@@ -10,12 +10,11 @@ using HB.NETF.Services.Logging.Factory.Target;
 
 namespace HB.NETF.Services.Logging.Factory {
     public class LoggerFactory : ILoggerFactory {
-        private List<string> capturedLoggerCategories;
+        private List<string> capturedLoggerCategories = new List<string>();
         public LogTarget[] GlobalLogTargets { get; }
         public IReadOnlyList<string> CapturedLoggerCategories => capturedLoggerCategories;
 
         public LoggerFactory() {
-            capturedLoggerCategories = new List<string>();
             GlobalLogTargets = new LogTarget[0];
         }
 
@@ -43,13 +42,27 @@ namespace HB.NETF.Services.Logging.Factory {
             return logger;
         }
 
-        public ILogger<T> CreateLogger<T>(Action<ILoggingBuilder> builder) where T : new() {
+        public ILogger<T> CreateLogger<T>(Action<ILoggingBuilder> builder){
             LoggingBuilder loggingBuilder = new LoggingBuilder();
             builder.Invoke(loggingBuilder);
 
             Logger<T> logger = new Logger<T>();
             logger.LogTargets = loggingBuilder.LogTargets.Concat(GlobalLogTargets).ToArray();
 
+            capturedLoggerCategories.Add(nameof(T));
+            return logger;
+        }
+
+        public ILogger CreateLogger(string category) {
+            Logger logger = new Logger(category);
+            logger.LogTargets = GlobalLogTargets;
+            capturedLoggerCategories.Add(category);
+            return logger;
+        }
+
+        public ILogger<T> CreateLogger<T>() {
+            Logger<T> logger = new Logger<T>();
+            logger.LogTargets = GlobalLogTargets;
             capturedLoggerCategories.Add(nameof(T));
             return logger;
         }

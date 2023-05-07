@@ -15,7 +15,7 @@ namespace HB.NETF.Services.Logging {
         void LogCritical(string message);
     }
 
-    public interface ILogger<out T> : ILogger where T : new() {
+    public interface ILogger<out T> : ILogger {
         string Category { get; }
     }
 }
