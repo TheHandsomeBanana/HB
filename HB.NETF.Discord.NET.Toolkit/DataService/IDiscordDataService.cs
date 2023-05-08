@@ -7,11 +7,7 @@ using System.Threading.Tasks;
 
 namespace HB.NETF.Discord.NET.Toolkit.DataService {
     public interface IDiscordDataService : IDisposable {
-        Func<Task> Ready { get; set; }
-        Task ConnectAsync();
         Task DownloadDataAsync();
-        Task DisconnectAsync();
-        Task LoadFromMemoryAsync();
 
         Task<DiscordItemModel[]> GetServers();
         Task<DiscordItemModel[]> GetUsers(ulong serverId);

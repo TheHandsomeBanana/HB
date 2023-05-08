@@ -103,7 +103,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataService\DiscordDataService.cs" />
+    <Compile Include="DataService\ExtendedDiscordDataService.cs" />
     <Compile Include="DataService\IDiscordDataService.cs" />
+    <Compile Include="DataService\IExtendedDiscordDataService.cs" />
     <Compile Include="DataService\Models\Simplified\DiscordItemModel.cs" />
     <Compile Include="DataService\Models\Simplified\SimplifiedDiscordDataModel.cs" />
     <Compile Include="DataService\Models\Simplified\SimplifiedDiscordServerModel.cs" />
