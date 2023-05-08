@@ -14,7 +14,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace HB.NETF.Discord.NET.Toolkit.DataService {
-    internal class ExtendedDiscordDataService : IExtendedDiscordDataService {
+    public class ExtendedDiscordDataService : IExtendedDiscordDataService {
         private ILogger<ExtendedDiscordDataService> logger;
         private List<DiscordDataService> internalDiscordDataServices = new List<DiscordDataService>();
 
