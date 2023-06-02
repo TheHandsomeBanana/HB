@@ -9,7 +9,7 @@ using HB.NETF.Common.Serialization.Streams;
 namespace HB.NETF.Services.Logging {
     internal class Logger<T> : Logger, ILogger<T> {
         public Logger() : base() {
-            Category = nameof(T);
+            Category = typeof(T).Name;
         }
     }
 

@@ -10,5 +10,11 @@ namespace HB.NETF.Discord.NET.Toolkit.DataService.Models {
         public string Token { get; set; }
         public string Bot { get; set; }
         public DateTime CreatedOn { get; set; }
+
+        public TokenModel(string botName, string token, DateTime createdOn) {
+            Bot = botName;
+            Token = token;
+            CreatedOn = createdOn;
+        }
     }
 }

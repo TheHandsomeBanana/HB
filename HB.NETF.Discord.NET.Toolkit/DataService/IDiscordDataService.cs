@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 namespace HB.NETF.Discord.NET.Toolkit.DataService {
     public interface IDiscordDataService : IDisposable {
         Task DownloadDataAsync();
-
         Task<DiscordItemModel[]> GetServers();
         Task<DiscordItemModel[]> GetUsers(ulong serverId);
         Task<DiscordItemModel[]> GetRoles(ulong serverId);

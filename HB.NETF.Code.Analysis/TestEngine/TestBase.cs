@@ -17,7 +17,7 @@ namespace HB.NETF.Code.Analysis.TestEngine {
             ILoggerFactory loggerFactory = new LoggerFactory();
             
             DIBuilder builder = new DIBuilder();
-            builder.Services.AddSingleton(loggerFactory.CreateLogger(nameof(TestBase), b => b.AddTarget(OnLog)));
+            builder.Services.AddSingleton(loggerFactory.CreateLogger<TestBase>(b => b.AddTarget(OnLog)));
 
             DIContainer.BuildServiceProvider(builder);
         }
