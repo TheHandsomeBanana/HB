@@ -45,10 +45,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\MemoryServiceException.cs" />
-    <Compile Include="ISimplifiedMemoryService.cs" />
-    <Compile Include="IMemoryService.cs" />
-    <Compile Include="MemoryObject.cs" />
-    <Compile Include="MemoryService.cs" />
+    <Compile Include="ISimplifiedSerializerService.cs" />
+    <Compile Include="ISerializerService.cs" />
+    <Compile Include="SerializerObject.cs" />
+    <Compile Include="SerializerServiceService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

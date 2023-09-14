@@ -42,8 +42,11 @@ namespace HB.NETF.Discord.NET.Toolkit.DataService {
         }
 
         public async Task DownloadDataAsync() {
+            List<Task> downloadTasks = new List<Task>();
             foreach (DiscordDataService dataService in internalDiscordDataServices)
-                await dataService.DownloadDataAsync();
+                downloadTasks.Add(dataService.DownloadDataAsync());
+
+            await Task.WhenAll(downloadTasks);
         }
 
         public void Dispose() {

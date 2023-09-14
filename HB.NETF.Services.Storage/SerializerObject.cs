@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace HB.NETF.Services.Storage {
-    public struct MemoryObject {
+    public struct SerializerObject {
         private string serializedObj;
         private object memoryObj;
         private SerializerMode serializerType;
@@ -26,13 +26,13 @@ namespace HB.NETF.Services.Storage {
         public bool IsSerialized => serializedObj != null;
         public bool IsDeserialized => memoryObj != null;
 
-        public MemoryObject(object memoryObj, SerializerMode serializerType) {
+        public SerializerObject(object memoryObj, SerializerMode serializerType) {
             this.serializedObj = null;
             this.memoryObj = memoryObj;
             this.serializerType = serializerType;
         }
 
-        internal MemoryObject(string serializedObj, SerializerMode serializerType) {
+        internal SerializerObject(string serializedObj, SerializerMode serializerType) {
             this.memoryObj = null;
             this.serializedObj = serializedObj;
             this.serializerType = serializerType;
@@ -119,7 +119,7 @@ namespace HB.NETF.Services.Storage {
         }
     }
 
-    public struct MemoryObject<TObjectType> {
+    public struct SerializerObject<TObjectType> {
         private string serializedObj;
         private TObjectType memoryObj;
         private SerializerMode serializerMode;
@@ -129,13 +129,13 @@ namespace HB.NETF.Services.Storage {
         public bool IsSerialized => serializedObj != null;
         public bool IsDeserialized => memoryObj != null;
 
-        public MemoryObject(TObjectType memoryObj, SerializerMode serializerType) {
+        public SerializerObject(TObjectType memoryObj, SerializerMode serializerType) {
             this.serializedObj = null;
             this.memoryObj = memoryObj;
             serializerMode = serializerType;
         }
 
-        internal MemoryObject(string serializedObj, SerializerMode serializerType) {
+        internal SerializerObject(string serializedObj, SerializerMode serializerType) {
             this.memoryObj = default(TObjectType);
             this.serializedObj = serializedObj;
             serializerMode = serializerType;

@@ -18,8 +18,10 @@ namespace HB.NETF.Services.Security.Cryptography {
     public class AesCryptoService<TValue> : IGenCryptoService<TValue, AesKey> {
         private SerializerMode serializerMode;
         public AesCryptoService(SerializerMode serializerMode) {
+#pragma warning disable CS0618 // Type or member is obsolete
             if (serializerMode == SerializerMode.Binary)
                 throw new NotSupportedException("Binary serialization is not supported.");
+#pragma warning restore CS0618 // Type or member is obsolete
 
             this.serializerMode = serializerMode;
         }

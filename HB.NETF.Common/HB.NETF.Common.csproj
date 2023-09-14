@@ -62,6 +62,7 @@
     <Compile Include="DependencyInjection\DIBuilder.cs" />
     <Compile Include="DependencyInjection\IDependencyConfig.cs" />
     <Compile Include="DependencyInjection\DIContainer.cs" />
+    <Compile Include="Exceptions\FrontException.cs" />
     <Compile Include="Exceptions\InternalException.cs" />
     <Compile Include="GlobalEnvironment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

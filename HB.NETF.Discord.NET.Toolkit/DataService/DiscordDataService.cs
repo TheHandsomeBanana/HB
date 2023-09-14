@@ -22,14 +22,14 @@ namespace HB.NETF.Discord.NET.Toolkit.DataService {
         public const SerializerMode DataSerializerMode = SerializerMode.Json;
 
         private ILogger<DiscordDataService> logger;
-        private ISimplifiedMemoryService memoryService;
+        private ISimplifiedSerializerService memoryService;
         private IGenCryptoService<SimplifiedDiscordDataModel, AesKey> cryptoService;
 
 
         private DiscordDataService() {
             ILoggerFactory factory = DIContainer.GetService<ILoggerFactory>();
             logger = factory.CreateLogger<DiscordDataService>();
-            memoryService = DIContainer.GetService<ISimplifiedMemoryService>();
+            memoryService = DIContainer.GetService<ISimplifiedSerializerService>();
             cryptoService = DIContainer.GetService<IGenCryptoService<SimplifiedDiscordDataModel, AesKey>>();
         }
 
@@ -39,7 +39,7 @@ namespace HB.NETF.Discord.NET.Toolkit.DataService {
 
         public DiscordDataService(TokenModel token) : this() {
             this.token = token;
-            DataModelLocation = DiscordEnvironment.CachePath + "\\" + token.Bot + "_" + nameof(SimplifiedDiscordDataModel) + MemoryService.MemoryExtension;
+            DataModelLocation = DiscordEnvironment.CachePath + "\\" + token.Bot + "_" + nameof(SimplifiedDiscordDataModel) + SerializerServiceService.MemoryExtension;
             
             client = new DiscordSocketClient(new DiscordSocketConfig() {
                 GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.GuildMembers,
@@ -116,7 +116,7 @@ namespace HB.NETF.Discord.NET.Toolkit.DataService {
             if (SimplifiedDataModel.Servers.Length == 0)
                 return;
 
-            await memoryService.WriteMemoryAsync(DataModelLocation, SimplifiedDataModel, DataSerializerMode);
+            await memoryService.WriteAsync(DataModelLocation, SimplifiedDataModel, DataSerializerMode);
             await DisconnectAsync();
         }
 
@@ -128,7 +128,7 @@ namespace HB.NETF.Discord.NET.Toolkit.DataService {
         }
 
         private async Task LoadFromMemoryAsync() {
-            SimplifiedDataModel = await memoryService.ReadMemoryAsync<SimplifiedDiscordDataModel>(DataModelLocation, DataSerializerMode);
+            SimplifiedDataModel = await memoryService.ReadAsync<SimplifiedDiscordDataModel>(DataModelLocation, DataSerializerMode);
         }
 
         #region Helper 
