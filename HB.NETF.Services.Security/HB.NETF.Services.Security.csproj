@@ -34,6 +34,8 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -53,10 +55,15 @@
     <Compile Include="Cryptography\Keys\RsaKey.cs" />
     <Compile Include="Cryptography\RsaCryptoService.cs" />
     <Compile Include="Cryptography\Settings\EncryptionMode.cs" />
+    <Compile Include="DataHandling\IdentifierStreamHandler.cs" />
     <Compile Include="DataHandling\ISecurityStreamHandler.cs" />
     <Compile Include="DataHandling\KeyStreamHandler.cs" />
     <Compile Include="DataHandling\SecurityStreamHandler.cs" />
+    <Compile Include="DataProtection\DataProtectionService.cs" />
+    <Compile Include="DataProtection\IDataProtectionService.cs" />
     <Compile Include="Exceptions\CryptoServiceException.cs" />
+    <Compile Include="Identifier\IdentifierObject.cs" />
+    <Compile Include="Identifier\IIdentifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -68,5 +75,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

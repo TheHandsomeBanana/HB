@@ -12,8 +12,7 @@ using System.Security.Cryptography;
 using HB.NETF.Common.Serialization.Streams;
 using System.IO;
 
-namespace HB.NETF.Services.Security.DataHandling
-{
+namespace HB.NETF.Services.Security.DataHandling {
     public class KeyStreamHandler : SecurityStreamHandler, ISecurityStreamHandler<IKey> {
         private Type keyType;
 
@@ -30,28 +29,18 @@ namespace HB.NETF.Services.Security.DataHandling
         }
 
         public IKey Read() {
-            //if(StreamMode == SecurityStreamMode.FileDialog) {
-            //    OpenFileDialog ofd = new OpenFileDialog();
-            //    ofd.Filter = "(*jk)|*jk";
+            if (StreamMode == SecurityStreamMode.FileDialog) {
+                OpenFileDialog ofd = new OpenFileDialog();
+                ofd.Filter = "(*jk)|*jk";
 
-            //    if (ofd.ShowDialog() == true) {
-            //        Stream = new FileStream(ofd.FileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            //    }
-            //}
+                if (!ofd.ShowDialog().Value)
+                    return null;
 
-            if (StreamMode == SecurityStreamMode.FileDialog)
-                throw new NotSupportedException($"{StreamMode} is currently not working.");
-
-            string json;
-            if (InstantDisposal) {
-                Stream = new FileStream(FilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-                json = GlobalEnvironment.Encoding.GetString(Stream.Read());
-                Stream.Dispose();
+                Stream = new FileStream(ofd.FileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
             }
-            else {
-                json = GlobalEnvironment.Encoding.GetString(Stream.Read());
-                Stream.Position = 0;
-            }
+
+            string json = GlobalEnvironment.Encoding.GetString(Stream.Read());
+            Stream.Position = 0;
 
             return JsonConvert.DeserializeObject(json, keyType) as IKey;
         }
@@ -60,45 +49,27 @@ namespace HB.NETF.Services.Security.DataHandling
             if (StreamMode == SecurityStreamMode.FileDialog)
                 throw new NotSupportedException($"{StreamMode} not supported in async execution.");
 
-            string json;
-            if (InstantDisposal) {
-                Stream = new FileStream(FilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-                json = GlobalEnvironment.Encoding.GetString(await Stream.ReadAsync());
-                Stream.Dispose();
-            }
-            else {
-                json = GlobalEnvironment.Encoding.GetString(await Stream.ReadAsync());
-                Stream.Position = 0;
-            }
+            string json = GlobalEnvironment.Encoding.GetString(await Stream.ReadAsync());
+            Stream.Position = 0;
 
             return JsonConvert.DeserializeObject(json, keyType) as IKey;
         }
 
         public void Write(IKey item) {
-            //if (StreamMode == SecurityStreamMode.FileDialog) {
-            //    SaveFileDialog sfd = new SaveFileDialog();
-            //    sfd.Filter = "(*jk)|*jk";
+            if (StreamMode == SecurityStreamMode.FileDialog) {
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Filter = "(*jk)|*jk";
+                sfd.FileName = "hbkey";
 
-            //    if (sfd.ShowDialog() == true) {
-            //        Stream = new FileStream(sfd.FileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            //    }
-            //}
+                if (!sfd.ShowDialog().Value)
+                    return;
 
-            if (StreamMode == SecurityStreamMode.FileDialog)
-                throw new NotSupportedException($"{StreamMode} is currently not working.");
+                Stream = new FileStream(sfd.FileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+            }
 
             byte[] json = GlobalEnvironment.Encoding.GetBytes(JsonConvert.SerializeObject(item));
-
-            if (InstantDisposal) {
-                Stream = new FileStream(FilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-                Stream.Write(json);
-                Stream.Dispose();
-            }
-            else {
-                Stream.Write(json);
-                Stream.Position = 0;
-            }
-
+            Stream.Write(json);
+            Stream.Position = 0;
         }
 
         public async Task WriteAsync(IKey item) {
@@ -106,16 +77,8 @@ namespace HB.NETF.Services.Security.DataHandling
                 throw new NotSupportedException($"{StreamMode} not supported in async execution.");
 
             byte[] json = GlobalEnvironment.Encoding.GetBytes(JsonConvert.SerializeObject(item));
-
-            if (InstantDisposal) {
-                Stream = new FileStream(FilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-                await Stream.WriteAsync(json);
-                Stream.Dispose();
-            }
-            else {
-                await Stream.WriteAsync(json);
-                Stream.Position = 0;
-            }
+            await Stream.WriteAsync(json);
+            Stream.Position = 0;
         }
 
         public void Dispose() {

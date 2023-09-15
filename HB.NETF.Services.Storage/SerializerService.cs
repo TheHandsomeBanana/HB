@@ -6,7 +6,7 @@ using System.IO;
 using System.Threading.Tasks;
 
 namespace HB.NETF.Services.Storage {
-    public class SerializerServiceService : ISerializerService, ISimplifiedSerializerService {
+    public class SerializerService : ISerializerService, ISimplifiedSerializerService {
         public const string MemoryExtension = ".hbsf";
         public SerializerObject Read(string location, SerializerMode serializerMode) {
             string content;
@@ -36,7 +36,7 @@ namespace HB.NETF.Services.Storage {
 
             return new SerializerObject<TObject>(content, serializerMode);
         }
-        public void WriteMemory(SerializerObject serializerObject, string location) {
+        public void Write(SerializerObject serializerObject, string location) {
             if (!serializerObject.IsSerialized)
                 serializerObject.Serialize();
 

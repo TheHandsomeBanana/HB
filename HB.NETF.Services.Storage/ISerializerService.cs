@@ -9,7 +9,7 @@ namespace HB.NETF.Services.Storage {
     public interface ISerializerService {
         SerializerObject Read(string location, SerializerMode serializerMode);
         Task<SerializerObject> ReadAsync(string location, SerializerMode serializerMode);
-        void WriteMemory(SerializerObject memoryObject, string location);
+        void Write(SerializerObject memoryObject, string location);
         Task WriteAsync(SerializerObject memoryObject, string location);
 
         SerializerObject<TObject> Read<TObject>(string location, SerializerMode serializerMode);

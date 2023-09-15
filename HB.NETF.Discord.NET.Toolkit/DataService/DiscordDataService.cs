@@ -39,7 +39,7 @@ namespace HB.NETF.Discord.NET.Toolkit.DataService {
 
         public DiscordDataService(TokenModel token) : this() {
             this.token = token;
-            DataModelLocation = DiscordEnvironment.CachePath + "\\" + token.Bot + "_" + nameof(SimplifiedDiscordDataModel) + SerializerServiceService.MemoryExtension;
+            DataModelLocation = DiscordEnvironment.CachePath + "\\" + token.Bot + "_" + nameof(SimplifiedDiscordDataModel) + SerializerService.MemoryExtension;
             
             client = new DiscordSocketClient(new DiscordSocketConfig() {
                 GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.GuildMembers,
