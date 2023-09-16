@@ -55,15 +55,24 @@
     <Compile Include="Cryptography\Keys\RsaKey.cs" />
     <Compile Include="Cryptography\RsaCryptoService.cs" />
     <Compile Include="Cryptography\Settings\EncryptionMode.cs" />
-    <Compile Include="DataHandling\IdentifierStreamHandler.cs" />
-    <Compile Include="DataHandling\ISecurityStreamHandler.cs" />
-    <Compile Include="DataHandling\KeyStreamHandler.cs" />
-    <Compile Include="DataHandling\SecurityStreamHandler.cs" />
+    <Compile Include="DataHandling\Async\AsyncStreamWrapper.cs" />
+    <Compile Include="DataHandling\Async\IAsyncStreamWrapper.cs" />
+    <Compile Include="DataHandling\IStreamWrapper.cs" />
+    <Compile Include="DataHandling\Options\IStreamOptionBuilder.cs" />
+    <Compile Include="DataHandling\Options\StreamOptionBuilder.cs" />
+    <Compile Include="DataHandling\Options\StreamOptions.cs" />
+    <Compile Include="DataHandling\StreamWrapper.cs" />
+    <Compile Include="DataHandling\Obsolete\IdentifierStreamHandler.cs" />
+    <Compile Include="DataHandling\Obsolete\ISecurityStreamHandler.cs" />
+    <Compile Include="DataHandling\Obsolete\KeyStreamHandler.cs" />
+    <Compile Include="DataHandling\Obsolete\SecurityStreamHandler.cs" />
     <Compile Include="DataProtection\DataProtectionService.cs" />
     <Compile Include="DataProtection\IDataProtectionService.cs" />
     <Compile Include="Exceptions\CryptoServiceException.cs" />
-    <Compile Include="Identifier\IdentifierObject.cs" />
-    <Compile Include="Identifier\IIdentifier.cs" />
+    <Compile Include="Exceptions\StreamWrapperException.cs" />
+    <Compile Include="Identifier\Identifier.cs" />
+    <Compile Include="Identifier\IdentifierService.cs" />
+    <Compile Include="Identifier\IIdentifierService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

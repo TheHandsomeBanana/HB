@@ -12,35 +12,17 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HB.NETF.Services.Security.DataHandling {
-    public class IdentifierStreamHandler<TIdentifier> : SecurityStreamHandler, ISecurityStreamHandler<IIdentifier<TIdentifier>> {
+    [Obsolete]
+    public class IdentifierStreamHandler<TIdentifier> : SecurityStreamHandler, ISecurityStreamHandler<Identifier<TIdentifier>> {
         private readonly Type identifierType;
 
-        public IdentifierStreamHandler(Type identifierType) {
-            if (!identifierType.GetInterfaces().Contains(typeof(IIdentifier<TIdentifier>)))
-                throw new ArgumentException($"{identifierType.FullName} does not inherit from {typeof(IIdentifier<TIdentifier>).FullName}");
-
-            this.identifierType = identifierType;
-       }
-
-        public IdentifierStreamHandler(FileStream stream, Type identifierType) : base(stream) {
-            if (!identifierType.GetInterfaces().Contains(typeof(IIdentifier<TIdentifier>)))
-                throw new ArgumentException($"{identifierType.FullName} does not inherit from {typeof(IIdentifier<TIdentifier>).FullName}");
-            
-            this.identifierType = identifierType;
-        }
-
-        public IdentifierStreamHandler(string filePath, Type identifierType) : base(filePath) {
-            if (!identifierType.GetInterfaces().Contains(typeof(IIdentifier<TIdentifier>)))
-                throw new ArgumentException($"{identifierType.FullName} does not inherit from {typeof(IIdentifier<TIdentifier>).FullName}");
-
-            this.identifierType = identifierType;
-        }
-
+        [Obsolete]
         public void Dispose() {
             this.Stream?.Dispose();
         }
 
-        public IIdentifier<TIdentifier> Read() {
+        [Obsolete]
+        public Identifier<TIdentifier> Read() {
             if (StreamMode == SecurityStreamMode.FileDialog) {
                 OpenFileDialog ofd = new OpenFileDialog();
                 ofd.Filter = "(*jk)|*jk";
@@ -54,20 +36,22 @@ namespace HB.NETF.Services.Security.DataHandling {
             string json = GlobalEnvironment.Encoding.GetString(Stream.Read());
             Stream.Position = 0;
 
-            return JsonConvert.DeserializeObject(json, identifierType) as IIdentifier<TIdentifier>;
+            return JsonConvert.DeserializeObject(json, identifierType) as Identifier<TIdentifier>;
         }
 
-        public async Task<IIdentifier<TIdentifier>> ReadAsync() {
+        [Obsolete]
+        public async Task<Identifier<TIdentifier>> ReadAsync() {
             if (StreamMode == SecurityStreamMode.FileDialog)
                 throw new NotSupportedException($"{StreamMode} not supported in async execution.");
 
             string json = GlobalEnvironment.Encoding.GetString(await Stream.ReadAsync());
             Stream.Position = 0;
 
-            return JsonConvert.DeserializeObject(json, identifierType) as IIdentifier<TIdentifier>;
+            return JsonConvert.DeserializeObject(json, identifierType) as Identifier<TIdentifier>;
         }
 
-        public void Write(IIdentifier<TIdentifier> item) {
+        [Obsolete]
+        public void Write(Identifier<TIdentifier> item) {
             if (StreamMode == SecurityStreamMode.FileDialog) {
                 SaveFileDialog sfd = new SaveFileDialog();
                 sfd.Filter = "(*jk)|*jk";
@@ -84,7 +68,8 @@ namespace HB.NETF.Services.Security.DataHandling {
             Stream.Position = 0;
         }
 
-        public async Task WriteAsync(IIdentifier<TIdentifier> item) {
+        [Obsolete]
+        public async Task WriteAsync(Identifier<TIdentifier> item) {
             if (StreamMode == SecurityStreamMode.FileDialog)
                 throw new NotSupportedException($"{StreamMode} not supported in async execution.");
 

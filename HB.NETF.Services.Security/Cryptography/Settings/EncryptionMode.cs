@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace HB.NETF.Services.Security.Cryptography.Settings {
     public enum EncryptionMode {
         AES,
-        RSA
+        RSA,
+        WindowsDataProtectionAPI
     }
 }

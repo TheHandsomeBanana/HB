@@ -62,5 +62,9 @@ namespace HB.NETF.Common.Serialization.Streams {
         public static async Task WriteAsync(this Stream s, byte[] buffer) {
             await s.WriteAsync(buffer, 0, buffer.Length);
         }
+
+        public static void ResetPosition(this Stream s) {
+            s.Position = 0;
+        }
     }
 }

@@ -13,21 +13,26 @@ using HB.NETF.Common.Serialization.Streams;
 using System.IO;
 
 namespace HB.NETF.Services.Security.DataHandling {
+    [Obsolete]
     public class KeyStreamHandler : SecurityStreamHandler, ISecurityStreamHandler<IKey> {
         private Type keyType;
 
+        [Obsolete]
         public KeyStreamHandler(Type keyType) : base() {
             this.keyType = keyType;
         }
 
+        [Obsolete]
         public KeyStreamHandler(FileStream stream, Type keyType) : base(stream) {
             this.keyType = keyType;
         }
 
+        [Obsolete]
         public KeyStreamHandler(string filePath, Type keyType) : base(filePath) {
             this.keyType = keyType;
         }
 
+        [Obsolete]
         public IKey Read() {
             if (StreamMode == SecurityStreamMode.FileDialog) {
                 OpenFileDialog ofd = new OpenFileDialog();
@@ -45,6 +50,7 @@ namespace HB.NETF.Services.Security.DataHandling {
             return JsonConvert.DeserializeObject(json, keyType) as IKey;
         }
 
+        [Obsolete]
         public async Task<IKey> ReadAsync() {
             if (StreamMode == SecurityStreamMode.FileDialog)
                 throw new NotSupportedException($"{StreamMode} not supported in async execution.");
@@ -55,6 +61,7 @@ namespace HB.NETF.Services.Security.DataHandling {
             return JsonConvert.DeserializeObject(json, keyType) as IKey;
         }
 
+        [Obsolete]
         public void Write(IKey item) {
             if (StreamMode == SecurityStreamMode.FileDialog) {
                 SaveFileDialog sfd = new SaveFileDialog();
@@ -72,6 +79,7 @@ namespace HB.NETF.Services.Security.DataHandling {
             Stream.Position = 0;
         }
 
+        [Obsolete]
         public async Task WriteAsync(IKey item) {
             if (StreamMode == SecurityStreamMode.FileDialog)
                 throw new NotSupportedException($"{StreamMode} not supported in async execution.");
@@ -81,6 +89,7 @@ namespace HB.NETF.Services.Security.DataHandling {
             Stream.Position = 0;
         }
 
+        [Obsolete]
         public void Dispose() {
             this.Stream?.Dispose();
         }

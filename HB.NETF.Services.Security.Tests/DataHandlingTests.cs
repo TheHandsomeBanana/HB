@@ -14,7 +14,8 @@ using System.Threading.Tasks;
 namespace HB.Services.Security.Tests {
     [TestClass]
     public class DataHandlingTests {
-        [TestMethod]
+        [Obsolete]
+        //[TestMethod]
         public void TestKeyFileStream() {
             using (FileStream fs = new FileStream("test", FileMode.OpenOrCreate, FileAccess.ReadWrite)) {
                 KeyStreamHandler keyHandler = new KeyStreamHandler(fs, typeof(AesKey));
@@ -27,34 +28,59 @@ namespace HB.Services.Security.Tests {
         }
 
         [TestMethod]
-        public void TestIdentifierFileStream() {
-            IIdentifier<TestClass> idWrapper = new IdentifierObject<TestClass>(new TestClass("TestContent", 10));
+        public void StreamWrapper_EmptyCtor_FileName() {
+            StreamWrapper streamWrapper = new StreamWrapper();
+            streamWrapper.WriteToFile<TestClass>("test", new TestClass("Test", 10));
 
-            using (FileStream fs = new FileStream("test", FileMode.OpenOrCreate, FileAccess.ReadWrite)) {
-                IdentifierStreamHandler<TestClass> streamHandler = new IdentifierStreamHandler<TestClass>(fs, typeof(IdentifierObject<TestClass>));
-                streamHandler.Write(idWrapper);
+            TestClass testClass = streamWrapper.ReadFromFile<TestClass>("test");
 
-                IIdentifier<TestClass> idWrapperRead = streamHandler.Read();
+            Assert.IsNotNull(testClass);
+            Assert.AreEqual("Test", testClass.Content);
+            Assert.AreEqual(10, testClass.Count);
+        }
 
-                Assert.AreEqual(idWrapper.Reference.Count, idWrapperRead.Reference.Count);
-                Assert.AreEqual(idWrapper.Reference.Content, idWrapperRead.Reference.Content);
+        [TestMethod]
+        public void StreamWrapper_EmptyCtor_Dialog() {
+            StreamWrapper streamWrapper = new StreamWrapper();
+            streamWrapper.StartSaveFileDialog<TestClass>(new TestClass("Test", 10));
+
+            TestClass testClass = streamWrapper.StartOpenFileDialog<TestClass>();
+
+            Assert.IsNotNull(testClass);
+            Assert.AreEqual("Test", testClass.Content);
+            Assert.AreEqual(10, testClass.Count);
+        }
+
+        [TestMethod]
+        public void StreamWrapper_WithFileStream() {
+            using(FileStream fs = new FileStream("test", FileMode.Create, FileAccess.ReadWrite)) {
+                using(StreamWrapper streamWrapper = new StreamWrapper(fs)) {
+                    streamWrapper.WriteStream<TestClass>(new TestClass("Test", 10));
+
+                    TestClass testClass = streamWrapper.ReadStream<TestClass>();
+
+                    Assert.IsNotNull(testClass);
+                    Assert.AreEqual("Test", testClass.Content);
+                    Assert.AreEqual(10, testClass.Count);
+                }
             }
         }
 
         [TestMethod]
-        public void TestIdentifierFileStreamInvalid() {
-            ArgumentException e1 = Assert.ThrowsException<ArgumentException>(() => {
-                new IdentifierStreamHandler<TestClass>(typeof(string));
-            });
+        public void StreamWrapper_WithBase64Option() {
+            StreamWrapper streamWrapper = new StreamWrapper();
 
-            ArgumentException e2 = Assert.ThrowsException<ArgumentException>(() => {
-                new IdentifierStreamHandler<TestClass>(typeof(IIdentifier<string>));
-            });
+            streamWrapper.WithOptions(e => e.UseBase64().Set())
+                .WriteToFile<TestClass>("test", new TestClass("Test", 10));
 
-            string message = $"{typeof(string).FullName} does not inherit from {typeof(IIdentifier<TestClass>).FullName}";
-            Assert.AreEqual(e1.Message, message);
-            Assert.AreEqual(e2.Message, message);
+            TestClass testClass = streamWrapper.WithOptions(e => e.UseBase64().Set()).ReadFromFile<TestClass>("test");
+
+            Assert.IsNotNull(testClass);
+            Assert.AreEqual("Test", testClass.Content);
+            Assert.AreEqual(10, testClass.Count);
         }
+
+        
     }
 
     public class TestClass {
