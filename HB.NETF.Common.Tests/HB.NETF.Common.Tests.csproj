@@ -65,9 +65,6 @@
     <Compile Include="TestBase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\HB.NETF.Common\HB.NETF.Common.csproj">
       <Project>{7a6dd6bd-d679-4ad7-94f6-4ae5189bf75a}</Project>
       <Name>HB.NETF.Common</Name>
@@ -80,6 +77,9 @@
       <Project>{B99CA5A1-866C-44ED-826D-DF14C4DF05CE}</Project>
       <Name>HB.NETF.Services.Logging</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
