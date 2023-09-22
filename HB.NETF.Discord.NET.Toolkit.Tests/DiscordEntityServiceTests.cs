@@ -13,7 +13,7 @@ namespace HB.NETF.Discord.NET.Toolkit.Tests {
         DiscordEntityService entityService;
         [TestMethod]
         public async Task DiscordEntityServiceTest() {
-            TokenModel token = new TokenModel("Testbot", "OTQ4NjcyNzU0MjcyNTgzNzIx.GXuaLm.1pZ7d7hiTfRLMxbg4G-Y2He3fQnqxN4vphJDVo");
+            TokenModel token = new TokenModel("Testbot", "");
             entityService = new DiscordEntityService(token);
             await entityService.ConnectAsync();
             await entityService.PullEntitiesAsync();
@@ -22,7 +22,7 @@ namespace HB.NETF.Discord.NET.Toolkit.Tests {
         CachedDiscordEntityService cachedEntityService;
         [TestMethod]
         public async Task CachedDiscordEntityServiceTest() {
-            TokenModel token = new TokenModel("Testbot", "OTQ4NjcyNzU0MjcyNTgzNzIx.GXuaLm.1pZ7d7hiTfRLMxbg4G-Y2He3fQnqxN4vphJDVo");
+            TokenModel token = new TokenModel("Testbot", "");
             cachedEntityService = new CachedDiscordEntityService(token);
             await cachedEntityService.Refresh();
         }
