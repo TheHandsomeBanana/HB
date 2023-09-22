@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HB.NETF.Services.Security.DataProtection {
-    public class DataProtectionService {
+    public class DataProtectionService : IDataProtectionService {
         
     }
 }

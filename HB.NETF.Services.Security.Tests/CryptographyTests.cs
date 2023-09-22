@@ -1,4 +1,4 @@
-using HB.NETF.Common.Serialization.Streams;
+using HB.NETF.Common.Extensions;
 using HB.NETF.Services.Security.Cryptography;
 using HB.NETF.Services.Security.Cryptography.Keys;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

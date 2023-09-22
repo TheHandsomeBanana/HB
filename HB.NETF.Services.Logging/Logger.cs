@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System;
 using System.IO;
-using HB.NETF.Common.Serialization.Streams;
+using HB.NETF.Common.Extensions;
 
 namespace HB.NETF.Services.Logging {
     internal class Logger<T> : Logger, ILogger<T> {

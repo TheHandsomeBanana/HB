@@ -304,6 +304,7 @@
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="stdole, Version=17.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\stdole.17.7.37355\lib\net472\stdole.dll</HintPath>
     </Reference>
@@ -443,11 +444,13 @@
     <Compile Include="Commands\CommandHelper.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\UIHelper.cs" />
     <Compile Include="Workspace\ProjectHelper.cs" />
     <Compile Include="Workspace\SolutionHelper.cs" />
     <Compile Include="Workspace\WorkspaceHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -470,6 +473,10 @@
     <ProjectReference Include="..\..\HB\HB.NETF.Common\HB.NETF.Common.csproj">
       <Project>{7A6DD6BD-D679-4AD7-94F6-4AE5189BF75A}</Project>
       <Name>HB.NETF.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HB.NETF.Services.Logging\HB.NETF.Services.Logging.csproj">
+      <Project>{b99ca5a1-866c-44ed-826d-df14c4df05ce}</Project>
+      <Name>HB.NETF.Services.Logging</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

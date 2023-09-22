@@ -47,32 +47,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cryptography\AesCryptoService.cs" />
+    <Compile Include="Cryptography\Interfaces\IAesCryptoService.cs" />
     <Compile Include="Cryptography\Interfaces\ICryptoService.cs" />
-    <Compile Include="Cryptography\Interfaces\IGenCryptoService.cs" />
+    <Compile Include="Cryptography\Interfaces\IRsaCryptoService.cs" />
     <Compile Include="Cryptography\KeyGenerator.cs" />
     <Compile Include="Cryptography\Keys\AesKey.cs" />
     <Compile Include="Cryptography\Keys\IKey.cs" />
     <Compile Include="Cryptography\Keys\RsaKey.cs" />
     <Compile Include="Cryptography\RsaCryptoService.cs" />
     <Compile Include="Cryptography\Settings\EncryptionMode.cs" />
-    <Compile Include="DataHandling\Async\AsyncStreamWrapper.cs" />
-    <Compile Include="DataHandling\Async\IAsyncStreamWrapper.cs" />
-    <Compile Include="DataHandling\IStreamWrapper.cs" />
-    <Compile Include="DataHandling\Options\IStreamOptionBuilder.cs" />
-    <Compile Include="DataHandling\Options\StreamOptionBuilder.cs" />
-    <Compile Include="DataHandling\Options\StreamOptions.cs" />
-    <Compile Include="DataHandling\StreamWrapper.cs" />
-    <Compile Include="DataHandling\Obsolete\IdentifierStreamHandler.cs" />
-    <Compile Include="DataHandling\Obsolete\ISecurityStreamHandler.cs" />
-    <Compile Include="DataHandling\Obsolete\KeyStreamHandler.cs" />
-    <Compile Include="DataHandling\Obsolete\SecurityStreamHandler.cs" />
     <Compile Include="DataProtection\DataProtectionService.cs" />
     <Compile Include="DataProtection\IDataProtectionService.cs" />
     <Compile Include="Exceptions\CryptoServiceException.cs" />
-    <Compile Include="Exceptions\StreamWrapperException.cs" />
-    <Compile Include="Identifier\Identifier.cs" />
-    <Compile Include="Identifier\IdentifierService.cs" />
-    <Compile Include="Identifier\IIdentifierService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -82,6 +68,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

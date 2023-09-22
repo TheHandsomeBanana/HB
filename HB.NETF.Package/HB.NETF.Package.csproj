@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C1FFDFDC-16E1-45A0-8DCE-C015592873AD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HB.NETF.Package</RootNamespace>
+    <AssemblyName>HB.NETF.Package</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.6.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.6.0.0\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.6.0.0\lib\net461\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="HBPackage.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HB.NETF.Code.Analysis\HB.NETF.Code.Analysis.csproj">
+      <Project>{41c3c462-030e-45c3-8c92-48175905c624}</Project>
+      <Name>HB.NETF.Code.Analysis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HB.NETF.Common\HB.NETF.Common.csproj">
+      <Project>{7a6dd6bd-d679-4ad7-94f6-4ae5189bf75a}</Project>
+      <Name>HB.NETF.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HB.NETF.Discord.NET.Toolkit\HB.NETF.Discord.NET.Toolkit.csproj">
+      <Project>{35cfc0bf-8442-43cc-9f30-695e19532aee}</Project>
+      <Name>HB.NETF.Discord.NET.Toolkit</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HB.NETF.Services.Data\HB.NETF.Services.Data.csproj">
+      <Project>{029481ce-57e0-4c7f-aa97-871d3f4c0f07}</Project>
+      <Name>HB.NETF.Services.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HB.NETF.Services.Logging\HB.NETF.Services.Logging.csproj">
+      <Project>{b99ca5a1-866c-44ed-826d-df14c4df05ce}</Project>
+      <Name>HB.NETF.Services.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HB.NETF.Services.Security\HB.NETF.Services.Security.csproj">
+      <Project>{884d9597-bfbb-41c0-bdcf-37d1ef0ddf3a}</Project>
+      <Name>HB.NETF.Services.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HB.NETF.Services.Serialization\HB.NETF.Services.Serialization.csproj">
+      <Project>{802de704-2f70-48aa-9734-ca9c0d1e2d38}</Project>
+      <Name>HB.NETF.Services.Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HB.NETF.VisualStudio\HB.NETF.VisualStudio.csproj">
+      <Project>{f017e1b9-c8e3-4c09-bc41-4c6e6f8e7c98}</Project>
+      <Name>HB.NETF.VisualStudio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HB.NETF.WPF\HB.NETF.WPF.csproj">
+      <Project>{c77b5e3f-16f0-4bdf-993c-179b2adfd44b}</Project>
+      <Name>HB.NETF.WPF</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

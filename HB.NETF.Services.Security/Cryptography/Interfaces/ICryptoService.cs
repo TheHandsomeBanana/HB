@@ -13,11 +13,4 @@ namespace HB.NETF.Services.Security.Cryptography.Interfaces {
 
         IKey[] GenerateKeys(int keySize);
     }
-
-    public interface ICryptoService<TKey> : ICryptoService where TKey : IKey {
-        byte[] Encrypt(byte[] data, TKey key);
-        byte[] Decrypt(byte[] cipher, TKey key);
-
-        new TKey[] GenerateKeys(int keySize);
-    }
 }
