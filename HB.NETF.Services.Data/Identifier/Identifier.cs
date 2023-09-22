@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,11 @@ namespace HB.NETF.Services.Data.Identifier {
     public class Identifier {
         public Guid Id { get; }
         public object Reference { get; }
+        [JsonConstructor]
+        private Identifier(Guid id, object reference) {
+            this.Id = id;
+            this.Reference = reference;
+        }
         internal Identifier(object reference) {
             Id = Guid.NewGuid();
             Reference = reference;
@@ -19,6 +25,12 @@ namespace HB.NETF.Services.Data.Identifier {
     public class Identifier<TReference> {
         public Guid Id { get; }
         public TReference Reference { get; }
+        [JsonConstructor]
+        private Identifier(Guid id, TReference reference) {
+            this.Id = id;
+            this.Reference = reference;
+        }
+
         internal Identifier(TReference reference) {
             Id = Guid.NewGuid();
             Reference = reference;
@@ -30,8 +42,8 @@ namespace HB.NETF.Services.Data.Identifier {
     public class Identifier<TIdentifier, TReference> {
         public TIdentifier Id { get; }
         public TReference Reference { get; }
-
-        public Identifier(TIdentifier id, TReference reference) {
+        [JsonConstructor]
+        internal Identifier(TIdentifier id, TReference reference) {
             this.Id = id;
             this.Reference = reference;
         }
