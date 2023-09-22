@@ -23,7 +23,7 @@ namespace HB.NETF.Services.Data.Handler {
 
     public delegate IStreamHandler OptionBuilderFunc(IStreamOptionBuilder optionBuilder);
     public class StreamHandler : IStreamHandler {
-        private readonly ICryptoService aesCryptoService;
+        private readonly IAesCryptoService aesCryptoService;
         private readonly IRsaCryptoService rsaCryptoService;
         private readonly IDataProtectionService dataProtectionService;
 
