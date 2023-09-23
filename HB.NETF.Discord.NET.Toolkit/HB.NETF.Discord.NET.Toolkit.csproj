@@ -148,6 +148,10 @@
       <Project>{884D9597-BFBB-41C0-BDCF-37D1EF0DDF3A}</Project>
       <Name>HB.NETF.Services.Security</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HB.NETF.Services.Serialization\HB.NETF.Services.Serialization.csproj">
+      <Project>{802DE704-2F70-48AA-9734-CA9C0D1E2D38}</Project>
+      <Name>HB.NETF.Services.Serialization</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

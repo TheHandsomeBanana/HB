@@ -56,8 +56,7 @@ namespace HB.NETF.Services.Data.Handler {
 
         public void WriteToFile<T>(string filePath, T content) {
             Invoke(() => {
-
-                string sContent = JsonConvert.SerializeObject(content);
+                string sContent = JsonConvert.SerializeObject(content, Formatting.Indented);
                 byte[] buffer = GlobalEnvironment.Encoding.GetBytes(sContent);
                 WriteInternal(filePath, buffer);
             });
@@ -85,7 +84,7 @@ namespace HB.NETF.Services.Data.Handler {
 
         public void StartSaveFileDialog<T>(T content) {
             Invoke(() => {
-                string sContent = JsonConvert.SerializeObject(content);
+                string sContent = JsonConvert.SerializeObject(content, Formatting.Indented);
                 byte[] buffer = GlobalEnvironment.Encoding.GetBytes(sContent);
 
                 WriteDialog(buffer);
@@ -125,7 +124,7 @@ namespace HB.NETF.Services.Data.Handler {
 
         public void WriteStream<T>(T content) {
             Invoke(() => {
-                string sContent = JsonConvert.SerializeObject(content);
+                string sContent = JsonConvert.SerializeObject(content, Formatting.Indented);
                 byte[] buffer = GlobalEnvironment.Encoding.GetBytes(sContent);
                 WriteStreamInternal(buffer);
             });
