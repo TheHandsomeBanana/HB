@@ -58,6 +58,16 @@ namespace HB.NETF.VisualStudio.UI {
                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
         }
 
+        public static int ShowWarningWithCancel(string message, string title) {
+            return VsShellUtilities.ShowMessageBox(
+                Package,
+                message,
+                title,
+                OLEMSGICON.OLEMSGICON_WARNING,
+                OLEMSGBUTTON.OLEMSGBUTTON_OKCANCEL,
+                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+        }
+
         private static IVsOutputWindowPane pane;
         public static void InitOutputLog(string paneName) {
             ThreadHelper.ThrowIfNotOnUIThread();

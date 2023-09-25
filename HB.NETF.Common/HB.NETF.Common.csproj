@@ -73,6 +73,8 @@
     <Compile Include="Extensions\StreamExtensions.cs" />
     <Compile Include="GlobalEnvironment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Extensions\TaskExtensions.cs" />
+    <Compile Include="Threading\TimeoutTask.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

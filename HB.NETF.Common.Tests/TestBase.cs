@@ -17,7 +17,7 @@ namespace HB.NETF.Common.Tests {
         public void Init() {
             DIBuilder dIBuilder = new DIBuilder();
             dIBuilder.Services.AddSingleton<ILoggerFactory>(new LoggerFactory((b) => b.AddTarget(Output)));
-            dIBuilder.Services.AddSingleton<IStreamHandler>(new StreamHandler());
+            dIBuilder.Services.AddTransient<IStreamHandler, StreamHandler>();
             DIContainer.BuildServiceProvider(dIBuilder);
         }
 

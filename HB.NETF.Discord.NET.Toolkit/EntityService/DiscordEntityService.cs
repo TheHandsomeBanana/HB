@@ -11,8 +11,10 @@ using HB.NETF.Services.Security.Cryptography.Keys;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -35,17 +37,27 @@ namespace HB.NETF.Discord.NET.Toolkit.EntityService {
             this.token = token;
         }
 
-        internal bool IsReady { get; set; }
+        public bool IsReady { get; private set; }
         public async Task ConnectAsync() {
             client.Ready += Client_Ready;
 
             await client.LoginAsync(TokenType.Bot, token.Token);
             await client.StartAsync();
             logger.LogInformation($"[{token.Bot}] - Connecting to Discord API."); // Temporary
-            while (!IsReady) { } // Wait for connection
+            Stopwatch sw = Stopwatch.StartNew();
+            while (!IsReady && sw.ElapsedMilliseconds < 10000) { } // Wait for connection
+            sw.Stop();
+            if (!IsReady)
+                logger.LogError($"[{token.Bot}] - Connection timed out.");
         }
 
         public async Task PullEntitiesAsync() {
+            if(!IsReady) {
+                logger.LogError($"[{token.Bot}] - Cannot pull entites, connection timed out.");
+                return;
+            }
+
+
             logger.LogInformation($"[{token.Bot}] - Loading data from Discord API."); // Temporary
 
             List<DiscordServerModel> serverModels = new List<DiscordServerModel>();
@@ -75,6 +87,11 @@ namespace HB.NETF.Discord.NET.Toolkit.EntityService {
 
 
         public async Task DisconnectAsync() {
+            if (!IsReady) {
+                logger.LogError($"[{token.Bot}] - Cannot disconnect, connection never established.");
+                return;
+            }
+
             await client.LogoutAsync();
             await client.StopAsync();
             logger.LogInformation($"[{token.Bot}] - Disconnected from Discord API."); // Temporary

@@ -17,7 +17,7 @@ namespace HB.NETF.Discord.NET.Toolkit.EntityService.Cached {
     public class CachedDiscordEntityService : ICachedDiscordEntityService {
         private readonly DiscordEntityService entityService;
         private readonly ILogger<CachedDiscordEntityService> logger;
-        private readonly IStreamHandler streamHandler;
+        private readonly IAsyncStreamHandler streamHandler;
         private readonly TokenModel token;
         private static string cacheFile;
 
@@ -27,7 +27,7 @@ namespace HB.NETF.Discord.NET.Toolkit.EntityService.Cached {
             ILoggerFactory factory = DIContainer.GetService<ILoggerFactory>();
             logger = factory.GetOrCreateLogger<CachedDiscordEntityService>();
 
-            streamHandler = DIContainer.GetService<IStreamHandler>();
+            streamHandler = DIContainer.GetService<IAsyncStreamHandler>();
             cacheFile = DiscordEnvironment.CachePath + "\\" + token.Bot + DiscordEnvironment.CacheExtension;
             this.token = token;
 
@@ -55,8 +55,8 @@ namespace HB.NETF.Discord.NET.Toolkit.EntityService.Cached {
             await entityService.ConnectAsync();
             await entityService.PullEntitiesAsync();
             Task disconnect = entityService.DisconnectAsync();
-            streamHandler.WriteToFile(cacheFile, entityService.DataModel);
-            await Task.WhenAll(disconnect);
+            Task write = streamHandler.WriteToFileAsync(cacheFile, entityService.DataModel);
+            await Task.WhenAll(disconnect, write);
             await Reload();
             this.logger.LogInformation($"Finished cache refresh. [{this.token.Bot}]");
         }
@@ -66,7 +66,7 @@ namespace HB.NETF.Discord.NET.Toolkit.EntityService.Cached {
         }
 
         internal async Task<DiscordEntityService> Reload() {
-            entityService.DataModel = streamHandler.WithOptions(optionBuilder).ReadFromFile<DiscordDataModel>(cacheFile);
+            entityService.DataModel = await streamHandler.WithOptions(optionBuilder).ReadFromFileAsync<DiscordDataModel>(cacheFile);
             return entityService;
         }
 
