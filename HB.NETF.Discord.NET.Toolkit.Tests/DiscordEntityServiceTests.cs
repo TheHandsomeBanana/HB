@@ -12,7 +12,7 @@ namespace HB.NETF.Discord.NET.Toolkit.Tests {
 
         [TestMethod]
         public async Task DiscordEntityServiceTest() {
-            TokenModel token = new TokenModel("Testbot", "OTQ5MDUyNzg5NjIxOTM2MTc4.GpOHku.djKnXwGAzOMur78h1EUJQMjMgILJtFeozhMo8k");
+            TokenModel token = new TokenModel("Testbot", "");
             DiscordEntityService entityService = new DiscordEntityService(token);
             await entityService.ConnectAsync();
             await entityService.PullEntitiesAsync();
