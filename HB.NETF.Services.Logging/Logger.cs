@@ -70,13 +70,15 @@ namespace HB.NETF.Services.Logging {
         }
 
         #region LogHelper
+        private static object lockObject = new object();
         private void HandleString(string str, LogStatement log) {
-            using (StreamWriter sw = new StreamWriter(str, true))
-                sw.WriteLine(log.ToString());
+            lock (lockObject) {
+                using (StreamWriter sw = new StreamWriter(str, true))
+                    sw.WriteLine(log.ToString());
+            }
         }
         private void HandleStream(Stream stream, LogStatement log) {
             stream.Write(Encoding.UTF8.GetBytes(log.ToString() + "\r"));
-            stream.Position = 0;
         }
         private DateTime GetCurrentTime() {
             switch (TimeKind) {

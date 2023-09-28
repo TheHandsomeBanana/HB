@@ -2,8 +2,9 @@
 using Discord.WebSocket;
 using HB.NETF.Common.DependencyInjection;
 using HB.NETF.Discord.NET.Toolkit.EntityService.Models;
-using HB.NETF.Discord.NET.Toolkit.EntityService.Models.Entities;
 using HB.NETF.Discord.NET.Toolkit.Exceptions;
+using HB.NETF.Discord.NET.Toolkit.Models.Collections;
+using HB.NETF.Discord.NET.Toolkit.Models.Entities;
 using HB.NETF.Services.Logging;
 using HB.NETF.Services.Logging.Factory;
 using HB.NETF.Services.Security.Cryptography.Interfaces;
@@ -17,6 +18,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace HB.NETF.Discord.NET.Toolkit.EntityService {
     public class DiscordEntityService : IDiscordEntityService {
@@ -24,7 +26,7 @@ namespace HB.NETF.Discord.NET.Toolkit.EntityService {
         private readonly ILogger<DiscordEntityService> logger;
         private readonly DiscordSocketClient client;
         private readonly TokenModel token;
-        internal DiscordDataModel DataModel { get; set; }
+        internal DiscordServerCollection ServerCollection { get; set; }
 
         // Todo: Make user connect to discord --> Retrieve Applications --> Get Bots from application
         public DiscordEntityService(TokenModel token) {
@@ -52,7 +54,7 @@ namespace HB.NETF.Discord.NET.Toolkit.EntityService {
         }
 
         public async Task PullEntitiesAsync() {
-            if(!IsReady) {
+            if (!IsReady) {
                 logger.LogError($"[{token.Bot}] - Cannot pull entites, connection timed out.");
                 return;
             }
@@ -60,19 +62,19 @@ namespace HB.NETF.Discord.NET.Toolkit.EntityService {
 
             logger.LogInformation($"[{token.Bot}] - Loading data from Discord API."); // Temporary
 
-            List<DiscordServerModel> serverModels = new List<DiscordServerModel>();
+            List<DiscordServer> servers = new List<DiscordServer>();
             foreach (var server in client.Guilds) {
-                serverModels.Add(new DiscordServerModel() {
+                servers.Add(new DiscordServer() {
                     Id = server.Id,
                     Name = server.Name,
-                    Users = await GetUsers(server),
-                    Roles = GetRoles(server),
-                    Channels = GetChannels(server)
+                    UserCollection = await GetUsers(server),
+                    RoleCollection = GetRoles(server),
+                    ChannelCollection = GetChannels(server)
                 });
             }
 
-            logger.LogInformation($"[{token.Bot}] - {serverModels.Count} servers data downloaded from Discord API."); // Temporary
-            DataModel = new DiscordDataModel() { Servers = serverModels.ToArray() };
+            logger.LogInformation($"[{token.Bot}] - {servers.Count} servers data downloaded from Discord API."); // Temporary
+            ServerCollection = new DiscordServerCollection(servers);
         }
 
         private Task Client_Ready() {
@@ -98,24 +100,46 @@ namespace HB.NETF.Discord.NET.Toolkit.EntityService {
             IsReady = false;
         }
 
-        public DiscordServerModel[] GetServers() => DataModel?.Servers;
-        public DiscordUserModel[] GetUsers(ulong serverId) => DataModel?.GetServer(serverId)?.Users;
-        public DiscordRoleModel[] GetRoles(ulong serverId) => DataModel?.GetServer(serverId)?.Roles;
-        public DiscordChannelModel[] GetChannels(ulong serverId) => DataModel?.GetServer(serverId)?.Channels;
-        public DiscordEntityModel GetEntity(ulong entityId) => DataModel.GetEntity(entityId);
+        public DiscordServer[] GetServers() => ServerCollection?.GetServers();
+        public DiscordUser[] GetUsers(ulong serverId) => ServerCollection?.GetUsers(serverId);
+        public DiscordRole[] GetRoles(ulong serverId) => ServerCollection?.GetRoles(serverId);
+        public DiscordChannel[] GetChannels(ulong serverId) => ServerCollection?.GetChannels(serverId);
+        public DiscordEntity GetEntity(ulong entityId) => ServerCollection?.GetEntity(entityId);
 
         #region Helper 
-        private async Task<DiscordUserModel[]> GetUsers(SocketGuild guild) {
+        private async Task<Dictionary<ulong, DiscordUser>> GetUsers(SocketGuild guild) {
             await guild.DownloadUsersAsync();
-            return guild.Users.Select(f => new DiscordUserModel { Id = f.Id, Name = f.IsBot ? $"{f.Username} [BOT]" : f.Username }).ToArray();
+
+            return guild.Users.ToDictionary(e => e.Id, e => new DiscordUser { Id = e.Id, Name = e.IsBot ? $"{e.Username} [BOT]" : e.Username, Type = DiscordEntityType.User, ParentId = guild.Id });
         }
 
-        private DiscordRoleModel[] GetRoles(SocketGuild guild) {
-            return guild.Roles.Select(e => new DiscordRoleModel { Id = e.Id, Name = e.Name }).ToArray();
+        private Dictionary<ulong, DiscordRole> GetRoles(SocketGuild guild) {
+            return guild.Roles.ToDictionary(e => e.Id, e => new DiscordRole { Id = e.Id, Name = e.Name, Type = DiscordEntityType.Role, ParentId = guild.Id });
         }
 
-        private DiscordChannelModel[] GetChannels(SocketGuild guild) {
-            return guild.Channels.Select(e => new DiscordChannelModel { Id = e.Id, Name = e.Name }).ToArray();
+        private Dictionary<ulong, DiscordChannel> GetChannels(SocketGuild guild) {
+            return guild.Channels.ToDictionary(e => e.Id, e => new DiscordChannel { Id = e.Id, Name = e.Name, ParentId = guild.Id, ChannelType = MapChannelType(e.GetChannelType()) });
+        }
+
+        private DiscordChannelType? MapChannelType(ChannelType? channelType) {
+            switch (channelType) {
+                case ChannelType.Text: 
+                    return DiscordChannelType.Text;
+                case ChannelType.Voice: 
+                    return DiscordChannelType.Voice;
+                case ChannelType.Category: 
+                    return DiscordChannelType.Category;
+                case ChannelType.Stage: 
+                    return DiscordChannelType.Stage;
+                case ChannelType.Forum: 
+                    return DiscordChannelType.Forum;
+                case ChannelType.PrivateThread:
+                case ChannelType.PublicThread:
+                case ChannelType.NewsThread:
+                    return DiscordChannelType.Thread;
+            }
+
+            return null;
         }
         #endregion
     }

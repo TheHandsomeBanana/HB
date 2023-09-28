@@ -17,15 +17,18 @@ namespace HB.NETF.VisualStudio.Workspace {
             return (DTE)Package.GetGlobalService(typeof(DTE));
         }
 
+        // Bad according to https://stackoverflow.com/questions/31194968/how-to-register-my-service-as-a-global-service-or-how-can-i-use-mef-in-my-scenar
+        // Use SComponentModel & SVsUIShell and 
         public static IComponentModel GetComponentModel() => (IComponentModel)Package.GetGlobalService(typeof(IComponentModel));
-        public static SComponentModel GetServiceComponentModel() => (SComponentModel)Package.GetGlobalService(typeof(SComponentModel));
+        
+        public static IComponentModel GetServiceComponentModel() => (IComponentModel)Package.GetGlobalService(typeof(SComponentModel));
 
         public static IVsUIShell GetUIShell() {
             ThreadHelper.ThrowIfNotOnUIThread();
             return (IVsUIShell)Package.GetGlobalService(typeof(SVsUIShell));
         }
 
-        public static VisualStudioWorkspace GetVisualStudioWorkspace() => GetComponentModel().GetService<VisualStudioWorkspace>();
+        public static VisualStudioWorkspace GetVisualStudioWorkspace() => GetServiceComponentModel().GetService<VisualStudioWorkspace>();
 
         public static Solution GetSolution() => GetDTE().Solution;
         public static Microsoft.CodeAnalysis.Solution GetCurrentCASolution() => GetVisualStudioWorkspace().CurrentSolution;

@@ -12,11 +12,16 @@ using System.Threading.Tasks;
 
 namespace HB.NETF.Discord.NET.Toolkit.TokenService {
     public interface IDiscordTokenService : IStreamManipulator {
+        string EncryptToken(string token, EncryptionMode encryptionMode, IKey key = null);
+        string DecryptToken(string token, EncryptionMode encryptionMode, IKey key = null);
         TokenModel EncryptToken(TokenModel tokenModel, EncryptionMode encryptionMode, IKey key = null);
         TokenModel DecryptToken(TokenModel tokenModel, EncryptionMode encryptionMode, IKey key = null);
+        string[] EncryptTokens(IEnumerable<string> tokens, EncryptionMode encryptionMode, IKey key = null);
+        string[] DecryptTokens(IEnumerable<string> tokens, EncryptionMode encryptionMode, IKey key = null);
+
         TokenModel[] EncryptTokens(TokenModel[] tokens, EncryptionMode encryptionMode, IKey key = null);
         TokenModel[] DecryptTokens(TokenModel[] tokens, EncryptionMode encryptionMode, IKey key = null);
-    
+
         TokenModel ReadToken(string filePath);
         void WriteToken(string filePath, TokenModel model);
     }

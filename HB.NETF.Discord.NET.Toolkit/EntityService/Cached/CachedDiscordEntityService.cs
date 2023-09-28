@@ -1,6 +1,7 @@
 ﻿using HB.NETF.Common.DependencyInjection;
 using HB.NETF.Discord.NET.Toolkit.EntityService.Models;
-using HB.NETF.Discord.NET.Toolkit.EntityService.Models.Entities;
+using HB.NETF.Discord.NET.Toolkit.Models.Collections;
+using HB.NETF.Discord.NET.Toolkit.Models.Entities;
 using HB.NETF.Services.Data.Handler;
 using HB.NETF.Services.Data.Handler.Async;
 using HB.NETF.Services.Data.Handler.Options;
@@ -19,7 +20,7 @@ namespace HB.NETF.Discord.NET.Toolkit.EntityService.Cached {
         private readonly ILogger<CachedDiscordEntityService> logger;
         private readonly IAsyncStreamHandler streamHandler;
         private readonly TokenModel token;
-        private static string cacheFile;
+        public string CacheFile { get; set; }
 
         public CachedDiscordEntityService(TokenModel token) {
             entityService = new DiscordEntityService(token);
@@ -28,26 +29,26 @@ namespace HB.NETF.Discord.NET.Toolkit.EntityService.Cached {
             logger = factory.GetOrCreateLogger<CachedDiscordEntityService>();
 
             streamHandler = DIContainer.GetService<IAsyncStreamHandler>();
-            cacheFile = DiscordEnvironment.CachePath + "\\" + token.Bot + DiscordEnvironment.CacheExtension;
+            CacheFile = DiscordEnvironment.CachePath + "\\" + token.Bot + DiscordEnvironment.CacheExtension;
             this.token = token;
 
-            if (!File.Exists(cacheFile))
-                File.Create(cacheFile).Close();
+            if (!File.Exists(CacheFile))
+                File.Create(CacheFile).Close();
         }
 
-        public async Task<DiscordServerModel[]> GetServers()
+        public async Task<DiscordServer[]> GetServers()
             => entityService.GetServers() ?? (await Reload())?.GetServers();
 
-        public async Task<DiscordChannelModel[]> GetChannels(ulong serverId)
+        public async Task<DiscordChannel[]> GetChannels(ulong serverId)
             => entityService.GetChannels(serverId) ?? (await Reload())?.GetChannels(serverId);
 
-        public async Task<DiscordEntityModel> GetEntity(ulong entityId) 
+        public async Task<DiscordEntity> GetEntity(ulong entityId)
             => entityService.GetEntity(entityId) ?? (await Reload())?.GetEntity(entityId);
 
-        public async Task<DiscordRoleModel[]> GetRoles(ulong serverId)
+        public async Task<DiscordRole[]> GetRoles(ulong serverId)
             => entityService.GetRoles(serverId) ?? (await Reload())?.GetRoles(serverId);
 
-        public async Task<DiscordUserModel[]> GetUsers(ulong serverId)
+        public async Task<DiscordUser[]> GetUsers(ulong serverId)
             => entityService.GetUsers(serverId) ?? (await Reload())?.GetUsers(serverId);
 
         public async Task Refresh() {
@@ -55,7 +56,7 @@ namespace HB.NETF.Discord.NET.Toolkit.EntityService.Cached {
             await entityService.ConnectAsync();
             await entityService.PullEntitiesAsync();
             Task disconnect = entityService.DisconnectAsync();
-            Task write = streamHandler.WriteToFileAsync(cacheFile, entityService.DataModel);
+            Task write = streamHandler.WriteToFileAsync(CacheFile, entityService.ServerCollection);
             await Task.WhenAll(disconnect, write);
             await Reload();
             this.logger.LogInformation($"Finished cache refresh. [{this.token.Bot}]");
@@ -66,7 +67,7 @@ namespace HB.NETF.Discord.NET.Toolkit.EntityService.Cached {
         }
 
         internal async Task<DiscordEntityService> Reload() {
-            entityService.DataModel = await streamHandler.WithOptions(optionBuilder).ReadFromFileAsync<DiscordDataModel>(cacheFile);
+            entityService.ServerCollection = await streamHandler.WithOptions(optionBuilder).ReadFromFileAsync<DiscordServerCollection>(CacheFile);
             return entityService;
         }
 

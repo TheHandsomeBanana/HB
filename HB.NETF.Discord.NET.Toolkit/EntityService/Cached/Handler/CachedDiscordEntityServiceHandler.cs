@@ -1,8 +1,9 @@
 ﻿using HB.NETF.Common.DependencyInjection;
 using HB.NETF.Discord.NET.Toolkit.EntityService.Handler;
 using HB.NETF.Discord.NET.Toolkit.EntityService.Models;
-using HB.NETF.Discord.NET.Toolkit.EntityService.Models.Entities;
 using HB.NETF.Discord.NET.Toolkit.Exceptions;
+using HB.NETF.Discord.NET.Toolkit.Models.Collections;
+using HB.NETF.Discord.NET.Toolkit.Models.Entities;
 using HB.NETF.Services.Data.Handler;
 using HB.NETF.Services.Data.Handler.Async;
 using HB.NETF.Services.Data.Handler.Options;
@@ -33,11 +34,11 @@ namespace HB.NETF.Discord.NET.Toolkit.EntityService.Cached.Handler {
             ReloadServerCollection().Wait();
         }
 
-        public DiscordServerModel[] GetServers() => ServerCollection.Values.ToArray();
-        public DiscordChannelModel[] GetChannels(ulong serverId) => ServerCollection.GetChannels(serverId);
-        public DiscordUserModel[] GetUsers(ulong serverId) => ServerCollection.GetUsers(serverId);
-        public DiscordRoleModel[] GetRoles(ulong serverId) => ServerCollection.GetRoles(serverId);
-        public DiscordEntityModel GetEntity(ulong entityId) => ServerCollection.GetEntity(entityId);
+        public DiscordServer[] GetServers() => ServerCollection.GetServers();
+        public DiscordChannel[] GetChannels(ulong serverId) => ServerCollection.GetChannels(serverId);
+        public DiscordUser[] GetUsers(ulong serverId) => ServerCollection.GetUsers(serverId);
+        public DiscordRole[] GetRoles(ulong serverId) => ServerCollection.GetRoles(serverId);
+        public DiscordEntity GetEntity(ulong entityId) => ServerCollection.GetEntity(entityId);
 
         public async Task Refresh() {
             List<Task> refreshTasks = new List<Task>();
@@ -62,7 +63,7 @@ namespace HB.NETF.Discord.NET.Toolkit.EntityService.Cached.Handler {
 
         private async Task ReloadServerCollection() {
             foreach (CachedDiscordEntityService entityService in entityServices) {
-                foreach (DiscordServerModel server in await entityService.GetServers()) {
+                foreach (DiscordServer server in await entityService.GetServers()) {
                     if (!ServerCollection.ContainsKey(server.Id))
                         ServerCollection.Add(server.Id, server);
                 }

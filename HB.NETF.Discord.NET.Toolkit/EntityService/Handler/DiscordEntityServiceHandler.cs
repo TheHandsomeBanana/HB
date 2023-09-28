@@ -1,7 +1,8 @@
 ﻿using HB.NETF.Common.DependencyInjection;
 using HB.NETF.Discord.NET.Toolkit.EntityService.Models;
-using HB.NETF.Discord.NET.Toolkit.EntityService.Models.Entities;
 using HB.NETF.Discord.NET.Toolkit.Exceptions;
+using HB.NETF.Discord.NET.Toolkit.Models.Collections;
+using HB.NETF.Discord.NET.Toolkit.Models.Entities;
 using HB.NETF.Services.Logging;
 using HB.NETF.Services.Logging.Factory;
 using HB.NETF.Services.Security.Cryptography.Interfaces;
@@ -49,7 +50,7 @@ namespace HB.NETF.Discord.NET.Toolkit.EntityService.Handler {
             await Task.WhenAll(downloadTasks);
 
             foreach (DiscordEntityService entityService in entityServices) {
-                foreach (DiscordServerModel server in entityService.GetServers()) {
+                foreach (DiscordServer server in entityService.GetServers()) {
                     if (!ServerCollection.ContainsKey(server.Id))
                         ServerCollection.Add(server.Id, server);
                 }
@@ -71,10 +72,10 @@ namespace HB.NETF.Discord.NET.Toolkit.EntityService.Handler {
             entityServices.Clear();
         }
 
-        public DiscordServerModel[] GetServers() => ServerCollection.Values.ToArray();
-        public DiscordUserModel[] GetUsers(ulong serverId) => ServerCollection.GetUsers(serverId);
-        public DiscordRoleModel[] GetRoles(ulong serverId) => ServerCollection.GetRoles(serverId);
-        public DiscordChannelModel[] GetChannels(ulong serverId) => ServerCollection.GetChannels(serverId);
-        public DiscordEntityModel GetEntity(ulong entityId) => ServerCollection.GetEntity(entityId);
+        public DiscordServer[] GetServers() => ServerCollection.Values.ToArray();
+        public DiscordUser[] GetUsers(ulong serverId) => ServerCollection.GetUsers(serverId);
+        public DiscordRole[] GetRoles(ulong serverId) => ServerCollection.GetRoles(serverId);
+        public DiscordChannel[] GetChannels(ulong serverId) => ServerCollection.GetChannels(serverId);
+        public DiscordEntity GetEntity(ulong entityId) => ServerCollection.GetEntity(entityId);
     }
 }

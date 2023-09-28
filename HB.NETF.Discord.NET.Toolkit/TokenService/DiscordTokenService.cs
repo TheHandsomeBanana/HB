@@ -42,14 +42,14 @@ namespace HB.NETF.Discord.NET.Toolkit.TokenService {
         private OptionBuilderFunc optionBuilder;
         public void ManipulateStream(OptionBuilderFunc optionBuilder) => this.optionBuilder = optionBuilder;
 
-        public TokenModel EncryptToken(TokenModel tokenModel, EncryptionMode encryptionMode, IKey key = null) {
-            switch(encryptionMode) {
+        public string EncryptToken(string token, EncryptionMode encryptionMode, IKey key = null) {
+            switch (encryptionMode) {
                 case EncryptionMode.AES:
                     string encrToken = serializerService
                         .ToBase64(aesCryptoService
-                        .Encrypt(serializerService.GetResultBytes(tokenModel.Token), key));
+                        .Encrypt(serializerService.GetResultBytes(token), key));
 
-                    return new TokenModel(tokenModel.Bot, encrToken, tokenModel.CreatedOn);
+                    return encrToken;
                 case EncryptionMode.RSA:
                     break;
                 case EncryptionMode.WindowsDataProtectionAPI:
@@ -59,14 +59,14 @@ namespace HB.NETF.Discord.NET.Toolkit.TokenService {
             throw new NotSupportedException($"{encryptionMode} not supported.");
         }
 
-        public TokenModel DecryptToken(TokenModel tokenModel, EncryptionMode encryptionMode, IKey key = null) {
+        public string DecryptToken(string token, EncryptionMode encryptionMode, IKey key = null) {
             switch (encryptionMode) {
                 case EncryptionMode.AES:
                     string encrToken = serializerService
                         .GetResultString(aesCryptoService
-                        .Decrypt(serializerService.FromBase64(tokenModel.Token), key));
+                        .Decrypt(serializerService.FromBase64(token), key));
 
-                    return new TokenModel(tokenModel.Bot, encrToken, tokenModel.CreatedOn);
+                    return encrToken;
                 case EncryptionMode.RSA:
                     break;
                 case EncryptionMode.WindowsDataProtectionAPI:
@@ -75,6 +75,20 @@ namespace HB.NETF.Discord.NET.Toolkit.TokenService {
 
             throw new NotSupportedException($"{encryptionMode} not supported.");
         }
+
+        public TokenModel EncryptToken(TokenModel tokenModel, EncryptionMode encryptionMode, IKey key = null) {
+            return new TokenModel(tokenModel.Bot, this.EncryptToken(tokenModel.Token, encryptionMode, key), tokenModel.CreatedOn);
+        }
+
+        public TokenModel DecryptToken(TokenModel tokenModel, EncryptionMode encryptionMode, IKey key = null) {
+            return new TokenModel(tokenModel.Bot, this.DecryptToken(tokenModel.Token, encryptionMode, key), tokenModel.CreatedOn);
+        }
+
+        public string[] EncryptTokens(IEnumerable<string> tokens, EncryptionMode encryptionMode, IKey key = null)
+            => tokens.Select(e => EncryptToken(e, encryptionMode, key)).ToArray();
+
+        public string[] DecryptTokens(IEnumerable<string> tokens, EncryptionMode encryptionMode, IKey key = null)
+            => tokens.Select(e => DecryptToken(e, encryptionMode, key)).ToArray();
 
         public TokenModel[] EncryptTokens(TokenModel[] tokens, EncryptionMode encryptionMode, IKey key = null) {
             return tokens.Select(e => EncryptToken(e, encryptionMode, key)).ToArray();
@@ -83,5 +97,7 @@ namespace HB.NETF.Discord.NET.Toolkit.TokenService {
         public TokenModel[] DecryptTokens(TokenModel[] tokens, EncryptionMode encryptionMode, IKey key = null) {
             return tokens.Select(e => DecryptToken(e, encryptionMode, key)).ToArray();
         }
+
+       
     }
 }

@@ -152,6 +152,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache\SemanticModelCache.cs" />
     <Compile Include="Exceptions\CodeAnalyserTestException.cs" />
     <Compile Include="Exceptions\CodeAnalyzerException.cs" />
     <Compile Include="IAsyncCodeAnalyser.cs" />

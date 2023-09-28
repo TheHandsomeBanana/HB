@@ -1,5 +1,5 @@
 ﻿using HB.NETF.Discord.NET.Toolkit.EntityService.Models;
-using HB.NETF.Discord.NET.Toolkit.EntityService.Models.Entities;
+using HB.NETF.Discord.NET.Toolkit.Models.Entities;
 using HB.NETF.Services.Data.Handler;
 using HB.NETF.Services.Data.Handler.Async;
 using HB.NETF.Services.Data.Handler.Manipulator;
@@ -13,10 +13,10 @@ using System.Threading.Tasks;
 namespace HB.NETF.Discord.NET.Toolkit.EntityService.Cached {
     public interface ICachedDiscordEntityService : IStreamManipulator, IDisposable {
         Task Refresh();
-        Task<DiscordServerModel[]> GetServers();
-        Task<DiscordUserModel[]> GetUsers(ulong serverId);
-        Task<DiscordRoleModel[]> GetRoles(ulong serverId);
-        Task<DiscordChannelModel[]> GetChannels(ulong serverId);
-        Task<DiscordEntityModel> GetEntity(ulong id);
+        Task<DiscordServer[]> GetServers();
+        Task<DiscordUser[]> GetUsers(ulong serverId);
+        Task<DiscordRole[]> GetRoles(ulong serverId);
+        Task<DiscordChannel[]> GetChannels(ulong serverId);
+        Task<DiscordEntity> GetEntity(ulong id);
     }
 }

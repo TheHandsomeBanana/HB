@@ -1,5 +1,5 @@
 ﻿using HB.NETF.Discord.NET.Toolkit.EntityService.Models;
-using HB.NETF.Discord.NET.Toolkit.EntityService.Models.Entities;
+using HB.NETF.Discord.NET.Toolkit.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +12,10 @@ namespace HB.NETF.Discord.NET.Toolkit.EntityService.Handler {
         Task ConnectAsync();
         Task PullEntitiesAsync();
         Task DisconnectAsync();
-        DiscordServerModel[] GetServers();
-        DiscordUserModel[] GetUsers(ulong serverId);
-        DiscordRoleModel[] GetRoles(ulong serverId);
-        DiscordChannelModel[] GetChannels(ulong serverId);
-        DiscordEntityModel GetEntity(ulong entityId);
+        DiscordServer[] GetServers();
+        DiscordUser[] GetUsers(ulong serverId);
+        DiscordRole[] GetRoles(ulong serverId);
+        DiscordChannel[] GetChannels(ulong serverId);
+        DiscordEntity GetEntity(ulong entityId);
     }
 }
