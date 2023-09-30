@@ -64,13 +64,15 @@ namespace HB.NETF.Discord.NET.Toolkit.EntityService.Merged {
             }
 
             List<Task> dcWriteTasks = new List<Task> {
-                streamHandler.WithOptions(optionBuilder).WriteToFileAsync<DiscordServerCollection>(mergedPath, ServerCollection)
+                Task.Run(() => streamHandler.WithOptions(optionBuilder).WriteToFile<DiscordServerCollection>(mergedPath, ServerCollection))
             };
 
             foreach (DiscordEntityService entityService in entityServices)
                 dcWriteTasks.Add(entityService.DisconnectAsync());
 
+
             await Task.WhenAll(dcWriteTasks);
+            optionBuilder = null;
         }
 
         private OptionBuilderFunc optionBuilder;
@@ -81,12 +83,14 @@ namespace HB.NETF.Discord.NET.Toolkit.EntityService.Merged {
         public void Dispose() {
             foreach (var entityService in entityServices)
                 entityService.Dispose();
+
+            entityServices.Clear();
         }
 
         public async Task<bool> LoadMerged(string mergedPath) {
             bool fileExists = File.Exists(mergedPath);
             if (fileExists)
-                ServerCollection = await streamHandler.WithOptions(optionBuilder).ReadFromFileAsync<DiscordServerCollection>(mergedPath);
+                ServerCollection = await Task.Run(() => streamHandler.WithOptions(optionBuilder).ReadFromFile<DiscordServerCollection>(mergedPath));
 
             return fileExists;
         }

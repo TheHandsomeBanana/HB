@@ -17,7 +17,7 @@ using System.Security.Cryptography;
 
 namespace HB.NETF.Services.Data.Handler.Async {
     public class AsyncStreamHandler : StreamHandler, IAsyncStreamHandler {
-        public AsyncStreamHandler() {
+        public AsyncStreamHandler() : base() {
         }
 
         public AsyncStreamHandler(FileStream fs) : base(fs) {
@@ -25,19 +25,19 @@ namespace HB.NETF.Services.Data.Handler.Async {
 
         #region File
 
-        public Task<byte[]> ReadFromFileAsync(string filePath) => Invoke(async () => await ReadInternal(filePath));
-        public Task<T> ReadFromFileAsync<T>(string filePath) {
-            return Invoke(async () => {
+        public async Task<byte[]> ReadFromFileAsync(string filePath) => await Invoke(async () => await ReadInternal(filePath));
+        public async Task<T> ReadFromFileAsync<T>(string filePath) {
+            return await Invoke(async () => {
                 string content = GlobalEnvironment.Encoding.GetString(await ReadInternal(filePath));
                 T tContent = JsonConvert.DeserializeObject<T>(content);
                 return tContent;
             });
         }
 
-        public Task WriteToFileAsync(string filePath, byte[] content) => Invoke(async () => await WriteInternal(filePath, content));
+        public async Task WriteToFileAsync(string filePath, byte[] content) => await Invoke(async () => await WriteInternal(filePath, content));
 
-        public Task WriteToFileAsync<T>(string filePath, T content) {
-            return Invoke(async () => {
+        public async Task WriteToFileAsync<T>(string filePath, T content) {
+            await Invoke(async () => {
 
                 string sContent = JsonConvert.SerializeObject(content);
                 byte[] buffer = GlobalEnvironment.Encoding.GetBytes(sContent);
@@ -95,10 +95,10 @@ namespace HB.NETF.Services.Data.Handler.Async {
         #endregion
 
         #region Stream
-        public Task<byte[]> ReadStreamAsync() => Invoke(async () => await ReadStreamInternal()); 
+        public async Task<byte[]> ReadStreamAsync() => await Invoke(async () => await ReadStreamInternal()); 
 
-        public Task<T> ReadStreamAsync<T>() {
-            return Invoke(async () => {
+        public async Task<T> ReadStreamAsync<T>() {
+            return await Invoke(async () => {
                 byte[] buffer = await ReadStreamInternal();
                 string content = GlobalEnvironment.Encoding.GetString(buffer);
                 T tContent = JsonConvert.DeserializeObject<T>(content);
@@ -133,7 +133,6 @@ namespace HB.NETF.Services.Data.Handler.Async {
 
             return buffer;
         }
-
         private async Task WriteInternal(string fileName, byte[] buffer) {
             if (Options.UseBase64)
                 buffer = GetBytesToBase64(buffer);
@@ -145,7 +144,6 @@ namespace HB.NETF.Services.Data.Handler.Async {
             using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
                 await fs.WriteAsync(buffer);
         }
-
         private async Task<byte[]> ReadStreamInternal() {
             if (Stream == null)
                 ThrowNoStreamProvided();
@@ -160,7 +158,6 @@ namespace HB.NETF.Services.Data.Handler.Async {
 
             return buffer;
         }
-
         private async Task WriteStreamInternal(byte[] buffer) {
             if (Stream == null)
                 ThrowNoStreamProvided();
@@ -173,13 +170,12 @@ namespace HB.NETF.Services.Data.Handler.Async {
 
             await Stream.WriteAsync(buffer);
         }
+        #endregion
 
+        IAsyncStreamHandler IAsyncStreamHandler.WithOptions(OptionBuilderFunc optionBuilder) => (IAsyncStreamHandler)this.WithOptions(optionBuilder);
         protected override void FinishOperation() {
             Options = new StreamOptions();
             Stream?.ResetPosition();
         }
-        #endregion
-
-        IAsyncStreamHandler IAsyncStreamHandler.WithOptions(OptionBuilderFunc optionBuilder) => (IAsyncStreamHandler)this.WithOptions(optionBuilder);
     }
 }

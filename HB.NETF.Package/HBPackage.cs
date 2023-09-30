@@ -3,6 +3,7 @@ using HB.NETF.Discord.NET.Toolkit.EntityService;
 using HB.NETF.Discord.NET.Toolkit.EntityService.Cached;
 using HB.NETF.Discord.NET.Toolkit.EntityService.Cached.Handler;
 using HB.NETF.Discord.NET.Toolkit.EntityService.Handler;
+using HB.NETF.Discord.NET.Toolkit.EntityService.Merged;
 using HB.NETF.Discord.NET.Toolkit.TokenService;
 using HB.NETF.Services.Data.Handler;
 using HB.NETF.Services.Data.Handler.Async;
@@ -26,21 +27,22 @@ namespace HB.NETF.Package {
             DIBuilder diBuilder = new DIBuilder();
             diBuilder.Services.AddTransient<IStreamHandler, StreamHandler>();
             diBuilder.Services.AddTransient<IAsyncStreamHandler, AsyncStreamHandler>();
-            diBuilder.Services.AddTransient<IDiscordEntityService, DiscordEntityService>();
-            diBuilder.Services.AddTransient<ICachedDiscordEntityService, CachedDiscordEntityService>();
-            diBuilder.Services.AddTransient<IDiscordEntityServiceHandler, DiscordEntityServiceHandler>();
-            diBuilder.Services.AddTransient<ICachedDiscordEntityServiceHandler, CachedDiscordEntityServiceHandler>();
-            diBuilder.Services.AddTransient<IDiscordTokenService, DiscordTokenService>();
             diBuilder.Services.AddTransient<IIdentifierFactory, IdentifierFactory>();
             diBuilder.Services.AddTransient<IAesCryptoService, AesCryptoService>();
             diBuilder.Services.AddTransient<IRsaCryptoService, RsaCryptoService>();
             diBuilder.Services.AddTransient<IDataProtectionService, DataProtectionService>();
+            diBuilder.Services.AddSingleton<IDiscordEntityService, DiscordEntityService>();
+            diBuilder.Services.AddSingleton<ICachedDiscordEntityService, CachedDiscordEntityService>();
+            diBuilder.Services.AddSingleton<IDiscordEntityServiceHandler, DiscordEntityServiceHandler>();
+            diBuilder.Services.AddSingleton<ICachedDiscordEntityServiceHandler, CachedDiscordEntityServiceHandler>();
+            diBuilder.Services.AddSingleton<IDiscordTokenService, DiscordTokenService>();
+            diBuilder.Services.AddSingleton<IMergedDiscordEntityService, MergedDiscordEntityService>();
 
             ServiceProvider = diBuilder.Services.BuildServiceProvider();
         }
 
         public static T GetService<T>() {
-            object service = ServiceProvider.GetService(typeof(T));
+            object service = ServiceProvider?.GetService(typeof(T));
             if (service == null)
                 return default;
 

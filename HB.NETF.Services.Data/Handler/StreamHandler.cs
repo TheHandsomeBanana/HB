@@ -232,7 +232,7 @@ namespace HB.NETF.Services.Data.Handler {
         protected byte[] DecryptBuffer(byte[] buffer) {
             switch (Options.EncryptionMode) {
                 case EncryptionMode.WindowsDataProtectionAPI:
-                    break;
+                    return dataProtectionService.Unprotect(buffer);
                 case EncryptionMode.AES:
                     if (Options.Key == null)
                         throw new StreamHandlerException($"No key for aes decryption provided.");
@@ -251,7 +251,7 @@ namespace HB.NETF.Services.Data.Handler {
         protected byte[] EncryptBuffer(byte[] buffer) {
             switch (Options.EncryptionMode) {
                 case EncryptionMode.WindowsDataProtectionAPI:
-                    break;
+                    return dataProtectionService.Protect(buffer);
                 case EncryptionMode.AES:
                     if (Options.Key == null)
                         throw new StreamHandlerException($"No key for aes decryption provided.");

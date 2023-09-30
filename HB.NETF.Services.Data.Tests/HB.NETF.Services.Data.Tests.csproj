@@ -57,9 +57,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HB.NETF.Common.Tests\HB.NETF.Common.Tests.csproj">
+      <Project>{175A2AFE-E272-4653-90B8-1BFAF17F9464}</Project>
+      <Name>HB.NETF.Common.Tests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HB.NETF.Services.Data\HB.NETF.Services.Data.csproj">
       <Project>{029481CE-57E0-4C7F-AA97-871D3F4C0F07}</Project>
       <Name>HB.NETF.Services.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HB.NETF.Services.Security\HB.NETF.Services.Security.csproj">
+      <Project>{884D9597-BFBB-41C0-BDCF-37D1EF0DDF3A}</Project>
+      <Name>HB.NETF.Services.Security</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

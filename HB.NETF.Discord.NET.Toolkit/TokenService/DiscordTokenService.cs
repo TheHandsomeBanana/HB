@@ -45,15 +45,16 @@ namespace HB.NETF.Discord.NET.Toolkit.TokenService {
         public string EncryptToken(string token, EncryptionMode encryptionMode, IKey key = null) {
             switch (encryptionMode) {
                 case EncryptionMode.AES:
-                    string encrToken = serializerService
+                    return serializerService
                         .ToBase64(aesCryptoService
                         .Encrypt(serializerService.GetResultBytes(token), key));
 
-                    return encrToken;
                 case EncryptionMode.RSA:
                     break;
                 case EncryptionMode.WindowsDataProtectionAPI:
-                    break;
+                    return serializerService
+                        .ToBase64(dataProtectionService
+                        .Protect(serializerService.GetResultBytes(token)));
             }
 
             throw new NotSupportedException($"{encryptionMode} not supported.");
@@ -62,15 +63,16 @@ namespace HB.NETF.Discord.NET.Toolkit.TokenService {
         public string DecryptToken(string token, EncryptionMode encryptionMode, IKey key = null) {
             switch (encryptionMode) {
                 case EncryptionMode.AES:
-                    string encrToken = serializerService
+                    return serializerService
                         .GetResultString(aesCryptoService
                         .Decrypt(serializerService.FromBase64(token), key));
 
-                    return encrToken;
                 case EncryptionMode.RSA:
                     break;
                 case EncryptionMode.WindowsDataProtectionAPI:
-                    break;
+                    return serializerService
+                        .GetResultString(dataProtectionService
+                        .Unprotect(serializerService.FromBase64(token)));
             }
 
             throw new NotSupportedException($"{encryptionMode} not supported.");

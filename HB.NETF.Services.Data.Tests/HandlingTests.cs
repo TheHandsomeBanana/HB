@@ -1,11 +1,15 @@
-﻿using HB.NETF.Services.Data.Handler;
+﻿using HB.NETF.Common.Tests;
+using HB.NETF.Services.Data.Handler;
+using HB.NETF.Services.Data.Handler.Async;
+using HB.NETF.Services.Security.Cryptography.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace HB.NETF.Services.Data.Tests {
     [TestClass]
-    public class HandlingTests {
+    public class HandlingTests : TestBase {
         [TestMethod]
         public void StreamHandler_EmptyCtor_FileName() {
             StreamHandler streamHandler = new StreamHandler();
@@ -59,7 +63,37 @@ namespace HB.NETF.Services.Data.Tests {
             Assert.AreEqual(10, testClass.Count);
         }
 
+        [TestMethod]
+        public void StreamHandler_WithEncryption() {
+            StreamHandler streamHandler = new StreamHandler();
+            streamHandler
+                .WithOptions(e => e.UseCryptography(EncryptionMode.WindowsDataProtectionAPI).UseBase64().Set())
+                .WriteToFile("test", new TestClass("Test", 10));
 
+            TestClass testClass = streamHandler
+                .WithOptions(e => e.UseCryptography(EncryptionMode.WindowsDataProtectionAPI).UseBase64().Set())
+                .ReadFromFile<TestClass>("test");
+
+            Assert.IsNotNull(testClass);
+            Assert.AreEqual("Test", testClass.Content);
+            Assert.AreEqual(10, testClass.Count);
+        }
+
+        [TestMethod]
+        public async Task AsyncStreamHandler_WithEncryption() {
+            IAsyncStreamHandler streamHandler = new AsyncStreamHandler();
+            await streamHandler
+                .WithOptions(e => e.UseCryptography(EncryptionMode.WindowsDataProtectionAPI).UseBase64().SetAsync())
+                .WriteToFileAsync("testasync", new TestClass("Test", 10));
+
+            TestClass testClass = await streamHandler
+                .WithOptions(e => e.UseCryptography(EncryptionMode.WindowsDataProtectionAPI).UseBase64().SetAsync())
+                .ReadFromFileAsync<TestClass>("testasync");
+
+            Assert.IsNotNull(testClass);
+            Assert.AreEqual("Test", testClass.Content);
+            Assert.AreEqual(10, testClass.Count);
+        }
     }
 
     public class TestClass {

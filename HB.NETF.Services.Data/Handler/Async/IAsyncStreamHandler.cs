@@ -28,6 +28,6 @@ namespace HB.NETF.Services.Data.Handler.Async {
         Task<T> ReadStreamAsync<T>();
         Task WriteStreamAsync<T>(T content);
 
-        IAsyncStreamHandler WithOptions(OptionBuilderFunc optionBuilder);
+        new IAsyncStreamHandler WithOptions(OptionBuilderFunc optionBuilder);
     }
 }
