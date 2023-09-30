@@ -21,7 +21,7 @@ namespace HB.NETF.Common.DependencyInjection {
         }
 
         public static TService GetService<TService>() {
-            object service = ServiceProvider.GetService(typeof(TService));
+            object service = ServiceProvider?.GetService(typeof(TService));
             if (service == null)
                 return default;
 
