@@ -9,6 +9,11 @@ using System.Threading.Tasks;
 namespace HB.Services.Data.Handler {
     public interface IStreamHandler : IDisposable {
         FileStream? Stream { get; }
+        byte[] StartOpenFileDialog();
+        void StartSaveFileDialog(byte[] content);
+
+        T? StartOpenFileDialog<T>();
+        void StartSaveFileDialog<T>(T content);
 
         byte[] ReadFromFile(string filePath);
         void WriteToFile(string filePath, byte[] content);

@@ -63,6 +63,53 @@ namespace HB.Services.Data.Handler {
         }
         #endregion
 
+        #region Dialog
+        public byte[] StartOpenFileDialog() => Invoke(() => ReadFromDialog() ?? Array.Empty<byte>());
+
+        public T? StartOpenFileDialog<T>() {
+            return Invoke(() => {
+                byte[] buffer = ReadFromDialog() ?? Array.Empty<byte>();
+
+                string sContent = GlobalEnvironment.Encoding.GetString(buffer);
+                T? content = JsonConvert.DeserializeObject<T>(sContent);
+                return content;
+            });
+        }
+
+        public void StartSaveFileDialog(byte[] content) {
+            Invoke(() => {
+                WriteDialog(content);
+            });
+        }
+
+        public void StartSaveFileDialog<T>(T content) {
+            Invoke(() => {
+                string sContent = JsonConvert.SerializeObject(content, Formatting.Indented);
+                byte[] buffer = GlobalEnvironment.Encoding.GetBytes(sContent);
+
+                WriteDialog(buffer);
+            });
+        }
+
+        private byte[]? ReadFromDialog() {
+            OpenFileDialog ofd = new OpenFileDialog();
+            bool? dialog = ofd.ShowDialog();
+            if (dialog.HasValue && !dialog.Value)
+                return null;
+
+            return ReadInternal(ofd.FileName);
+        }
+        private void WriteDialog(byte[] buffer) {
+            SaveFileDialog sfd = new SaveFileDialog();
+            bool? dialog = sfd.ShowDialog();
+
+            if (dialog.HasValue && !dialog.Value)
+                return;
+
+            WriteInternal(sfd.FileName, buffer);
+        }
+        #endregion
+
         #region Stream
         public byte[] ReadStream() => Invoke(() => ReadStreamInternal());
 
