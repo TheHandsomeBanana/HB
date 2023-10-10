@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HB.DependencyInjection\HB.DependencyInjection.csproj" />
+    <ProjectReference Include="..\HB.Services.Data\HB.Services.Data.csproj" />
+    <ProjectReference Include="..\HB.Services.Security\HB.Services.Security.csproj" />
+  </ItemGroup>
+
+</Project>

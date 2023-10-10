@@ -14,6 +14,8 @@ using Newtonsoft.Json;
 using HB.Common;
 using Microsoft.Win32;
 using System.Security.Cryptography;
+using System.Runtime.Versioning;
+using System.Windows.Forms;
 
 namespace HB.Services.Data.Handler.Async {
     public class AsyncStreamHandler : StreamHandler, IAsyncStreamHandler {
@@ -70,14 +72,11 @@ namespace HB.Services.Data.Handler.Async {
             });
         }
 
+        [SupportedOSPlatform("windows")]
         private async Task<byte[]?> ReadFromDialog() {
             string? fileName = await Task.Factory.StartNew<string?>(() => {
                 OpenFileDialog ofd = new OpenFileDialog();
-                bool? dialog = ofd.ShowDialog();
-                if (!dialog.HasValue)
-                    return null;
-
-                if (!dialog.Value)
+                if (ofd.ShowDialog() != DialogResult.OK)
                     return null;
 
                 return ofd.FileName;
@@ -88,15 +87,12 @@ namespace HB.Services.Data.Handler.Async {
 
             return await ReadInternal(fileName);
         }
+
+        [SupportedOSPlatform("windows")]
         private async Task WriteDialog(byte[] buffer) {
             string? fileName = await Task.Factory.StartNew<string?>(() => {
                 SaveFileDialog sfd = new SaveFileDialog();
-
-                bool? dialog = sfd.ShowDialog();
-                if (!dialog.HasValue)
-                    return null;
-
-                if (!dialog.Value)
+                if (sfd.ShowDialog() != DialogResult.OK)
                     return null;
 
 

@@ -14,10 +14,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 
 namespace HB.Services.Data.Handler {
 
@@ -64,8 +66,10 @@ namespace HB.Services.Data.Handler {
         #endregion
 
         #region Dialog
+        [SupportedOSPlatform("windows")]
         public byte[] StartOpenFileDialog() => Invoke(() => ReadFromDialog() ?? Array.Empty<byte>());
 
+        [SupportedOSPlatform("windows")]
         public T? StartOpenFileDialog<T>() {
             return Invoke(() => {
                 byte[] buffer = ReadFromDialog() ?? Array.Empty<byte>();
@@ -76,12 +80,14 @@ namespace HB.Services.Data.Handler {
             });
         }
 
+        [SupportedOSPlatform("windows")]
         public void StartSaveFileDialog(byte[] content) {
             Invoke(() => {
                 WriteDialog(content);
             });
         }
 
+        [SupportedOSPlatform("windows")]
         public void StartSaveFileDialog<T>(T content) {
             Invoke(() => {
                 string sContent = JsonConvert.SerializeObject(content, Formatting.Indented);
@@ -93,17 +99,14 @@ namespace HB.Services.Data.Handler {
 
         private byte[]? ReadFromDialog() {
             OpenFileDialog ofd = new OpenFileDialog();
-            bool? dialog = ofd.ShowDialog();
-            if (dialog.HasValue && !dialog.Value)
+            if (ofd.ShowDialog() != DialogResult.OK)
                 return null;
 
             return ReadInternal(ofd.FileName);
         }
         private void WriteDialog(byte[] buffer) {
             SaveFileDialog sfd = new SaveFileDialog();
-            bool? dialog = sfd.ShowDialog();
-
-            if (dialog.HasValue && !dialog.Value)
+            if (sfd.ShowDialog() != DialogResult.OK)
                 return;
 
             WriteInternal(sfd.FileName, buffer);
@@ -256,12 +259,12 @@ namespace HB.Services.Data.Handler {
                     return dataProtectionService.Protect(buffer);
                 case EncryptionMode.AES:
                     if (Options.Key == null)
-                        throw new StreamHandlerException($"No key for aes decryption provided.");
+                        throw new StreamHandlerException($"No key for aes enryption provided.");
 
                     return aesCryptoService.Encrypt(buffer, Options.Key);
                 case EncryptionMode.RSA:
                     if (Options.Key == null)
-                        throw new StreamHandlerException($"No key for rsa decryption provided.");
+                        throw new StreamHandlerException($"No key for rsa encryption provided.");
 
                     return rsaCryptoService.Encrypt(buffer, Options.Key);
             }
