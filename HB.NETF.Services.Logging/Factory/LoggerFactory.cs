@@ -46,6 +46,7 @@ namespace HB.NETF.Services.Logging.Factory {
             Logger logger = new Logger(category);
             logger.LogTargets = loggingBuilder.LogTargets.Concat(GlobalLogTargets).ToArray();
 
+            LoggerContainer.Add(category, logger);
             return logger;
         }
 

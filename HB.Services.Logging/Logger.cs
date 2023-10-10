@@ -2,9 +2,11 @@
 using HB.Services.Logging.Exceptions;
 using System.Runtime.CompilerServices;
 using System.Text;
+using HB.Common.Threading;
+using HB.Common.Extensions;
 
 namespace HB.Services.Logging {
-    internal class Logger<T> : Logger, ILogger<T> where T : new() {
+    internal class Logger<T> : Logger, ILogger<T> {
         public Logger() : base(nameof(T)) {
         }
     }
@@ -47,10 +49,10 @@ namespace HB.Services.Logging {
             foreach (LogTarget t in LogTargets) {
                 switch (t.Target) {
                     case Action<LogStatement> logAction:
-                        logAction.Invoke(log);
+                        Locker.RunLocked(() => logAction.Invoke(log));
                         break;
                     case Action<string> stringAction:
-                        stringAction.Invoke(log.ToString());
+                        Locker.RunLocked(() => stringAction.Invoke(log.ToString()));
                         break;
                     case string str:
                         HandleString(str, log);
@@ -64,12 +66,15 @@ namespace HB.Services.Logging {
 
         #region LogHelper
         private void HandleString(string str, LogStatement log) {
-            using (StreamWriter sw = new StreamWriter(str, true))
+            Locker.RunLocked(() => {
+                using StreamWriter sw = new StreamWriter(str, true);
                 sw.WriteLine(log.ToString());
+            });
         }
         private void HandleStream(Stream stream, LogStatement log) {
-            stream.Write(Encoding.UTF8.GetBytes(log.ToString() + "\r"));
-            stream.Position = 0;
+            Locker.RunLocked(() => {
+                stream.Write(Encoding.UTF8.GetBytes(log.ToString() + "\r"));
+            });
         }
         private DateTime GetCurrentTime() {
             switch (TimeKind) {

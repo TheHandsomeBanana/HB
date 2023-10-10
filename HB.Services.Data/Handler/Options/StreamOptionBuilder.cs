@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace HB.Services.Data.Handler.Options {
     internal class StreamOptionBuilder : IStreamOptionBuilder {
-        StreamHandler wrapper;
+        private readonly StreamHandler wrapper;
         public StreamOptionBuilder(StreamHandler wrapper) {
             this.wrapper = wrapper;
         }

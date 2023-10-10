@@ -15,7 +15,7 @@ namespace HB.Services.Logging {
         public void LogCritical(string message);
     }
 
-    public interface ILogger<out T> : ILogger where T : new() {
+    public interface ILogger<out T> : ILogger {
         public string Category { get; }
     }
 }

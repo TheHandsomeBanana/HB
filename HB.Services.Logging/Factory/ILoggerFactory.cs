@@ -8,9 +8,10 @@ using System.Threading.Tasks;
 
 namespace HB.Services.Logging.Factory {
     public interface ILoggerFactory {
-        public IReadOnlyList<string> CapturedLoggerCategories { get; }
         public LogTarget[] GlobalLogTargets { get; }
+        public ILogger GetOrCreateLogger(string category);
+        public ILogger<T> GetOrCreateLogger<T>();
         public ILogger CreateLogger(string category, Action<ILoggingBuilder> builder);
-        public ILogger<T> CreateLogger<T>(Action<ILoggingBuilder> builder) where T : new();
+        public ILogger<T> CreateLogger<T>(Action<ILoggingBuilder> builder);
     }
 }
