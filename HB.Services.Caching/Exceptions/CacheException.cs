@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HB.Utilities.Services.Caching.Exceptions {
+namespace HB.Services.Caching.Exceptions {
     public class CacheException : InternalException {
         public CacheException(string? message) : base(message) {
         }

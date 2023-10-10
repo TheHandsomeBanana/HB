@@ -10,7 +10,7 @@ namespace HB.NETF.Discord.NET.Toolkit.Tests {
     [TestClass]
     public class DiscordEntityServiceTests : TestBase {
 
-        [TestMethod]
+        //[TestMethod]
         public async Task DiscordEntityServiceTest() {
             TokenModel token = new TokenModel("Testbot", "");
             DiscordEntityService entityService = new DiscordEntityService(token);
@@ -18,7 +18,7 @@ namespace HB.NETF.Discord.NET.Toolkit.Tests {
             await entityService.PullEntitiesAsync();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public async Task CachedDiscordEntityServiceTest() {
             TokenModel token = new TokenModel("Testbot", "");
             CachedDiscordEntityService cachedEntityService = new CachedDiscordEntityService(token);

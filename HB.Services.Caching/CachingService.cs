@@ -1,4 +1,4 @@
-﻿using HB.Utilities.Services.Caching.Exceptions;
+﻿using HB.Services.Caching.Exceptions;
 using Newtonsoft.Json;
 using System.Linq.Expressions;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -6,9 +6,9 @@ using System.Xml.Serialization;
 using HB.Common;
 using HB.Services.Caching.Helper;
 using System.Reflection;
-using HB.Common.Serialization;
+using HB.Services.Serialization;
 
-namespace HB.Utilities.Services.Caching {
+namespace HB.Services.Caching {
     public class CachingService : ICachingService {
         private readonly System.Timers.Timer timer = new System.Timers.Timer();
 

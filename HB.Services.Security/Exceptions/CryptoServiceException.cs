@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace HB.Services.Security.Exceptions {
     public class CryptoServiceException : InternalException {
-        public CryptoServiceException(string? message) : base(message) {
+        public CryptoServiceException(string message) : base(message) {
         }
 
-        public CryptoServiceException(string? message, Exception? innerException) : base(message, innerException) {
+        public CryptoServiceException(string message, Exception innerException) : base(message, innerException) {
         }
     }
 }

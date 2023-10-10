@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HB.Utilities.Services.Caching {
+namespace HB.Services.Caching {
     public interface ICachingService : IDisposable {
         Cache Get(string key);
         Cache? GetOrDefault(string key);

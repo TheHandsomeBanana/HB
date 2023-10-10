@@ -1,9 +1,7 @@
-using HB.Common.Serialization;
+using HB.Services.Serialization;
 using HB.Services.Caching;
-using HB.Utilities.Services.Caching;
 using Microsoft.Win32.SafeHandles;
 using Newtonsoft.Json;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace HB.Services.Caching.Tests {
     [TestClass]

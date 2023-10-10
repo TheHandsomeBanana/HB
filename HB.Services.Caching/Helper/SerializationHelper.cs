@@ -1,6 +1,6 @@
-﻿using HB.Common.Serialization;
-using HB.Common.Serialization.Json;
-using HB.Utilities.Services.Caching;
+﻿using HB.Services.Serialization;
+using HB.Services.Serialization.Json;
+using HB.Services.Caching;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

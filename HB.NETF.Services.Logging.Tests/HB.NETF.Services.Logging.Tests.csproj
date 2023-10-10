@@ -57,6 +57,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HB.NETF.Common\HB.NETF.Common.csproj">
+      <Project>{7A6DD6BD-D679-4AD7-94F6-4AE5189BF75A}</Project>
+      <Name>HB.NETF.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HB.NETF.Services.Logging\HB.NETF.Services.Logging.csproj">
       <Project>{b99ca5a1-866c-44ed-826d-df14c4df05ce}</Project>
       <Name>HB.NETF.Services.Logging</Name>

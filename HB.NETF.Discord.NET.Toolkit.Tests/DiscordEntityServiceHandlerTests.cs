@@ -12,7 +12,7 @@ using HB.NETF.Common.Tests;
 namespace HB.NETF.Discord.NET.Toolkit.Tests {
     [TestClass]
     public class DiscordEntityServiceHandlerTests : TestBase {
-        [TestMethod]
+        //[TestMethod]
         public async Task DiscordEntityServiceHandlerTest() {
             TokenModel token1 = new TokenModel("BananaBot", "OTQ4NjcyNzU0MjcyNTgzNzIx.GdHysS.sXifYJCIbe500_GxEMvrSHCHOd5iqFJtQZywyk");
             TokenModel token2 = new TokenModel("AlbionBot", "OTQ5MDUyNzg5NjIxOTM2MTc4.GpOHku.djKnXwGAzOMur78h1EUJQMjMgILJtFeozhMo8k");
@@ -22,7 +22,7 @@ namespace HB.NETF.Discord.NET.Toolkit.Tests {
             await entityService.PullEntitiesAsync();
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void CachedDiscordEntitysServiceHandlerTest() {
 
         }

@@ -6,11 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HB.Services.Security.Cryptography.Interfaces {
-    public interface ICryptoService {
-
-        byte[] Encrypt(byte[] data, IKey key);
-        byte[] Decrypt(byte[] cipher, IKey key);
-
-        IKey[] GenerateKeys(int keySize);
+    public interface IAesCryptoService : ICryptoService {
+        byte[] Encrypt(byte[] data, AesKey key);
+        byte[] Decrypt(byte[] cipher, AesKey key);
+        AesKey GenerateKey(int keySize = 256);
     }
 }

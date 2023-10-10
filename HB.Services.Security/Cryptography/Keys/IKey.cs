@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 
 namespace HB.Services.Security.Cryptography.Keys {
     public interface IKey {
-        public string Name { get; }
+        string Name { get; }
     }
 }

@@ -1,11 +1,11 @@
-﻿using HB.Common.Serialization;
+﻿using HB.Services.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HB.Utilities.Services.Caching {
+namespace HB.Services.Caching {
     [Serializable]
     public struct CacheMetaInfo {
         public string Key { get; set; }

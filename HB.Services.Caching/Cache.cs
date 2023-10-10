@@ -1,4 +1,4 @@
-﻿using HB.Common.Serialization;
+﻿using HB.Services.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -9,7 +9,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HB.Utilities.Services.Caching {
+namespace HB.Services.Caching {
     public class Cache {
         internal double? Seconds { get; set; } = null;
         public object Value { get; set; }

@@ -1,4 +1,4 @@
-using HB.Common.Serialization.Streams;
+using HB.Common.Extensions;
 using HB.Services.Security.Cryptography;
 using HB.Services.Security.Cryptography.Keys;
 using System.Text;
