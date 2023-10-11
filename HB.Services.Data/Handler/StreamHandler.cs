@@ -19,7 +19,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
 
 namespace HB.Services.Data.Handler {
 
@@ -62,54 +61,6 @@ namespace HB.Services.Data.Handler {
                 byte[] buffer = GlobalEnvironment.Encoding.GetBytes(sContent);
                 WriteInternal(filePath, buffer);
             });
-        }
-        #endregion
-
-        #region Dialog
-        [SupportedOSPlatform("windows")]
-        public byte[] StartOpenFileDialog() => Invoke(() => ReadFromDialog() ?? Array.Empty<byte>());
-
-        [SupportedOSPlatform("windows")]
-        public T? StartOpenFileDialog<T>() {
-            return Invoke(() => {
-                byte[] buffer = ReadFromDialog() ?? Array.Empty<byte>();
-
-                string sContent = GlobalEnvironment.Encoding.GetString(buffer);
-                T? content = JsonConvert.DeserializeObject<T>(sContent);
-                return content;
-            });
-        }
-
-        [SupportedOSPlatform("windows")]
-        public void StartSaveFileDialog(byte[] content) {
-            Invoke(() => {
-                WriteDialog(content);
-            });
-        }
-
-        [SupportedOSPlatform("windows")]
-        public void StartSaveFileDialog<T>(T content) {
-            Invoke(() => {
-                string sContent = JsonConvert.SerializeObject(content, Formatting.Indented);
-                byte[] buffer = GlobalEnvironment.Encoding.GetBytes(sContent);
-
-                WriteDialog(buffer);
-            });
-        }
-
-        private byte[]? ReadFromDialog() {
-            OpenFileDialog ofd = new OpenFileDialog();
-            if (ofd.ShowDialog() != DialogResult.OK)
-                return null;
-
-            return ReadInternal(ofd.FileName);
-        }
-        private void WriteDialog(byte[] buffer) {
-            SaveFileDialog sfd = new SaveFileDialog();
-            if (sfd.ShowDialog() != DialogResult.OK)
-                return;
-
-            WriteInternal(sfd.FileName, buffer);
         }
         #endregion
 

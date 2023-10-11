@@ -11,13 +11,12 @@ namespace HB.Services.Serialization.Xml
 {
     public static class XmlConvert
     {
-        public static string? SerializeObject(object? o, XmlSerializerSettings? settings = null)
+        public static string SerializeObject(object? o, XmlSerializerSettings? settings = null)
         {
+            ArgumentNullException.ThrowIfNull(o, nameof(o));
+
             if (settings == null)
                 settings = new XmlSerializerSettings();
-
-            if (o == null)
-                return null;
 
             XmlSerializer xmlSerializer = new XmlSerializer(o.GetType(), settings.XmlAttributeOverrides, settings.ExtraTypes, settings.Root, settings.DefaultNamespace, settings.Location);
             StringBuilder sb = new StringBuilder();

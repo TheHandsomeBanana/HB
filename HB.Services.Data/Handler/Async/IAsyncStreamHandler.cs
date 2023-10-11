@@ -9,16 +9,6 @@ using System.Threading.Tasks;
 
 namespace HB.Services.Data.Handler.Async {
     public interface IAsyncStreamHandler : IStreamHandler {
-        [SupportedOSPlatform("windows")]
-        Task<byte[]> StartOpenFileDialogAsync();
-        [SupportedOSPlatform("windows")]
-        Task StartSaveFileDialogAsync(byte[] content);
-
-        [SupportedOSPlatform("windows")]
-        Task<T?> StartOpenFileDialogAsync<T>();
-        [SupportedOSPlatform("windows")]
-        Task StartSaveFileDialogAsync<T>(T content);
-
         Task<byte[]> ReadFromFileAsync(string filePath);
         Task<T?> ReadFromFileAsync<T>(string filePath);
 

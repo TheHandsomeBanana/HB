@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace HB.Services.Serialization {
     public enum SerializerMode {
-        None,
         Json,
         Xml,
         [Obsolete("Usage of binary formatting is dangerous and should not be used.")]

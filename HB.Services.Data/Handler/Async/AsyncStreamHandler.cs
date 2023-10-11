@@ -15,7 +15,6 @@ using HB.Common;
 using Microsoft.Win32;
 using System.Security.Cryptography;
 using System.Runtime.Versioning;
-using System.Windows.Forms;
 
 namespace HB.Services.Data.Handler.Async {
     public class AsyncStreamHandler : StreamHandler, IAsyncStreamHandler {
@@ -48,64 +47,6 @@ namespace HB.Services.Data.Handler.Async {
         }
         #endregion
 
-        #region Dialog
-        public async Task<byte[]> StartOpenFileDialogAsync() => await Invoke(async () => await ReadFromDialog() ?? Array.Empty<byte>());
-
-        public async Task<T?> StartOpenFileDialogAsync<T>() {
-            return await Invoke(async () => {
-                byte[] buffer = await ReadFromDialog() ?? Array.Empty<byte>();
-
-                string sContent = GlobalEnvironment.Encoding.GetString(buffer);
-                T? content = JsonConvert.DeserializeObject<T>(sContent);
-                return content;
-            });
-        }
-
-        public async Task StartSaveFileDialogAsync(byte[] content) => await Invoke(async () => await WriteDialog(content));
-
-        public async Task StartSaveFileDialogAsync<T>(T content) {
-            await Invoke(async () => {
-                string sContent = JsonConvert.SerializeObject(content);
-                byte[] buffer = GlobalEnvironment.Encoding.GetBytes(sContent);
-
-                await WriteDialog(buffer);
-            });
-        }
-
-        [SupportedOSPlatform("windows")]
-        private async Task<byte[]?> ReadFromDialog() {
-            string? fileName = await Task.Factory.StartNew<string?>(() => {
-                OpenFileDialog ofd = new OpenFileDialog();
-                if (ofd.ShowDialog() != DialogResult.OK)
-                    return null;
-
-                return ofd.FileName;
-            });
-
-            if (fileName is null)
-                return null;
-
-            return await ReadInternal(fileName);
-        }
-
-        [SupportedOSPlatform("windows")]
-        private async Task WriteDialog(byte[] buffer) {
-            string? fileName = await Task.Factory.StartNew<string?>(() => {
-                SaveFileDialog sfd = new SaveFileDialog();
-                if (sfd.ShowDialog() != DialogResult.OK)
-                    return null;
-
-
-                return sfd.FileName;
-            });
-
-            if (fileName is null)
-                return;
-
-            await WriteInternal(fileName, buffer);
-        }
-        #endregion
-
         #region Stream
         public async Task<byte[]> ReadStreamAsync() => await Invoke(async () => await ReadStreamInternal()); 
 
@@ -128,7 +69,6 @@ namespace HB.Services.Data.Handler.Async {
             });
         }
         #endregion
-
 
         #region Read Write Internal
         private async Task<byte[]> ReadInternal(string fileName) {

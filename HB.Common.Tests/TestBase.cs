@@ -2,6 +2,8 @@
 using HB.Services.Data.Handler;
 using HB.Services.Logging;
 using HB.Services.Logging.Factory;
+using HB.Services.Security.Cryptography;
+using HB.Services.Security.Cryptography.Interfaces;
 using HB.Services.Security.DataProtection;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -16,9 +18,11 @@ namespace HB.Common.Tests {
         [TestInitialize]
         public void Init() {
             DIBuilder dIBuilder = new DIBuilder();
-            dIBuilder.Services.AddSingleton<ILoggerFactory>(new LoggerFactory((b) => b.AddTarget(Output)));
-            dIBuilder.Services.AddTransient<IStreamHandler, StreamHandler>();
-            dIBuilder.Services.AddTransient<IDataProtectionService, DataProtectionService>();
+            dIBuilder.Services.AddSingleton<ILoggerFactory>(new LoggerFactory((b) => b.AddTarget(Output)))
+            .AddTransient<IStreamHandler, StreamHandler>()
+            .AddTransient<IAesCryptoService, AesCryptoService>()
+            .AddTransient<IRsaCryptoService, RsaCryptoService>()
+            .AddTransient<IDataProtectionService, DataProtectionService>();
             DIContainer.BuildServiceProvider(dIBuilder);
         }
 

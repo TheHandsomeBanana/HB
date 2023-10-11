@@ -22,8 +22,6 @@ namespace HB.NETF.Services.Data.Tests {
             Assert.AreEqual(10, testClass.Count);
         }
 
-        
-
         [TestMethod]
         public void StreamHandler_WithFileStream() {
             using (FileStream fs = new FileStream("test", FileMode.Create, FileAccess.ReadWrite)) {
