@@ -58,6 +58,9 @@
     <Reference Include="Microsoft.CodeAnalysis, Version=3.9.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\Discord.NET.SupportExtension\packages\Microsoft.CodeAnalysis.Common.3.9.0\lib\netstandard2.0\Microsoft.CodeAnalysis.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp, Version=3.9.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\Discord.NET.SupportExtension\packages\Microsoft.CodeAnalysis.CSharp.3.9.0\lib\netstandard2.0\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeAnalysis.Workspaces, Version=3.9.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\Discord.NET.SupportExtension\packages\Microsoft.CodeAnalysis.Workspaces.Common.3.9.0\lib\netstandard2.0\Microsoft.CodeAnalysis.Workspaces.dll</HintPath>
     </Reference>
@@ -154,13 +157,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cache\SemanticModelCache.cs" />
+    <Compile Include="Analyser\TypeAnalyser.cs" />
+    <Compile Include="Models\SearchType.cs" />
+    <Compile Include="Models\SemanticModelCache.cs" />
     <Compile Include="Exceptions\CodeAnalyserTestException.cs" />
     <Compile Include="Exceptions\CodeAnalyzerException.cs" />
-    <Compile Include="IAsyncCodeAnalyser.cs" />
-    <Compile Include="IAsyncNodeResolver.cs" />
-    <Compile Include="ICodeAnalyser.cs" />
-    <Compile Include="INodeResolver.cs" />
+    <Compile Include="Interface\ICodeAnalyser.cs" />
+    <Compile Include="Interface\ITypeAnalyser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestEngine\CodeAnalysisTest.cs" />
     <Compile Include="TestEngine\CodeAnalysisTestEngine.cs" />

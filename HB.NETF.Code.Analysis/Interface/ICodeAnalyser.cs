@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HB.NETF.Code.Analysis {
-    public interface IAsyncNodeResolver {
-       Task ResolveNodeAsync(SyntaxNode node);
+namespace HB.NETF.Code.Analysis.Interface {
+    public interface ICodeAnalyser<TResult> {
+        Task<TResult> ExecuteAsync(SyntaxNode node);
     }
 }

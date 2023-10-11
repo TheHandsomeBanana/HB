@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HB.NETF.Code.Analysis.Cache {
+namespace HB.NETF.Code.Analysis.Models {
     public class SemanticModelCache {
         private readonly Dictionary<string, SemanticModel> modelCache = new Dictionary<string, SemanticModel>();
         public SemanticModelCache() { }
