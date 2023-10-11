@@ -157,7 +157,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analyser\IdentifierAnalyser.cs" />
     <Compile Include="Analyser\TypeAnalyser.cs" />
+    <Compile Include="Interface\IIdentifierAnalyser.cs" />
+    <Compile Include="Models\IdentifierResult.cs" />
     <Compile Include="Models\SearchType.cs" />
     <Compile Include="Models\SemanticModelCache.cs" />
     <Compile Include="Exceptions\CodeAnalyserTestException.cs" />

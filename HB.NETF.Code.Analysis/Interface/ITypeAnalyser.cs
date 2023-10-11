@@ -10,15 +10,15 @@ namespace HB.NETF.Code.Analysis.Interface {
     public interface ITypeAnalyser {
         SemanticModel SemanticModel { get; }
         Type[] TypeFilter { get; }
-        Task<SearchType?> GetFirst(SyntaxNode syntaxNode);
-        Task<SearchType[]> GetAll(SyntaxNode syntaxNode);
+        Task<SearchType?> GetFirstFromSnapshotNode(SyntaxNode syntaxNode);
+        Task<SearchType[]> GetAll(SyntaxTree syntaxTree);
     }
 
     public interface ITypeAnalyser<out T> {
         SemanticModel SemanticModel { get; }
         Type TypeFilter { get; }
 
-        Task<SearchType?> GetFirst(SyntaxNode syntaxNode);
-        Task<SearchType[]> GetAll(SyntaxNode syntaxNode);
+        Task<SearchType?> GetFromTriggeredNode(SyntaxNode syntaxNode);
+        Task<SearchType[]> GetAll(SyntaxTree syntaxTree);
     }
 }

@@ -22,7 +22,7 @@ namespace HB.NETF.Code.Analysis.Analyser {
             this.TypeFilter = filter;
         }
 
-        public async Task<SearchType?> GetFirst(SyntaxNode syntaxNode) {
+        public async Task<SearchType?> GetFirstFromSnapshotNode(SyntaxNode syntaxNode) {
             int i = 0;
             while (!(syntaxNode is ExpressionSyntax) && i < MAXREC) {
                 syntaxNode = syntaxNode.Parent;
@@ -35,8 +35,21 @@ namespace HB.NETF.Code.Analysis.Analyser {
             return null;
         }
 
-        public async Task<SearchType[]> GetAll(SyntaxNode syntaxNode) {
-            throw new NotImplementedException();
+        public async Task<SearchType[]> GetAll(SyntaxTree syntaxTree) {
+            List<SearchType> foundTypes = new List<SearchType>();
+            SyntaxNode root = await syntaxTree.GetRootAsync();
+            foreach (SyntaxNode desc in root.DescendantNodesAndSelf()) {
+                ITypeSymbol type = SemanticModel.GetTypeInfo(desc).Type;
+                if (type is null)
+                    continue;
+
+                if (!TypeFilter.Any(e => e.FullName == type.ToDisplayString()))
+                    continue;
+
+                foundTypes.Add(new SearchType(desc, type));
+            }
+
+            return foundTypes.ToArray();
         }
 
         private async Task<SearchType?> ResolveExpression(SyntaxNode expression) {
@@ -73,6 +86,9 @@ namespace HB.NETF.Code.Analysis.Analyser {
             if (type == null)
                 return null;
 
+            if (!TypeFilter.Any(e => e.FullName == type.ToDisplayString()))
+                return null;
+
             return new SearchType(expression, type);
         }
     }
@@ -90,7 +106,7 @@ namespace HB.NETF.Code.Analysis.Analyser {
             typeAnalyser = new TypeAnalyser(semanticModel, typeof(T));
         }
 
-        public Task<SearchType?> GetFirst(SyntaxNode syntaxNode) => typeAnalyser.GetFirst(syntaxNode);
-        public Task<SearchType[]> GetAll(SyntaxNode syntaxNode) => typeAnalyser.GetAll(syntaxNode);
+        public Task<SearchType?> GetFromTriggeredNode(SyntaxNode syntaxNode) => typeAnalyser.GetFirstFromSnapshotNode(syntaxNode);
+        public Task<SearchType[]> GetAll(SyntaxTree syntaxTree) => typeAnalyser.GetAll(syntaxTree);
     }
 }
