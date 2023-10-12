@@ -159,13 +159,14 @@
   <ItemGroup>
     <Compile Include="Analyser\IdentifierAnalyser.cs" />
     <Compile Include="Analyser\TypeAnalyser.cs" />
+    <Compile Include="Interface\ICodeAnalyser.cs" />
     <Compile Include="Interface\IIdentifierAnalyser.cs" />
     <Compile Include="Models\IdentifierResult.cs" />
-    <Compile Include="Models\SearchType.cs" />
+    <Compile Include="Models\TypeResult.cs" />
     <Compile Include="Models\SemanticModelCache.cs" />
     <Compile Include="Exceptions\CodeAnalyserTestException.cs" />
     <Compile Include="Exceptions\CodeAnalyzerException.cs" />
-    <Compile Include="Interface\ICodeAnalyser.cs" />
+    <Compile Include="Interface\ISnapshotAnalyser.cs" />
     <Compile Include="Interface\ITypeAnalyser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestEngine\CodeAnalysisTest.cs" />

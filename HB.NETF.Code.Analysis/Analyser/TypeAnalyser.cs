@@ -15,14 +15,19 @@ namespace HB.NETF.Code.Analysis.Analyser {
         private const int MAXREC = 4;
 
         public SemanticModel SemanticModel { get; }
-        public Type[] TypeFilter { get; }
+        public Type[] TypeFilter { get; } = Array.Empty<Type>();
 
-        public TypeAnalyser(SemanticModel semanticModel, params Type[] filter) {
+        public TypeAnalyser(SemanticModel semanticModel) {
             this.SemanticModel = semanticModel;
+        }
+
+        public TypeAnalyser(SemanticModel semanticModel, params Type[] filter) : this(semanticModel) {
             this.TypeFilter = filter;
         }
 
-        public async Task<SearchType?> GetFirstFromSnapshotNode(SyntaxNode syntaxNode) {
+        public async Task<TypeResult?> Run(SyntaxNode syntaxNode) => await GetFirstFromSnapshot(syntaxNode);
+
+        public async Task<TypeResult?> GetFirstFromSnapshot(SyntaxNode syntaxNode) {
             int i = 0;
             while (!(syntaxNode is ExpressionSyntax) && i < MAXREC) {
                 syntaxNode = syntaxNode.Parent;
@@ -35,24 +40,24 @@ namespace HB.NETF.Code.Analysis.Analyser {
             return null;
         }
 
-        public async Task<SearchType[]> GetAll(SyntaxTree syntaxTree) {
-            List<SearchType> foundTypes = new List<SearchType>();
+        public async Task<TypeResult[]> GetAll(SyntaxTree syntaxTree) {
+            List<TypeResult> foundTypes = new List<TypeResult>();
             SyntaxNode root = await syntaxTree.GetRootAsync();
             foreach (SyntaxNode desc in root.DescendantNodesAndSelf()) {
                 ITypeSymbol type = SemanticModel.GetTypeInfo(desc).Type;
                 if (type is null)
                     continue;
 
-                if (!TypeFilter.Any(e => e.FullName == type.ToDisplayString()))
+                if (TypeFilter.Length > 0 && !TypeFilter.Any(e => e.FullName == type.ToDisplayString()))
                     continue;
 
-                foundTypes.Add(new SearchType(desc, type));
+                foundTypes.Add(new TypeResult(desc, type));
             }
 
             return foundTypes.ToArray();
         }
 
-        private async Task<SearchType?> ResolveExpression(SyntaxNode expression) {
+        private async Task<TypeResult?> ResolveExpression(SyntaxNode expression) {
             switch (expression) {
                 case InvocationExpressionSyntax invocation:
                     return CheckType(invocation);
@@ -81,15 +86,15 @@ namespace HB.NETF.Code.Analysis.Analyser {
             return null;
         }
 
-        private SearchType? CheckType(ExpressionSyntax expression) {
+        private TypeResult? CheckType(ExpressionSyntax expression) {
             ITypeSymbol type = SemanticModel.GetTypeInfo(expression).Type;
             if (type == null)
                 return null;
 
-            if (!TypeFilter.Any(e => e.FullName == type.ToDisplayString()))
+            if (TypeFilter.Length > 0 && !TypeFilter.Any(e => e.FullName == type.ToDisplayString()))
                 return null;
 
-            return new SearchType(expression, type);
+            return new TypeResult(expression, type);
         }
     }
 
@@ -106,7 +111,8 @@ namespace HB.NETF.Code.Analysis.Analyser {
             typeAnalyser = new TypeAnalyser(semanticModel, typeof(T));
         }
 
-        public Task<SearchType?> GetFromTriggeredNode(SyntaxNode syntaxNode) => typeAnalyser.GetFirstFromSnapshotNode(syntaxNode);
-        public Task<SearchType[]> GetAll(SyntaxTree syntaxTree) => typeAnalyser.GetAll(syntaxTree);
+        public async Task<TypeResult?> Run(SyntaxNode syntaxNode) => await GetFirstFromSnapshot(syntaxNode);
+        public async Task<TypeResult?> GetFirstFromSnapshot(SyntaxNode syntaxNode) => await typeAnalyser.GetFirstFromSnapshot(syntaxNode);
+        public async Task<TypeResult[]> GetAll(SyntaxTree syntaxTree) => await typeAnalyser.GetAll(syntaxTree);
     }
 }

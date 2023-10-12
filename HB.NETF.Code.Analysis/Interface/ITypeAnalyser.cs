@@ -7,18 +7,16 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HB.NETF.Code.Analysis.Interface {
-    public interface ITypeAnalyser {
-        SemanticModel SemanticModel { get; }
+    public interface ITypeAnalyser : ICodeAnalyser<TypeResult?> {
         Type[] TypeFilter { get; }
-        Task<SearchType?> GetFirstFromSnapshotNode(SyntaxNode syntaxNode);
-        Task<SearchType[]> GetAll(SyntaxTree syntaxTree);
+        Task<TypeResult?> GetFirstFromSnapshot(SyntaxNode syntaxNode);
+        Task<TypeResult[]> GetAll(SyntaxTree syntaxTree);
     }
 
-    public interface ITypeAnalyser<out T> {
-        SemanticModel SemanticModel { get; }
+    public interface ITypeAnalyser<out T> : ICodeAnalyser<TypeResult?> {
         Type TypeFilter { get; }
 
-        Task<SearchType?> GetFromTriggeredNode(SyntaxNode syntaxNode);
-        Task<SearchType[]> GetAll(SyntaxTree syntaxTree);
+        Task<TypeResult?> GetFirstFromSnapshot(SyntaxNode syntaxNode);
+        Task<TypeResult[]> GetAll(SyntaxTree syntaxTree);
     }
 }
