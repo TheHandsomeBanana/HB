@@ -9,8 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HB.NETF.Code.Analysis.Interface {
-    public interface IIdentifierAnalyser : ICodeAnalyser<IdentifierResult[]> {
-        Task<IdentifierResult[]> GetFromIdentifier(IdentifierNameSyntax identifier);
+    public interface IIdentifierAnalyser : ICodeAnalyser<IdentifierResult?> {
+        Task<IdentifierResult?> GetFromIdentifier(IdentifierNameSyntax identifier);
         Task<IdentifierNameSyntax> FindFirstIdentifierFromSnapshot(SyntaxNode syntaxNode);
         Task<IdentifierNameSyntax[]> FindAllIdentifiersFromSnapshot(SyntaxNode syntaxNode);
         Task<IdentifierNameSyntax> FindFirstIdentifierFromSnapshot(SyntaxNode syntaxNode, IdentifierClassification classification);

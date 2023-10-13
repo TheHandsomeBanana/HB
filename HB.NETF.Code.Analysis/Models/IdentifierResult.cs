@@ -1,4 +1,5 @@
-﻿using HB.NETF.Common.Exceptions;
+﻿using HB.NETF.Code.Analysis.Models;
+using HB.NETF.Common.Exceptions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Classification;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -6,27 +7,24 @@ using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace HB.NETF.Code.Analysis.Models {
-    public struct IdentifierResult : IEquatable<IdentifierResult>, IComparable<IdentifierResult> {
-        public IdentifierNameSyntax Origin { get; set; }
-        public Location OriginLocation { get; set; }
-        public IdentifierClassification OriginClassification { get; set; }
-        public SyntaxNode Value { get; set; }
-        public Location ValueLocation { get; set; }
-        public IdentifierClassification ValueClassification { get; set; }
+    public readonly struct IdentifierResult : IEquatable<IdentifierResult> {
+        public IdentifierNameSyntax Origin { get; }
+        public Location Location { get; }
+        public IdentifierClassification Classification { get; }
+        public ImmutableArray<IdentifierResultValue> Values { get; }
 
-        public IdentifierResult(IdentifierNameSyntax origin, IdentifierClassification originClassification, SyntaxNode value, IdentifierClassification valueClassification) {
+        public IdentifierResult(IdentifierNameSyntax origin, IdentifierClassification originClassification, ImmutableArray<IdentifierResultValue> values) {
             this.Origin = origin;
-            this.OriginLocation = origin.GetLocation();
-            this.OriginClassification = originClassification;
-            this.Value = value;
-            this.ValueLocation = value.GetLocation();
-            this.ValueClassification = valueClassification;
+            this.Location = origin.GetLocation();
+            this.Classification = originClassification;
+            this.Values = values;
         }
 
         public static bool operator ==(IdentifierResult left, IdentifierResult right) {
@@ -39,30 +37,24 @@ namespace HB.NETF.Code.Analysis.Models {
 
         public override int GetHashCode() {
             int hashCode = -320094465;
-            hashCode = hashCode * -1521134295 + ValueLocation.SourceSpan.GetHashCode();
-            hashCode = hashCode * -1521134295 + ValueLocation.SourceTree.FilePath.GetHashCode();
-            hashCode = hashCode * -1521134295 + OriginLocation.SourceSpan.GetHashCode();
-            hashCode = hashCode * -1521134295 + OriginLocation.SourceTree.FilePath.GetHashCode();
+            foreach (IdentifierResultValue identifierResultValue in Values)
+                hashCode = hashCode * -1521134295 + identifierResultValue.GetHashCode();
+
+            hashCode = hashCode * -1521134295 + Location.SourceSpan.GetHashCode();
+            hashCode = hashCode * -1521134295 + Location.SourceTree.FilePath.GetHashCode();
             return hashCode;
         }
 
         public bool Equals(IdentifierResult other) {
-            return this.OriginLocation.IsInSource
-                && other.OriginLocation.IsInSource
-                && this.OriginLocation.SourceTree.FilePath == other.OriginLocation.SourceTree.FilePath
-                && this.OriginLocation.SourceSpan == other.OriginLocation.SourceSpan
-                && other.ValueLocation.IsInSource
-                && this.ValueLocation.IsInSource
-                && this.ValueLocation.SourceTree.FilePath == other.ValueLocation.SourceTree.FilePath
-                && this.ValueLocation.SourceSpan == other.ValueLocation.SourceSpan;
+            return this.Location.IsInSource
+                && other.Location.IsInSource
+                && this.Location.SourceTree.FilePath == other.Location.SourceTree.FilePath
+                && this.Location.SourceSpan == other.Location.SourceSpan
+                && other.Values.SequenceEqual(other.Values);
         }
 
         public override bool Equals(object obj) {
             return obj is IdentifierResult result && Equals(result);
-        }
-
-        public int CompareTo(IdentifierResult other) {
-            return this.ValueLocation.SourceSpan.CompareTo(other.ValueLocation.SourceSpan);
         }
 
         public static IdentifierClassification MapSymbolKind(SymbolKind symbolKind) {
@@ -86,12 +78,63 @@ namespace HB.NETF.Code.Analysis.Models {
 
             throw new NotSupportedException($"{classification} not supported");
         }
+
+        public static readonly IdentifierResult Default = new IdentifierResult();
+    }
+
+
+    public readonly struct IdentifierResultValue : IEquatable<IdentifierResultValue>, IComparable<IdentifierResultValue> {
+        public SyntaxNode Value { get; }
+        public Location Location { get; }
+        public IdentifierClassification Classification { get; }
+
+        public IdentifierResultValue(SyntaxNode value, IdentifierClassification classification) {
+            this.Value = value;
+            this.Location = value.GetLocation();
+            this.Classification = classification;
+        }
+
+        public static bool operator ==(IdentifierResultValue left, IdentifierResultValue right) {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(IdentifierResultValue left, IdentifierResultValue right) {
+            return !(left == right);
+        }
+
+        public override bool Equals(object obj) {
+            return obj is IdentifierResultValue result && Equals(result);
+        }
+
+        public override int GetHashCode() {
+            int hashCode = -320094465;
+            hashCode = hashCode * -1521134295 + Location.SourceSpan.GetHashCode();
+            hashCode = hashCode * -1521134295 + Location.SourceTree.FilePath.GetHashCode();
+            return hashCode;
+        }
+
+        public bool Equals(IdentifierResultValue other) {
+            return this.Location.IsInSource
+                && other.Location.IsInSource
+                && this.Location.SourceTree.FilePath == other.Location.SourceTree.FilePath
+                && this.Location.SourceSpan == other.Location.SourceSpan;
+        }
+
+        public int CompareTo(IdentifierResultValue other) {
+            return this.Location.SourceSpan.CompareTo(other.Location.SourceSpan);
+        }
+
+        public static readonly IdentifierResult Default = new IdentifierResult();
     }
 
     public enum IdentifierClassification {
+        Undefined,
         Local,
         Parameter,
         Field,
         Property
     }
 }
+
+
+

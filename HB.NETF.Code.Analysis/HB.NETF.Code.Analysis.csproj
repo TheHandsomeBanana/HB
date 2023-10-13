@@ -166,9 +166,9 @@
     <Compile Include="Models\SemanticModelCache.cs" />
     <Compile Include="Exceptions\CodeAnalyserTestException.cs" />
     <Compile Include="Exceptions\CodeAnalyzerException.cs" />
-    <Compile Include="Interface\ISnapshotAnalyser.cs" />
     <Compile Include="Interface\ITypeAnalyser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resolver\LocationResolver.cs" />
     <Compile Include="TestEngine\CodeAnalysisTest.cs" />
     <Compile Include="TestEngine\CodeAnalysisTestEngine.cs" />
     <Compile Include="TestEngine\TestBase.cs" />
@@ -190,6 +190,9 @@
   <ItemGroup>
     <Analyzer Include="..\..\Discord.NET.SupportExtension\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
     <Analyzer Include="..\..\Discord.NET.SupportExtension\packages\Microsoft.CodeAnalysis.Analyzers.3.3.3\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Factory\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
