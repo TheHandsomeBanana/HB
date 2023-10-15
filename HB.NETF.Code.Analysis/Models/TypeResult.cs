@@ -36,6 +36,14 @@ namespace HB.NETF.Code.Analysis.Models {
             return hashCode;
         }
 
+        public override bool Equals(object obj) {
+            return obj is TypeResult result && Equals(result);
+        }
+
+        public override string ToString() {
+            return $"{SyntaxNode} ({Location.SourceTree.FilePath} [{Location.SourceSpan}])";
+        }
+
         public bool Equals(TypeResult other) {
             return this.Location.IsInSource
                 && other.Location.IsInSource
@@ -43,12 +51,10 @@ namespace HB.NETF.Code.Analysis.Models {
                 && this.Location.SourceSpan == other.Location.SourceSpan;
         }
 
-        public override bool Equals(object obj) {
-            return obj is TypeResult && Equals((TypeResult)obj);
-        }
-
         public int CompareTo(TypeResult other) {
             return this.Location.SourceSpan.CompareTo(other.Location.SourceSpan);
         }
+
+
     }
 }

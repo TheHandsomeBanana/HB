@@ -7,22 +7,20 @@ using System.Threading.Tasks;
 
 namespace HB.NETF.Code.Analysis.Interface {
     public interface ICodeAnalyser {
-        SemanticModel SemanticModel { get; }
         /// <summary>
         /// Analyser specific. Returns <see cref="TResult"/> closest to snapshot in most cases. 
         /// </summary>
         /// <param name="syntaxNode"></param>
         /// <returns></returns>
-        Task<TResult> Run<TResult>(SyntaxNode syntaxNode);
+        Task<object> Run(SyntaxNode syntaxNode);
     }
 
-    public interface ICodeAnalyser<TResult> {
-        SemanticModel SemanticModel { get; }
+    public interface ICodeAnalyser<TResult> : ICodeAnalyser {
         /// <summary>
         /// Analyser specific. Returns <see cref="TResult"/> closest to snapshot in most cases. 
         /// </summary>
         /// <param name="syntaxNode"></param>
         /// <returns></returns>
-        Task<TResult> Run(SyntaxNode syntaxNode);
+        new Task<TResult> Run(SyntaxNode syntaxNode);
     }
 }

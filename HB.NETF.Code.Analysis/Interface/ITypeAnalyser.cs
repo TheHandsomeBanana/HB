@@ -15,7 +15,6 @@ namespace HB.NETF.Code.Analysis.Interface {
 
     public interface ITypeAnalyser<out T> : ICodeAnalyser<TypeResult?> {
         Type TypeFilter { get; }
-
         Task<TypeResult?> GetFirstFromSnapshot(SyntaxNode syntaxNode);
         Task<TypeResult[]> GetAll(SyntaxTree syntaxTree);
     }

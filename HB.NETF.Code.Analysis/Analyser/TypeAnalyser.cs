@@ -11,17 +11,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HB.NETF.Code.Analysis.Analyser {
-    public class TypeAnalyser : ITypeAnalyser {
+    public class TypeAnalyser : AnalyserBase, ITypeAnalyser {
         private const int MAXREC = 4;
-
-        public SemanticModel SemanticModel { get; }
         public Type[] TypeFilter { get; } = Array.Empty<Type>();
 
-        public TypeAnalyser(SemanticModel semanticModel) {
-            this.SemanticModel = semanticModel;
+        public TypeAnalyser(Solution solution, Project project, SemanticModel semanticModel) : base(solution, project, semanticModel) {
         }
 
-        public TypeAnalyser(SemanticModel semanticModel, params Type[] filter) : this(semanticModel) {
+        public TypeAnalyser(Solution solution, Project project, SemanticModel semanticModel, params Type[] filter) : this(solution, project, semanticModel) {
             this.TypeFilter = filter;
         }
 
@@ -96,23 +93,28 @@ namespace HB.NETF.Code.Analysis.Analyser {
 
             return new TypeResult(expression, type);
         }
+
+        Task<object> ICodeAnalyser.Run(SyntaxNode syntaxNode) {
+            throw new NotImplementedException();
+        }
     }
 
     public class TypeAnalyser<T> : ITypeAnalyser<T> {
         private TypeAnalyser typeAnalyser;
-
         public SemanticModel SemanticModel { get; }
         public Type TypeFilter { get; }
 
-        public TypeAnalyser(SemanticModel semanticModel) {
+        public TypeAnalyser(Solution solution, Project project, SemanticModel semanticModel) {
             this.TypeFilter = typeof(T);
             this.SemanticModel = semanticModel;
 
-            typeAnalyser = new TypeAnalyser(semanticModel, typeof(T));
+            typeAnalyser = new TypeAnalyser(solution, project, semanticModel, typeof(T));
         }
 
         public async Task<TypeResult?> Run(SyntaxNode syntaxNode) => await GetFirstFromSnapshot(syntaxNode);
         public async Task<TypeResult?> GetFirstFromSnapshot(SyntaxNode syntaxNode) => await typeAnalyser.GetFirstFromSnapshot(syntaxNode);
         public async Task<TypeResult[]> GetAll(SyntaxTree syntaxTree) => await typeAnalyser.GetAll(syntaxTree);
+
+        async Task<object> ICodeAnalyser.Run(SyntaxNode syntaxNode) => await Run(syntaxNode);
     }
 }

@@ -2,90 +2,34 @@
 using HB.NETF.Code.Analysis.Models;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.FindSymbols;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace HB.NETF.Code.Analysis.Analyser {
-    public class IdentifierAnalyser : IIdentifierAnalyser {
-        private readonly Solution solution;
-        private readonly IImmutableSet<Document> documents;
-        public SemanticModel SemanticModel { get; }
-
-        public IdentifierAnalyser(SemanticModel semanticModel, Solution solution, Project project) {
-            this.SemanticModel = semanticModel;
-            this.solution = solution;
-            documents = project.Documents.ToImmutableHashSet();
+    public class IdentifierAnalyser : AnalyserBase, IIdentifierAnalyser {
+        public IdentifierAnalyser(Solution solution, Project project, SemanticModel semanticModel) : base(solution, project, semanticModel) {
         }
 
-        public async Task<IdentifierNameSyntax[]> FindAllIdentifiersFromSnapshot(SyntaxNode syntaxNode) {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IdentifierNameSyntax[]> FindAllIdentifiersFromSnapshot(SyntaxNode syntaxNode, IdentifierClassification classification) {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IdentifierNameSyntax> FindFirstIdentifierFromSnapshot(SyntaxNode syntaxNode) {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IdentifierNameSyntax> FindFirstIdentifierFromSnapshot(SyntaxNode syntaxNode, IdentifierClassification classification) {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IdentifierResult?> GetFromIdentifier(IdentifierNameSyntax identifier) {
-            List<IdentifierResultValue> resultValues = new List<IdentifierResultValue>();
-
-            ISymbol identifierSymbol = SemanticModel.GetSymbolInfo(identifier).Symbol;
-            if (identifierSymbol == null)
-                return null;
-
-            SyntaxReference declarationReference = identifierSymbol.DeclaringSyntaxReferences.FirstOrDefault();
-            if (declarationReference == null)
-                return null;
-
-            SyntaxNode declaration = await declarationReference.GetSyntaxAsync();
-
-            IEnumerable<ReferencedSymbol> references = await SymbolFinder.FindReferencesAsync(identifierSymbol, solution, documents);
-            IEnumerable<Location> referenceLocations = references.SelectMany(l => l.Locations.Select(s => s.Location));
-
-            switch (declaration) {
-                case ParameterSyntax parameter:
-                    resultValues.AddRange(await ResolveParameter(parameter));
-                    break;
-                case PropertyDeclarationSyntax propertyDeclaration:
-                    resultValues.AddRange(await ResolvePropertyDeclaration(propertyDeclaration));
-                    break;
-                case VariableDeclaratorSyntax variableDeclarator:
-                    resultValues.AddRange(await ResolveVariableDeclarator(variableDeclarator));
-                    break;
+        public ImmutableArray<IdentifierResult> FindIdentifiersFromSnapshot(SyntaxNode syntaxNode) {
+            while (syntaxNode != null && !(syntaxNode.Parent is BlockSyntax) && !(syntaxNode.Parent is ClassDeclarationSyntax)) {
+                syntaxNode = syntaxNode.Parent;
             }
+            if (syntaxNode is null)
+                return ImmutableArray<IdentifierResult>.Empty;
 
-            return new IdentifierResult(identifier, IdentifierResult.MapSymbolKind(identifierSymbol.Kind), resultValues.ToImmutableArray());
+            return syntaxNode.DescendantNodes()
+                .OfType<IdentifierNameSyntax>()
+                .Select(e => new IdentifierResult(e, SemanticModel.GetSymbolInfo(e).Symbol?.Kind))
+                .ToImmutableArray();
         }
 
-        public async Task<IdentifierResult?> Run(SyntaxNode syntaxNode) {
-            if (!(syntaxNode is IdentifierNameSyntax identifier))
-                identifier = await FindFirstIdentifierFromSnapshot(syntaxNode);
+        public async Task<ImmutableArray<IdentifierResult>> Run(SyntaxNode syntaxNode) => await Task.Run(() => FindIdentifiersFromSnapshot(syntaxNode));
 
-            return await GetFromIdentifier(identifier);
-        }
-
-        private async Task<IdentifierResultValue[]> ResolveParameter(ParameterSyntax parameter) {
-            throw new NotImplementedException();
-        }
-
-        private async Task<IdentifierResultValue[]> ResolvePropertyDeclaration(PropertyDeclarationSyntax propertyDeclaration) {
-            throw new NotImplementedException();
-        }
-
-        private async Task<IdentifierResultValue[]> ResolveVariableDeclarator(VariableDeclaratorSyntax variableDeclarator) {
-            throw new NotImplementedException();
-        }
+        async Task<object> ICodeAnalyser.Run(SyntaxNode syntaxNode) => await Run(syntaxNode);
     }
 }
