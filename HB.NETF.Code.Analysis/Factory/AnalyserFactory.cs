@@ -1,4 +1,5 @@
 ﻿using HB.NETF.Code.Analysis.Analyser;
+using HB.NETF.Code.Analysis.Exceptions;
 using HB.NETF.Code.Analysis.Interface;
 using HB.NETF.Code.Analysis.Models;
 using Microsoft.CodeAnalysis;
@@ -6,68 +7,97 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace HB.NETF.Code.Analysis.Factory {
     public class AnalyserFactory : IAnalyserFactory {
-        private Dictionary<Type, ICodeAnalyser> analyserContainer = new Dictionary<Type, ICodeAnalyser>();
-        public IReadOnlyDictionary<Type, ICodeAnalyser> AnalyserContainer => analyserContainer;
+        private readonly Dictionary<AnalyserFactoryKey, ICodeAnalyser> analyserContainer = new Dictionary<AnalyserFactoryKey, ICodeAnalyser>();
+        public IReadOnlyDictionary<AnalyserFactoryKey, ICodeAnalyser> AnalyserContainer => analyserContainer;
+        public SemanticModelCache SemanticModelCache { get; set; }
 
-        public ICodeAnalyser CreateAnalyser(Type analyserType, Solution solution, Project project, SemanticModel semanticModel) {
-            if(AnalyserContainer.ContainsKey(analyserType))
-                return analyserContainer[analyserType];
+        public ICodeAnalyser GetOrCreateAnalyser(Type analyserType, Solution solution, Project project, SemanticModel semanticModel) {
+            if (analyserType.IsInterface) {
+                IEnumerable<Type> foundTypes = Assembly.GetExecutingAssembly().GetTypes().Where(e => e.GetInterfaces().Contains(analyserType)); 
+                if(foundTypes.Count() != 1)
+                    throw new CodeAnalyserException($"No precise type found that inherits from {analyserType.Name}");
+
+                analyserType = foundTypes.First();
+            }
+
+            AnalyserFactoryKey key = new AnalyserFactoryKey(analyserType, semanticModel.SyntaxTree.FilePath);
+
+            if (AnalyserContainer.ContainsKey(key))
+                return analyserContainer[key];
 
             ICodeAnalyser analyser = Activator.CreateInstance(analyserType, solution, project, semanticModel) as ICodeAnalyser;
-            analyserContainer.Add(analyserType, analyser);
+            analyserContainer.Add(key, analyser);
             return analyser;
         }
 
-        public ICodeAnalyser CreateAnalyser<TAnalyser>(Solution solution, Project project, SemanticModel semanticModel) {
-            return CreateAnalyser(typeof(TAnalyser), solution, project, semanticModel);
+        public TAnalyser GetOrCreateAnalyser<TAnalyser>(Solution solution, Project project, SemanticModel semanticModel) where TAnalyser : ICodeAnalyser {
+            try {
+                return (TAnalyser)GetOrCreateAnalyser(typeof(TAnalyser), solution, project, semanticModel);
+            }
+            catch {
+                return default;
+            }
         }
 
-        public ICodeAnalyser<TResult> CreateAnalyser<TResult>(Type analyserType, Solution solution, Project project, SemanticModel semanticModel) {
-            return CreateAnalyser(analyserType, solution, project, semanticModel) as ICodeAnalyser<TResult>;
+        public ICodeAnalyser<TResult> GetOrCreateAnalyser<TResult>(Type analyserType, Solution solution, Project project, SemanticModel semanticModel) {
+            return GetOrCreateAnalyser(analyserType, solution, project, semanticModel) as ICodeAnalyser<TResult>;
         }
 
-        public ICodeAnalyser<TResult> CreateAnalyser<TAnalyser, TResult>(Solution solution, Project project, SemanticModel semanticModel) {
-            return CreateAnalyser<TAnalyser>(solution, project, semanticModel) as ICodeAnalyser<TResult>;
+        public void SetSemanticModelCache(IImmutableSet<Document> documents) {
+            SemanticModelCache = new SemanticModelCache(documents);
         }
 
-        public SemanticModelCache CreateSemanticModelCache(IImmutableSet<Document> documents) {
-            return new SemanticModelCache(documents);
+        public ITypeAnalyser GetOrCreateTypeAnalyser(Solution solution, Project project, SemanticModel semanticModel, Type[] typeFilter) {
+            AnalyserFactoryKey key = new AnalyserFactoryKey(typeof(TypeAnalyser), semanticModel.SyntaxTree.FilePath);
+
+            if (AnalyserContainer.ContainsKey(key))
+                return (TypeAnalyser)analyserContainer[key];
+
+            ITypeAnalyser analyser = new TypeAnalyser(solution, project, semanticModel, typeFilter);
+            analyserContainer.Add(key, analyser);
+            return analyser;
         }
 
-        public ITypeAnalyser CreateTypeAnalyser(Solution solution, Project project, SemanticModel semanticModel, Type[] typeFilter) {
-            return new TypeAnalyser(solution, project, semanticModel, typeFilter);
+        public IEnumerable<ICodeAnalyser> GetAnalysers(Type analyserType) {
+            return analyserContainer.Where(e => e.Key.AnalyserType == analyserType).Select(e => e.Value);
         }
 
-        public IIdentifierAnalyser CreateIdentifierAnalyser(Solution solution, Project project, SemanticModel semanticModel) {
-            return new IdentifierAnalyser(solution, project, semanticModel);
+        public IEnumerable<TAnalyser> GetAnalysers<TAnalyser>() where TAnalyser : ICodeAnalyser {
+            return GetAnalysers(typeof(TAnalyser)).Cast<TAnalyser>();
         }
 
-        public IVariableAnalyser CreateVariableAnalyser(Solution solution, Project project, SemanticModel semanticModel) {
-            return new VariableAnalyser(solution, project, semanticModel);
+        public IEnumerable<ICodeAnalyser<TResult>> GetAnalysers<TResult>(Type analyserType) {
+            return GetAnalysers(analyserType).Cast<ICodeAnalyser<TResult>>();
         }
 
-        public ICodeAnalyser GetAnalyser(Type analyserType) {
-            if (!analyserContainer.ContainsKey(analyserType))
+        public IEnumerable<ICodeAnalyser<TResult>> GetAnalysers<TAnalyser, TResult>() where TAnalyser : ICodeAnalyser {
+            return GetAnalysers<TResult>(typeof(TAnalyser));
+        }
+
+        public ICodeAnalyser GetAnalyser(AnalyserFactoryKey key) {
+            if (!analyserContainer.ContainsKey(key))
                 return null;
 
-            return analyserContainer[analyserType];
+            return analyserContainer[key];
         }
 
-        public ICodeAnalyser<TResult> GetAnalyser<TResult>(Type analyserType) {
-            return GetAnalyser(analyserType) as ICodeAnalyser<TResult>;
+        public TAnalyser GetAnalyser<TAnalyser>(string filePath) {
+            try {
+                return (TAnalyser)GetAnalyser(new AnalyserFactoryKey(typeof(TAnalyser), filePath));
+            }
+            catch {
+                return default;
+            }
         }
 
-        public ICodeAnalyser<TResult> GetAnalyser<TAnalyser, TResult>() {
-            return GetAnalyser<TResult>(typeof(TAnalyser));
-        }
-
-        public ICodeAnalyser GetAnalyzer<TAnalyser>() {
-            return GetAnalyser(typeof(TAnalyser));
+        public ICodeAnalyser<TResult> GetAnalyser<TResult>(AnalyserFactoryKey key) {
+            return GetAnalyser(key) as ICodeAnalyser<TResult>;
         }
 
         public void Reset() {

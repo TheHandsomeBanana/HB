@@ -19,6 +19,11 @@ namespace HB.NETF.Code.Analysis.Models {
             }
         }
 
+        public bool TryGet(string filePath, out SemanticModel semanticModel) {
+            semanticModel = Get(filePath);
+            return semanticModel != null;
+        }
+
         public SemanticModel Get(string filePath) {
             if (modelCache.TryGetValue(filePath, out var model)) return model;
 

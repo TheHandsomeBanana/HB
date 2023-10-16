@@ -15,7 +15,7 @@ namespace HB.NETF.Code.Analysis.Analyser {
         private const int MAXREC = 4;
         public Type[] TypeFilter { get; } = Array.Empty<Type>();
 
-        public TypeAnalyser(Solution solution, Project project, SemanticModel semanticModel) : base(solution, project, semanticModel) {
+        internal TypeAnalyser(Solution solution, Project project, SemanticModel semanticModel) : base(solution, project, semanticModel) {
         }
 
         public TypeAnalyser(Solution solution, Project project, SemanticModel semanticModel, params Type[] filter) : this(solution, project, semanticModel) {
@@ -23,7 +23,7 @@ namespace HB.NETF.Code.Analysis.Analyser {
         }
 
         public async Task<TypeResult?> Run(SyntaxNode syntaxNode) => await GetFirstFromSnapshot(syntaxNode);
-
+        async Task<object> ICodeAnalyser.Run(SyntaxNode syntaxNode) => await Run(syntaxNode);
         public async Task<TypeResult?> GetFirstFromSnapshot(SyntaxNode syntaxNode) {
             int i = 0;
             while (!(syntaxNode is ExpressionSyntax) && i < MAXREC) {
@@ -93,20 +93,14 @@ namespace HB.NETF.Code.Analysis.Analyser {
 
             return new TypeResult(expression, type);
         }
-
-        Task<object> ICodeAnalyser.Run(SyntaxNode syntaxNode) {
-            throw new NotImplementedException();
-        }
     }
 
     public class TypeAnalyser<T> : ITypeAnalyser<T> {
-        private TypeAnalyser typeAnalyser;
-        public SemanticModel SemanticModel { get; }
+        private readonly TypeAnalyser typeAnalyser;
         public Type TypeFilter { get; }
 
         public TypeAnalyser(Solution solution, Project project, SemanticModel semanticModel) {
             this.TypeFilter = typeof(T);
-            this.SemanticModel = semanticModel;
 
             typeAnalyser = new TypeAnalyser(solution, project, semanticModel, typeof(T));
         }

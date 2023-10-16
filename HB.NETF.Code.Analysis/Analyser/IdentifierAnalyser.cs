@@ -12,11 +12,11 @@ using System.Xml.Linq;
 
 namespace HB.NETF.Code.Analysis.Analyser {
     public class IdentifierAnalyser : AnalyserBase, IIdentifierAnalyser {
-        public IdentifierAnalyser(Solution solution, Project project, SemanticModel semanticModel) : base(solution, project, semanticModel) {
+        internal IdentifierAnalyser(Solution solution, Project project, SemanticModel semanticModel) : base(solution, project, semanticModel) {
         }
 
         public ImmutableArray<IdentifierResult> FindIdentifiersFromSnapshot(SyntaxNode syntaxNode) {
-            while (syntaxNode != null && !(syntaxNode.Parent is BlockSyntax) && !(syntaxNode.Parent is ClassDeclarationSyntax)) {
+            while (syntaxNode != null && !(syntaxNode.Parent is BlockSyntax) && !(syntaxNode.Parent is TypeDeclarationSyntax)) {
                 syntaxNode = syntaxNode.Parent;
             }
             if (syntaxNode is null)

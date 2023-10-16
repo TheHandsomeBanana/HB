@@ -14,7 +14,7 @@ namespace HB.NETF.Code.Analysis.Analyser {
         protected SemanticModel SemanticModel { get; }
         protected SyntaxTree SyntaxTree { get; }
 
-        public AnalyserBase(Solution solution, Project project, SemanticModel semanticModel) {
+        internal AnalyserBase(Solution solution, Project project, SemanticModel semanticModel) {
             this.Solution = solution;
             this.Project = project;
             this.Documents = project.Documents.ToImmutableHashSet();

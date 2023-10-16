@@ -1,4 +1,6 @@
-﻿using HB.NETF.Common.DependencyInjection;
+﻿using HB.NETF.Code.Analysis.Factory;
+using HB.NETF.Code.Analysis.Interface;
+using HB.NETF.Common.DependencyInjection;
 using HB.NETF.Discord.NET.Toolkit.EntityService;
 using HB.NETF.Discord.NET.Toolkit.EntityService.Cached;
 using HB.NETF.Discord.NET.Toolkit.EntityService.Cached.Handler;
@@ -20,9 +22,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HB.NETF.Package {
+    /// <summary>
+    /// Use for all packages provided by HB. 
+    /// <br>Uses <see cref="DIContainer"/> -> overrides previous dependencies.</br>
+    /// </summary>
     public static class HBPackage {
-        public static IServiceProvider ServiceProvider { get; set; }
-
         public static void PreparePackage() {
             DIBuilder diBuilder = new DIBuilder();
             diBuilder.Services.AddTransient<IStreamHandler, StreamHandler>();
@@ -37,16 +41,11 @@ namespace HB.NETF.Package {
             diBuilder.Services.AddSingleton<ICachedDiscordEntityServiceHandler, CachedDiscordEntityServiceHandler>();
             diBuilder.Services.AddSingleton<IDiscordTokenService, DiscordTokenService>();
             diBuilder.Services.AddSingleton<IMergedDiscordEntityService, MergedDiscordEntityService>();
+            diBuilder.Services.AddSingleton<IAnalyserFactory, AnalyserFactory>();
 
-            ServiceProvider = diBuilder.Services.BuildServiceProvider();
+            DIContainer.BuildServiceProvider(diBuilder);
         }
 
-        public static T GetService<T>() {
-            object service = ServiceProvider?.GetService(typeof(T));
-            if (service == null)
-                return default;
-
-            return (T)service;
-        }
+        public static T GetService<T>() => DIContainer.GetService<T>();
     }
 }
