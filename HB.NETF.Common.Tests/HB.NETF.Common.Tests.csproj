@@ -65,6 +65,10 @@
     <Compile Include="TestBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HB.NETF.Code.Analysis\HB.NETF.Code.Analysis.csproj">
+      <Project>{41c3c462-030e-45c3-8c92-48175905c624}</Project>
+      <Name>HB.NETF.Code.Analysis</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HB.NETF.Common\HB.NETF.Common.csproj">
       <Project>{7a6dd6bd-d679-4ad7-94f6-4ae5189bf75a}</Project>
       <Name>HB.NETF.Common</Name>

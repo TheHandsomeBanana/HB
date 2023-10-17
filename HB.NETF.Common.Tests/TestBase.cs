@@ -1,4 +1,6 @@
-﻿using HB.NETF.Common.DependencyInjection;
+﻿using HB.NETF.Code.Analysis.Factory;
+using HB.NETF.Code.Analysis.Interface;
+using HB.NETF.Common.DependencyInjection;
 using HB.NETF.Services.Data.Handler;
 using HB.NETF.Services.Logging;
 using HB.NETF.Services.Logging.Factory;
@@ -14,12 +16,13 @@ using System.Threading.Tasks;
 namespace HB.NETF.Common.Tests {
     [TestClass]
     public abstract class TestBase {
-        [TestInitialize] 
+        
+        [ClassInitialize(InheritanceBehavior.BeforeEachDerivedClass)]
         public void Init() {
             DIBuilder dIBuilder = new DIBuilder();
-            dIBuilder.Services.AddSingleton<ILoggerFactory>(new LoggerFactory((b) => b.AddTarget(Output)));
-            dIBuilder.Services.AddTransient<IStreamHandler, StreamHandler>();
-            dIBuilder.Services.AddTransient<IDataProtectionService, DataProtectionService>();
+            dIBuilder.Services.AddSingleton<ILoggerFactory>(new LoggerFactory((b) => b.AddTarget(Output)))
+                .AddTransient<IStreamHandler, StreamHandler>()
+                .AddTransient<IDataProtectionService, DataProtectionService>();
             DIContainer.BuildServiceProvider(dIBuilder);
         }
 

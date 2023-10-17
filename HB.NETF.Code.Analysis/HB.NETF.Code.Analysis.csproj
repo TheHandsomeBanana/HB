@@ -177,7 +177,6 @@
     <Compile Include="Resolver\LocationResolver.cs" />
     <Compile Include="TestEngine\CodeAnalysisTest.cs" />
     <Compile Include="TestEngine\CodeAnalysisTestEngine.cs" />
-    <Compile Include="TestEngine\TestBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HB.NETF.Common\HB.NETF.Common.csproj">

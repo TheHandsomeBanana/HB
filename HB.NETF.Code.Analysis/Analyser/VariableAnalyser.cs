@@ -66,7 +66,6 @@ namespace HB.NETF.Code.Analysis.Analyser {
             IEnumerable<Location> locations = await LocationResolver.FindReferenceLocations(identifierSymbol, Solution, Documents);
             IEnumerable<Tuple<VariableAnalyser, IEnumerable<SyntaxNode>>> analyserTuples = LocationResolver.GetAnalyserWithNodesToAnalyse<VariableAnalyser>(locations, Solution, Project, analyserFactory);
 
-            List<VariableResultValue> recAnalyserResult = new List<VariableResultValue>();
             foreach (Tuple<VariableAnalyser, IEnumerable<SyntaxNode>> analyserTuple in analyserTuples) {
                 VariableAnalyser analyser = analyserTuple.Item1;
                 IEnumerable<SyntaxNode> nodes = analyserTuple.Item2;
@@ -75,9 +74,8 @@ namespace HB.NETF.Code.Analysis.Analyser {
                 foreach (SyntaxNode node in nodes)
                     analyserTasks.Add(analyser.ResolveInternal(node));
 
-                recAnalyserResult.AddRange((await Task.WhenAll(analyserTasks)).SelectMany(e => e));
+                resultValues.AddRange((await Task.WhenAll(analyserTasks)).SelectMany(e => e));
             }
-            resultValues.AddRange(recAnalyserResult);
 
             switch (declaration) {
                 case ParameterSyntax parameter:

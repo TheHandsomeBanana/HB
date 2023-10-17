@@ -11,7 +11,7 @@ namespace HB.NETF.Code.Analysis.Models {
         private readonly Dictionary<string, SemanticModel> modelCache = new Dictionary<string, SemanticModel>();
         public SemanticModelCache() { }
 
-        public SemanticModelCache(IImmutableSet<Document> documents) {
+        public SemanticModelCache(IEnumerable<Document> documents) {
             foreach(Document document in documents) {
                 if(document.FilePath != null && document.TryGetSemanticModel(out SemanticModel semanticModel)) {
                     modelCache.Add(document.FilePath, semanticModel);

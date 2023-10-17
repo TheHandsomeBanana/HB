@@ -20,7 +20,9 @@ namespace HB.NETF.Code.Analysis.Interface {
 
         ITypeAnalyser GetOrCreateTypeAnalyser(Solution solution, Project project, SemanticModel semanticModel, Type[] typeFilter);
 
-        void SetSemanticModelCache(IImmutableSet<Document> documents);
+        void SetSemanticModelCache(IEnumerable<Document> documents);
+        void SetSemanticModelCache(Project project);
+        void SetSemanticModelCache(Solution solution);
 
         IEnumerable<ICodeAnalyser> GetAnalysers(Type analyserType);
         IEnumerable<TAnalyser> GetAnalysers<TAnalyser>() where TAnalyser : ICodeAnalyser;

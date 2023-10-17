@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,14 +19,9 @@ namespace HB.NETF.Code.Analysis.Factory {
         public SemanticModelCache SemanticModelCache { get; set; }
 
         public ICodeAnalyser GetOrCreateAnalyser(Type analyserType, Solution solution, Project project, SemanticModel semanticModel) {
-            if (analyserType.IsInterface) {
-                IEnumerable<Type> foundTypes = Assembly.GetExecutingAssembly().GetTypes().Where(e => e.GetInterfaces().Contains(analyserType)); 
-                if(foundTypes.Count() != 1)
-                    throw new CodeAnalyserException($"No precise type found that inherits from {analyserType.Name}");
-
-                analyserType = foundTypes.First();
-            }
-
+            if (analyserType.IsInterface)
+                analyserType = AnalyserTypeMapping.Get(analyserType);
+            
             AnalyserFactoryKey key = new AnalyserFactoryKey(analyserType, semanticModel.SyntaxTree.FilePath);
 
             if (AnalyserContainer.ContainsKey(key))
@@ -49,8 +45,16 @@ namespace HB.NETF.Code.Analysis.Factory {
             return GetOrCreateAnalyser(analyserType, solution, project, semanticModel) as ICodeAnalyser<TResult>;
         }
 
-        public void SetSemanticModelCache(IImmutableSet<Document> documents) {
+        public void SetSemanticModelCache(IEnumerable<Document> documents) {
             SemanticModelCache = new SemanticModelCache(documents);
+        }
+
+        public void SetSemanticModelCache(Project project) {
+            SetSemanticModelCache(project.Documents);
+        }
+
+        public void SetSemanticModelCache(Solution solution) {
+            SetSemanticModelCache(solution.Projects.SelectMany(e => e.Documents));
         }
 
         public ITypeAnalyser GetOrCreateTypeAnalyser(Solution solution, Project project, SemanticModel semanticModel, Type[] typeFilter) {
@@ -102,6 +106,21 @@ namespace HB.NETF.Code.Analysis.Factory {
 
         public void Reset() {
             analyserContainer.Clear();
+        }
+
+        /// <summary>
+        /// Helper class, reflection type loading takes way too much time
+        /// </summary>
+        static class AnalyserTypeMapping {
+            public static Type Get(Type type) {
+                switch(type.Name) {
+                    case nameof(IVariableAnalyser): return typeof(VariableAnalyser);
+                    case nameof(IIdentifierAnalyser): return typeof(IdentifierAnalyser);
+                    case nameof(ITypeAnalyser): return typeof(TypeAnalyser);
+                }
+
+                throw new NotSupportedException($"{nameof(AnalyserTypeMapping)} does not support {type.Name}.");
+            }
         }
     }
 }
