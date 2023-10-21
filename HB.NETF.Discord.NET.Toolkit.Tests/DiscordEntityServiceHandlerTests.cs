@@ -1,12 +1,12 @@
-﻿using HB.NETF.Discord.NET.Toolkit.EntityService.Models;
-using HB.NETF.Discord.NET.Toolkit.EntityService;
+﻿using HB.NETF.Discord.NET.Toolkit.Obsolete.EntityService.Models;
+using HB.NETF.Discord.NET.Toolkit.Obsolete.EntityService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HB.NETF.Discord.NET.Toolkit.EntityService.Handler;
+using HB.NETF.Discord.NET.Toolkit.Obsolete.EntityService.Handler;
 using HB.NETF.Common.Tests;
 
 namespace HB.NETF.Discord.NET.Toolkit.Tests {

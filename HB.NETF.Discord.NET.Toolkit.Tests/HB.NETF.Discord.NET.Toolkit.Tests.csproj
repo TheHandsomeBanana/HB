@@ -58,6 +58,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationServiceTests.cs" />
     <Compile Include="DiscordEntityServiceHandlerTests.cs" />
     <Compile Include="DiscordEntityServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

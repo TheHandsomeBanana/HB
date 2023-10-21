@@ -1,7 +1,7 @@
 ﻿using HB.NETF.Common.Tests;
-using HB.NETF.Discord.NET.Toolkit.EntityService;
-using HB.NETF.Discord.NET.Toolkit.EntityService.Cached;
-using HB.NETF.Discord.NET.Toolkit.EntityService.Models;
+using HB.NETF.Discord.NET.Toolkit.Obsolete.EntityService;
+using HB.NETF.Discord.NET.Toolkit.Obsolete.EntityService.Cached;
+using HB.NETF.Discord.NET.Toolkit.Obsolete.EntityService.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Threading.Tasks;

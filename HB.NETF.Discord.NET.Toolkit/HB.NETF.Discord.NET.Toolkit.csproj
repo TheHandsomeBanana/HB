@@ -102,6 +102,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Application\DiscordApplication.cs" />
+    <Compile Include="Models\Application\DiscordApplicationBot.cs" />
     <Compile Include="Obsolete\EntityService\Cached\CachedDiscordEntityService.cs" />
     <Compile Include="Obsolete\EntityService\Cached\Handler\CachedDiscordEntityServiceHandler.cs" />
     <Compile Include="Obsolete\EntityService\Cached\Handler\ICachedDiscordEntityServiceHandler.cs" />
