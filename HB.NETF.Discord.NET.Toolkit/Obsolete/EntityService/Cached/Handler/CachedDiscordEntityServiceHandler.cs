@@ -1,6 +1,6 @@
 ﻿using HB.NETF.Common.DependencyInjection;
-using HB.NETF.Discord.NET.Toolkit.EntityService.Handler;
-using HB.NETF.Discord.NET.Toolkit.EntityService.Models;
+using HB.NETF.Discord.NET.Toolkit.Obsolete.EntityService.Handler;
+using HB.NETF.Discord.NET.Toolkit.Obsolete.EntityService.Models;
 using HB.NETF.Discord.NET.Toolkit.Exceptions;
 using HB.NETF.Discord.NET.Toolkit.Models.Collections;
 using HB.NETF.Discord.NET.Toolkit.Models.Entities;
@@ -15,7 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HB.NETF.Discord.NET.Toolkit.EntityService.Cached.Handler {
+namespace HB.NETF.Discord.NET.Toolkit.Obsolete.EntityService.Cached.Handler {
     public class CachedDiscordEntityServiceHandler : ICachedDiscordEntityServiceHandler {
         private readonly List<CachedDiscordEntityService> entityServices = new List<CachedDiscordEntityService>();
         private readonly ILogger<CachedDiscordEntityServiceHandler> logger;

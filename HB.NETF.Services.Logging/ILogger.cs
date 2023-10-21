@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace HB.NETF.Services.Logging {
     public interface ILogger {
+        void Log(string message, LogSeverity severity);
         void LogTrace(string message);
         void LogDebug(string message);
         void LogInformation(string message);

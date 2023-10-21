@@ -1,7 +1,7 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using HB.NETF.Common.DependencyInjection;
-using HB.NETF.Discord.NET.Toolkit.EntityService.Models;
+using HB.NETF.Discord.NET.Toolkit.Obsolete.EntityService.Models;
 using HB.NETF.Discord.NET.Toolkit.Exceptions;
 using HB.NETF.Discord.NET.Toolkit.Models.Collections;
 using HB.NETF.Discord.NET.Toolkit.Models.Entities;
@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
-namespace HB.NETF.Discord.NET.Toolkit.EntityService {
+namespace HB.NETF.Discord.NET.Toolkit.Obsolete.EntityService {
     public class DiscordEntityService : IDiscordEntityService {
 
         private readonly ILogger<DiscordEntityService> logger;

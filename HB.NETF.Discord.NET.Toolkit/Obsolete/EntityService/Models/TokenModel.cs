@@ -6,7 +6,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HB.NETF.Discord.NET.Toolkit.EntityService.Models {
+namespace HB.NETF.Discord.NET.Toolkit.Obsolete.EntityService.Models {
     public class TokenModel {
         public string Token { get; set; }
         public string Bot { get; set; }

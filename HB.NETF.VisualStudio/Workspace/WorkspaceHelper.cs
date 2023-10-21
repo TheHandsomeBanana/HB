@@ -18,7 +18,7 @@ namespace HB.NETF.VisualStudio.Workspace {
         }
 
         // Bad according to https://stackoverflow.com/questions/31194968/how-to-register-my-service-as-a-global-service-or-how-can-i-use-mef-in-my-scenar
-        // Use SComponentModel & SVsUIShell and 
+        // Use SComponentModel & SVsUIShell 
         public static IComponentModel GetComponentModel() => (IComponentModel)Package.GetGlobalService(typeof(IComponentModel));
         
         public static IComponentModel GetServiceComponentModel() => (IComponentModel)Package.GetGlobalService(typeof(SComponentModel));

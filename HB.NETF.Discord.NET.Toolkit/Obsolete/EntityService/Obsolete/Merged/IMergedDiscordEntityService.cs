@@ -8,7 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HB.NETF.Discord.NET.Toolkit.EntityService.Merged {
+namespace HB.NETF.Discord.NET.Toolkit.EntityService.Obsolete.Merged {
+    [Obsolete]
     public interface IMergedDiscordEntityService : IStreamManipulator, IDisposable {
         void Init(params string[] tokens);
         void Init(params TokenModel[] tokens);

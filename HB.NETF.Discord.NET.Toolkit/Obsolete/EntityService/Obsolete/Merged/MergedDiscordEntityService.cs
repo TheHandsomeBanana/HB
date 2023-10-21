@@ -15,7 +15,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HB.NETF.Discord.NET.Toolkit.EntityService.Merged {
+namespace HB.NETF.Discord.NET.Toolkit.EntityService.Obsolete.Merged {
+    [Obsolete]
     public class MergedDiscordEntityService : IMergedDiscordEntityService {
         private List<DiscordEntityService> entityServices = new List<DiscordEntityService>();
         private readonly ILogger<MergedDiscordEntityService> logger;

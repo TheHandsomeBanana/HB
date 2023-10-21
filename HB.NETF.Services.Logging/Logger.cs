@@ -26,6 +26,29 @@ namespace HB.NETF.Services.Logging {
             LogTargets = new LogTarget[0];
         }
 
+        public void Log(string message, LogSeverity severity) {
+            switch (severity) {
+                case LogSeverity.Trace:
+                    LogTrace(message);
+                    break;
+                case LogSeverity.Debug:
+                    LogDebug(message);
+                    break;
+                case LogSeverity.Information:
+                    LogInformation(message);
+                    break;
+                case LogSeverity.Warning:
+                    LogWarning(message);
+                    break;
+                case LogSeverity.Error:
+                    LogError(message);
+                    break;
+                case LogSeverity.Critical:
+                    LogCritical(message);
+                    break;
+            }
+        }
+
         public void LogDebug(string message) {
             LogInternal(new LogStatement(GetCategory(), message, LogSeverity.Debug, GetCurrentTime()));
         }

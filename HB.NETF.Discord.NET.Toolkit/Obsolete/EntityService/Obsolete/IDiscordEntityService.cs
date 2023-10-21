@@ -1,4 +1,5 @@
 ﻿using HB.NETF.Discord.NET.Toolkit.EntityService.Models;
+using HB.NETF.Discord.NET.Toolkit.Models.Collections;
 using HB.NETF.Discord.NET.Toolkit.Models.Entities;
 using System;
 using System.Collections.Generic;
@@ -6,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HB.NETF.Discord.NET.Toolkit.EntityService.Handler {
-    public interface IDiscordEntityServiceHandler : IDisposable {
-        void Init(params TokenModel[] tokens);
+namespace HB.NETF.Discord.NET.Toolkit.EntityService.Obsolete {
+    [Obsolete]
+    public interface IDiscordEntityService : IDisposable {        
         Task ConnectAsync();
         Task PullEntitiesAsync();
         Task DisconnectAsync();

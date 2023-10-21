@@ -13,7 +13,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HB.NETF.Discord.NET.Toolkit.EntityService.Handler {
+namespace HB.NETF.Discord.NET.Toolkit.EntityService.Obsolete.Handler {
+    [Obsolete]
     public class DiscordEntityServiceHandler : IDiscordEntityServiceHandler {
         private ILogger<DiscordEntityServiceHandler> logger;
         private List<DiscordEntityService> entityServices = new List<DiscordEntityService>();

@@ -1,4 +1,4 @@
-﻿using HB.NETF.Discord.NET.Toolkit.EntityService.Models;
+﻿using HB.NETF.Discord.NET.Toolkit.Obsolete.EntityService.Models;
 using HB.NETF.Discord.NET.Toolkit.Models.Entities;
 using HB.NETF.Services.Data.Handler;
 using HB.NETF.Services.Data.Handler.Async;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HB.NETF.Discord.NET.Toolkit.EntityService.Cached {
+namespace HB.NETF.Discord.NET.Toolkit.Obsolete.EntityService.Cached {
     public interface ICachedDiscordEntityService : IStreamManipulator, IDisposable {
         Task Refresh();
         Task<DiscordServer[]> GetServers();

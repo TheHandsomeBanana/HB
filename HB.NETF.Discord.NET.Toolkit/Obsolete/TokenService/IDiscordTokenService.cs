@@ -1,4 +1,4 @@
-﻿using HB.NETF.Discord.NET.Toolkit.EntityService.Models;
+﻿using HB.NETF.Discord.NET.Toolkit.Obsolete.EntityService.Models;
 using HB.NETF.Services.Data.Handler;
 using HB.NETF.Services.Data.Handler.Manipulator;
 using HB.NETF.Services.Security.Cryptography.Keys;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HB.NETF.Discord.NET.Toolkit.TokenService {
+namespace HB.NETF.Discord.NET.Toolkit.Obsolete.TokenService {
     public interface IDiscordTokenService : IStreamManipulator {
         string EncryptToken(string token, EncryptionMode encryptionMode, IKey key = null);
         string DecryptToken(string token, EncryptionMode encryptionMode, IKey key = null);
