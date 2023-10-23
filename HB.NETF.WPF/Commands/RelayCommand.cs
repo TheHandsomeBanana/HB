@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HB.NETF.WPF.Base.CommandBase {
-    public class AsyncRelayCommand : AsyncCommandBase {
-        private readonly Func<Task> callback;
-        private readonly Predicate<object> canExecute;
-        public AsyncRelayCommand(Func<Task> callback, Predicate<object> canExecute, Action<Exception> onException) : base(onException) {
+namespace HB.NETF.WPF.Commands {
+    public class RelayCommand : CommandBase {
+        private Action<object> callback;
+        private Predicate<object> canExecute;
+
+        public RelayCommand(Action<object> callback, Predicate<object> canExecute) {
             this.callback = callback ?? throw new ArgumentNullException(nameof(callback));
             this.canExecute = canExecute;
         }
@@ -17,8 +19,8 @@ namespace HB.NETF.WPF.Base.CommandBase {
             return canExecute != null ? canExecute(parameter) && base.CanExecute(parameter) : base.CanExecute(parameter);
         }
 
-        protected override async Task ExecuteAsync(object parameter) => await callback(); 
-        
-        
+        public override void Execute(object parameter) {
+            callback(parameter);
+        }
     }
 }

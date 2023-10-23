@@ -44,15 +44,17 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\CommandBase\AsyncCommandBase.cs" />
-    <Compile Include="Base\CommandBase\AsyncRelayCommand.cs" />
-    <Compile Include="Base\CommandBase\CommandBase.cs" />
-    <Compile Include="Base\CommandBase\RelayCommand.cs" />
-    <Compile Include="Base\ViewModelBase\ICloseableWindow.cs" />
-    <Compile Include="Base\ViewModelBase\ViewModelBase.cs" />
-    <Compile Include="Base\ViewModelBase\WindowCloser.cs" />
+    <Compile Include="Commands\AsyncCommandBase.cs" />
+    <Compile Include="Commands\AsyncRelayCommand.cs" />
+    <Compile Include="Commands\CommandBase.cs" />
+    <Compile Include="Commands\Navigation\NavigationCommand.cs" />
+    <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Exceptions\CommandException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Stores\NavigationStore.cs" />
+    <Compile Include="ViewModels\ICloseableWindow.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="ViewModels\WindowCloser.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HB.NETF.Common\HB.NETF.Common.csproj">
@@ -62,6 +64,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="CustomControls\" />
+    <Folder Include="Views\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

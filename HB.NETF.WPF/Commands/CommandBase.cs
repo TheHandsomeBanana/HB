@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace HB.NETF.WPF.Base.CommandBase {
+namespace HB.NETF.WPF.Commands {
     public abstract class CommandBase : ICommand {
         public event EventHandler CanExecuteChanged;
 

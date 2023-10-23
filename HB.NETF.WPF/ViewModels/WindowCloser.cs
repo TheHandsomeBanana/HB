@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace HB.NETF.WPF.Base.ViewModelBase {
+namespace HB.NETF.WPF.ViewModels {
     public class WindowCloser {
 
 
