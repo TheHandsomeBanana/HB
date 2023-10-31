@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HB.NETF.WPF.Stores {
+namespace HB.NETF.WPF.Navigation {
     public class NavigationStore {
         private ViewModelBase currentViewModel;
         public ViewModelBase CurrentViewModel {
