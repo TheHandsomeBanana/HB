@@ -1,12 +1,6 @@
 ﻿using HB.NETF.Code.Analysis.Factory;
 using HB.NETF.Code.Analysis.Interface;
 using HB.NETF.Common.DependencyInjection;
-using HB.NETF.Discord.NET.Toolkit.EntityService;
-using HB.NETF.Discord.NET.Toolkit.EntityService.Cached;
-using HB.NETF.Discord.NET.Toolkit.EntityService.Cached.Handler;
-using HB.NETF.Discord.NET.Toolkit.EntityService.Handler;
-using HB.NETF.Discord.NET.Toolkit.EntityService.Merged;
-using HB.NETF.Discord.NET.Toolkit.TokenService;
 using HB.NETF.Services.Data.Handler;
 using HB.NETF.Services.Data.Handler.Async;
 using HB.NETF.Services.Data.Identifier;
@@ -35,12 +29,6 @@ namespace HB.NETF.Package {
             diBuilder.Services.AddTransient<IAesCryptoService, AesCryptoService>();
             diBuilder.Services.AddTransient<IRsaCryptoService, RsaCryptoService>();
             diBuilder.Services.AddTransient<IDataProtectionService, DataProtectionService>();
-            diBuilder.Services.AddSingleton<IDiscordEntityService, DiscordEntityService>();
-            diBuilder.Services.AddSingleton<ICachedDiscordEntityService, CachedDiscordEntityService>();
-            diBuilder.Services.AddSingleton<IDiscordEntityServiceHandler, DiscordEntityServiceHandler>();
-            diBuilder.Services.AddSingleton<ICachedDiscordEntityServiceHandler, CachedDiscordEntityServiceHandler>();
-            diBuilder.Services.AddSingleton<IDiscordTokenService, DiscordTokenService>();
-            diBuilder.Services.AddSingleton<IMergedDiscordEntityService, MergedDiscordEntityService>();
             diBuilder.Services.AddSingleton<IAnalyserFactory, AnalyserFactory>();
 
             DIContainer.BuildServiceProvider(diBuilder);
