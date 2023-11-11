@@ -104,17 +104,6 @@
   <ItemGroup>
     <Compile Include="Models\Application\DiscordApplication.cs" />
     <Compile Include="Models\Application\DiscordApplicationBot.cs" />
-    <Compile Include="Obsolete\EntityService\Cached\CachedDiscordEntityService.cs" />
-    <Compile Include="Obsolete\EntityService\Cached\Handler\CachedDiscordEntityServiceHandler.cs" />
-    <Compile Include="Obsolete\EntityService\Cached\Handler\ICachedDiscordEntityServiceHandler.cs" />
-    <Compile Include="Obsolete\EntityService\Cached\ICachedDiscordEntityService.cs" />
-    <Compile Include="Obsolete\EntityService\DiscordEntityService.cs" />
-    <Compile Include="Obsolete\EntityService\Merged\IMergedDiscordEntityService.cs" />
-    <Compile Include="Obsolete\EntityService\Merged\MergedDiscordEntityService.cs" />
-    <Compile Include="Obsolete\EntityService\Handler\DiscordEntityServiceHandler.cs" />
-    <Compile Include="Obsolete\EntityService\IDiscordEntityService.cs" />
-    <Compile Include="Obsolete\EntityService\Handler\IDiscordEntityServiceHandler.cs" />
-    <Compile Include="Obsolete\EntityService\Models\TokenModel.cs" />
     <Compile Include="DiscordEnvironment.cs" />
     <Compile Include="Exceptions\DiscordEntityServiceException.cs" />
     <Compile Include="Exceptions\TokenNotFoundException.cs" />
@@ -129,9 +118,8 @@
     <Compile Include="Services\ApplicationService\IDiscordApplicationService.cs" />
     <Compile Include="Services\EntityService\DiscordEntityService.cs" />
     <Compile Include="Services\EntityService\IDiscordEntityService.cs" />
-    <Compile Include="SupportExtension\ServerIdListAttribute.cs" />
-    <Compile Include="Obsolete\TokenService\DiscordTokenService.cs" />
-    <Compile Include="Obsolete\TokenService\IDiscordTokenService.cs" />
+    <Compile Include="Services\TokenService\DiscordTokenService.cs" />
+    <Compile Include="Services\TokenService\IDiscordTokenService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

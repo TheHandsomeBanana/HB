@@ -17,6 +17,7 @@ namespace HB.NETF.Discord.NET.Toolkit.Services.EntityService {
         DiscordUser[] GetUsers(ulong serverId);
         DiscordRole[] GetRoles(ulong serverId);
         DiscordChannel[] GetChannels(ulong serverId);
+        DiscordChannel[] GetChannels(ulong serverId, DiscordChannelType? channelType);
         DiscordEntity GetEntity(ulong entityId);
     }
 }

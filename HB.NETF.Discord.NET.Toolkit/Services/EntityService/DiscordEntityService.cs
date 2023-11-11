@@ -36,11 +36,19 @@ namespace HB.NETF.Discord.NET.Toolkit.Services.EntityService {
             this.token = token;
         }
 
+        private bool operationDone = false;
         public async Task LoadEntities() {
             client.Ready += Client_Ready;
             client.Log += Client_Log;
             await client.LoginAsync(TokenType.Bot, token);
             await client.StartAsync();
+
+            Stopwatch sw = Stopwatch.StartNew();
+            while (!operationDone && sw.ElapsedMilliseconds < 10000) { } // Wait for connection
+            sw.Stop();
+
+            if (!operationDone)
+                logger.LogError($"Operation timed out.");
         }
 
         public async Task<bool> ReadFromFile(string fileName) {
@@ -61,6 +69,7 @@ namespace HB.NETF.Discord.NET.Toolkit.Services.EntityService {
         public DiscordUser[] GetUsers(ulong serverId) => ServerCollection.GetUsers(serverId);
         public DiscordRole[] GetRoles(ulong serverId) => ServerCollection.GetRoles(serverId);
         public DiscordChannel[] GetChannels(ulong serverId) => ServerCollection.GetChannels(serverId);
+        public DiscordChannel[] GetChannels(ulong serverId, DiscordChannelType? channelType) => ServerCollection.GetChannels(serverId, channelType);
 
         private OptionBuilderFunc optionBuilder;
         public void ManipulateStream(OptionBuilderFunc optionBuilder) {
@@ -81,6 +90,7 @@ namespace HB.NETF.Discord.NET.Toolkit.Services.EntityService {
         }
 
         private async Task Client_Ready() {
+
             List<DiscordServer> servers = new List<DiscordServer>();
             foreach (var server in client.Guilds) {
                 servers.Add(new DiscordServer() {
@@ -97,6 +107,7 @@ namespace HB.NETF.Discord.NET.Toolkit.Services.EntityService {
 
             await client.StopAsync();
             await client.LogoutAsync();
+            operationDone = true;
         }
 
         #region Helper 
