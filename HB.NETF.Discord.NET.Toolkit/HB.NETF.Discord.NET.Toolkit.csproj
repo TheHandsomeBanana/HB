@@ -128,7 +128,6 @@
     <Compile Include="Services\ApplicationService\DiscordApplicationService.cs" />
     <Compile Include="Services\ApplicationService\IDiscordApplicationService.cs" />
     <Compile Include="Services\EntityService\DiscordEntityService.cs" />
-    <Compile Include="Services\EntityService\DiscordEntityServiceWrapper.cs" />
     <Compile Include="Services\EntityService\IDiscordEntityService.cs" />
     <Compile Include="SupportExtension\ServerIdListAttribute.cs" />
     <Compile Include="Obsolete\TokenService\DiscordTokenService.cs" />

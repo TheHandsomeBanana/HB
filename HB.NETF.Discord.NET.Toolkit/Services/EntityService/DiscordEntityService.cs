@@ -32,11 +32,8 @@ namespace HB.NETF.Discord.NET.Toolkit.Services.EntityService {
             this.streamHandler = DIContainer.GetService<IAsyncStreamHandler>();
         }
 
-        public void Init(params string[] token) {
-            if (token.Length != 1)
-                throw new DiscordEntityServiceException("Only one token is valid.");
-
-            this.token = token.First();
+        public void Init(string token) {
+            this.token = token;
         }
 
         public async Task LoadEntities() {

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HB.NETF.Discord.NET.Toolkit.Services.EntityService {
     public interface IDiscordEntityService : IStreamManipulator, IDisposable, IAsyncDisposable {
-        void Init(params string[] tokens);
+        void Init(string token);
         Task LoadEntities();
         Task SaveToFile(string fileName);
         Task<bool> ReadFromFile(string fileName);
