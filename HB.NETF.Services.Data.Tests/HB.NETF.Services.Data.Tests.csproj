@@ -61,6 +61,10 @@
       <Project>{175A2AFE-E272-4653-90B8-1BFAF17F9464}</Project>
       <Name>HB.NETF.Common.Tests</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HB.NETF.Common\HB.NETF.Common.csproj">
+      <Project>{7A6DD6BD-D679-4AD7-94F6-4AE5189BF75A}</Project>
+      <Name>HB.NETF.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HB.NETF.Services.Data\HB.NETF.Services.Data.csproj">
       <Project>{029481CE-57E0-4C7F-AA97-871D3F4C0F07}</Project>
       <Name>HB.NETF.Services.Data</Name>

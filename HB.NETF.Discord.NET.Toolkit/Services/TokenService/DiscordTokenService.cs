@@ -15,18 +15,14 @@ using System.Threading.Tasks;
 namespace HB.NETF.Discord.NET.Toolkit.Services.TokenService {
     public class DiscordTokenService : IDiscordTokenService {
 
-        private readonly IStreamHandler streamHandler;
         private readonly ISerializerService serializerService;
         private readonly IAesCryptoService aesCryptoService;
-        private readonly IRsaCryptoService rsaCryptoService;
         private readonly IDataProtectionService dataProtectionService;
 
-        public DiscordTokenService() {
-            streamHandler = DIContainer.GetService<IStreamHandler>();
-            aesCryptoService = DIContainer.GetService<IAesCryptoService>();
-            rsaCryptoService = DIContainer.GetService<IRsaCryptoService>();
-            dataProtectionService = DIContainer.GetService<IDataProtectionService>();
-            serializerService = DIContainer.GetService<ISerializerService>();
+        public DiscordTokenService(IAesCryptoService aesCryptoService, IDataProtectionService dataProtectionService, ISerializerService serializerService) {
+            this.serializerService = serializerService;
+            this.aesCryptoService = aesCryptoService;
+            this.dataProtectionService = dataProtectionService;
         }
 
         public string EncryptToken(string token, EncryptionMode encryptionMode, IKey key = null) {
