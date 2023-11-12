@@ -39,7 +39,7 @@ namespace HB.NETF.Services.Data.Handler.Async {
         public async Task WriteToFileAsync<T>(string filePath, T content) {
             await Invoke(async () => {
 
-                string sContent = JsonConvert.SerializeObject(content);
+                string sContent = JsonConvert.SerializeObject(content, Formatting.Indented);
                 byte[] buffer = GlobalEnvironment.Encoding.GetBytes(sContent);
                 await WriteInternal(filePath, buffer);
             });
@@ -110,7 +110,7 @@ namespace HB.NETF.Services.Data.Handler.Async {
 
         public async Task WriteStreamAsync<T>(T content) {
             await Invoke(async () => {
-                string sContent = JsonConvert.SerializeObject(content);
+                string sContent = JsonConvert.SerializeObject(content, Formatting.Indented);
                 byte[] buffer = GlobalEnvironment.Encoding.GetBytes(sContent);
                 await WriteStreamInternal(buffer);
             });

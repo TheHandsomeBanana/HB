@@ -1,7 +1,6 @@
-﻿using HB.NETF.Common.Tests;
-using HB.NETF.Discord.NET.Toolkit.Obsolete.EntityService;
-using HB.NETF.Discord.NET.Toolkit.Obsolete.EntityService.Cached;
-using HB.NETF.Discord.NET.Toolkit.Obsolete.EntityService.Models;
+﻿using HB.NETF.Common.DependencyInjection;
+using HB.NETF.Common.Tests;
+using HB.NETF.Discord.NET.Toolkit.Services.EntityService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Threading.Tasks;
@@ -10,19 +9,13 @@ namespace HB.NETF.Discord.NET.Toolkit.Tests {
     [TestClass]
     public class DiscordEntityServiceTests : TestBase {
 
-        //[TestMethod]
+        [TestMethod]
         public async Task DiscordEntityServiceTest() {
-            TokenModel token = new TokenModel("Testbot", "");
-            DiscordEntityService entityService = new DiscordEntityService(token);
-            await entityService.ConnectAsync();
-            await entityService.PullEntitiesAsync();
-        }
 
-        //[TestMethod]
-        public async Task CachedDiscordEntityServiceTest() {
-            TokenModel token = new TokenModel("Testbot", "");
-            CachedDiscordEntityService cachedEntityService = new CachedDiscordEntityService(token);
-            await cachedEntityService.Refresh();
+            IDiscordEntityService entityService = DIContainer.GetService<IDiscordEntityService>();
+            entityService.Init("OTQ4NjcyNzU0MjcyNTgzNzIx.Gdn4wJ.C_zwRc3XgJ0RqIMpu6Kndepdd0c1fMPG1ZaJps");
+
+            await entityService.LoadEntities();
         }
     }
 }

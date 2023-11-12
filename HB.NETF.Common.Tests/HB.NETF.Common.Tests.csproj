@@ -73,6 +73,10 @@
       <Project>{7a6dd6bd-d679-4ad7-94f6-4ae5189bf75a}</Project>
       <Name>HB.NETF.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HB.NETF.Discord.NET.Toolkit\HB.NETF.Discord.NET.Toolkit.csproj">
+      <Project>{35CFC0BF-8442-43CC-9F30-695E19532AEE}</Project>
+      <Name>HB.NETF.Discord.NET.Toolkit</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HB.NETF.Services.Data\HB.NETF.Services.Data.csproj">
       <Project>{029481CE-57E0-4C7F-AA97-871D3F4C0F07}</Project>
       <Name>HB.NETF.Services.Data</Name>

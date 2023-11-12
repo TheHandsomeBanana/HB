@@ -59,7 +59,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationServiceTests.cs" />
-    <Compile Include="DiscordEntityServiceHandlerTests.cs" />
     <Compile Include="DiscordEntityServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -72,9 +71,17 @@
       <Project>{175a2afe-e272-4653-90b8-1bfaf17f9464}</Project>
       <Name>HB.NETF.Common.Tests</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HB.NETF.Common\HB.NETF.Common.csproj">
+      <Project>{7A6DD6BD-D679-4AD7-94F6-4AE5189BF75A}</Project>
+      <Name>HB.NETF.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HB.NETF.Discord.NET.Toolkit\HB.NETF.Discord.NET.Toolkit.csproj">
       <Project>{35CFC0BF-8442-43CC-9F30-695E19532AEE}</Project>
       <Name>HB.NETF.Discord.NET.Toolkit</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HB.NETF.Services.Data\HB.NETF.Services.Data.csproj">
+      <Project>{029481CE-57E0-4C7F-AA97-871D3F4C0F07}</Project>
+      <Name>HB.NETF.Services.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

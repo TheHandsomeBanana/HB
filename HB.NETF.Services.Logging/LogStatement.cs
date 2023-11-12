@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HB.NETF.Services.Logging {
-    public struct LogStatement {
+    public readonly struct LogStatement {
         public string BoundTypeName { get; }
         public string Message { get; }
         public LogSeverity Severity { get; }
@@ -19,7 +19,7 @@ namespace HB.NETF.Services.Logging {
         }
 
         public override string ToString() {
-            return $"[{BoundTypeName}] [{Timestamp.ToString("dd:MM:yyyy HH:mm:ss")}] [{Severity}]: {Message}";
+            return $"[{BoundTypeName}] [{Timestamp.ToString("dd.MM.yyyy HH:mm:ss")}] [{Severity}]: {Message}";
         }
     }
 

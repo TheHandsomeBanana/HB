@@ -1,7 +1,9 @@
 ﻿using HB.NETF.Code.Analysis.Factory;
 using HB.NETF.Code.Analysis.Interface;
 using HB.NETF.Common.DependencyInjection;
+using HB.NETF.Discord.NET.Toolkit.Services.EntityService;
 using HB.NETF.Services.Data.Handler;
+using HB.NETF.Services.Data.Handler.Async;
 using HB.NETF.Services.Logging;
 using HB.NETF.Services.Logging.Factory;
 using HB.NETF.Services.Security.DataProtection;
@@ -18,15 +20,17 @@ namespace HB.NETF.Common.Tests {
     public abstract class TestBase {
         
         [ClassInitialize(InheritanceBehavior.BeforeEachDerivedClass)]
-        public void Init() {
+        public static void Initialize(TestContext context) {
             DIBuilder dIBuilder = new DIBuilder();
             dIBuilder.Services.AddSingleton<ILoggerFactory>(new LoggerFactory((b) => b.AddTarget(Output)))
                 .AddTransient<IStreamHandler, StreamHandler>()
+                .AddTransient<IAsyncStreamHandler, AsyncStreamHandler>()
+                .AddSingleton<IDiscordEntityService, DiscordEntityService>()
                 .AddTransient<IDataProtectionService, DataProtectionService>();
             DIContainer.BuildServiceProvider(dIBuilder);
         }
 
-        public void Output(LogStatement log) {
+        public static void Output(LogStatement log) {
             Console.WriteLine(log.ToString());
         }
     }

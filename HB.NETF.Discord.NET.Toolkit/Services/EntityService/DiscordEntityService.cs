@@ -6,6 +6,8 @@ using HB.NETF.Discord.NET.Toolkit.Models.Collections;
 using HB.NETF.Discord.NET.Toolkit.Models.Entities;
 using HB.NETF.Services.Data.Handler;
 using HB.NETF.Services.Data.Handler.Async;
+using HB.NETF.Services.Logging;
+using HB.NETF.Services.Logging.Factory;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -24,74 +26,39 @@ namespace HB.NETF.Discord.NET.Toolkit.Services.EntityService {
         });
 
         private readonly IAsyncStreamHandler streamHandler;
-        private readonly NETF.Services.Logging.ILogger<DiscordEntityService> logger;
-        private string token;
+        private readonly ILogger<DiscordEntityService> logger;
         
         public DiscordServerCollection ServerCollection { get; private set; } = new DiscordServerCollection();
-        public DiscordEntityService() {
-            this.logger = DIContainer.GetService<NETF.Services.Logging.Factory.ILoggerFactory>().GetOrCreateLogger<DiscordEntityService>();
-            this.streamHandler = DIContainer.GetService<IAsyncStreamHandler>();
+        public DiscordEntityService(ILoggerFactory loggerFactory, IAsyncStreamHandler streamHandler) {
+            this.logger = loggerFactory.GetOrCreateLogger<DiscordEntityService>();
+            this.streamHandler = streamHandler;
         }
 
-        public void Init(string token) {
-            this.token = token;
-        }
+        public event ConnectionTimeout OnTimeout;
+        public bool Ready { get; private set; }
+        public int Timeout { get; set; } = 10000;
 
-        private bool operationDone = false;
-        public async Task LoadEntities() {
+        public async Task Connect(string token) {
             client.Ready += Client_Ready;
-            client.Log += Client_Log;
             await client.LoginAsync(TokenType.Bot, token);
             await client.StartAsync();
+            logger.LogInformation("Connecting.");
 
             Stopwatch sw = Stopwatch.StartNew();
-            while (!operationDone && sw.ElapsedMilliseconds < 10000) { } // Wait for connection
+            while(sw.ElapsedMilliseconds < Timeout && !Ready) { } // Wait for connection to establish
+            if (!Ready)
+                OnTimeout.Invoke();
+
             sw.Stop();
-
-            if (!operationDone)
-                logger.LogError($"Operation timed out.");
         }
 
-        public async Task<bool> ReadFromFile(string fileName) {
-            bool fileExists = File.Exists(fileName);
-            if (fileExists)
-                ServerCollection = await Task.Run(() => streamHandler.WithOptions(optionBuilder).ReadFromFile<DiscordServerCollection>(fileName));
+        public async Task LoadEntities() {
+            if (!Ready) {
+                logger.LogError("Cannot load entities, connection timed out.");
+                return;
+            }
 
-            return fileExists;
-        }
-
-        public async Task SaveToFile(string fileName) {
-            await Task.Run(() => streamHandler.WithOptions(optionBuilder).WriteToFile<DiscordServerCollection>(fileName, ServerCollection));
-        }
-
-
-        public DiscordEntity GetEntity(ulong entityId) => ServerCollection.GetEntity(entityId);
-        public DiscordServer[] GetServers() => ServerCollection.GetServers();
-        public DiscordUser[] GetUsers(ulong serverId) => ServerCollection.GetUsers(serverId);
-        public DiscordRole[] GetRoles(ulong serverId) => ServerCollection.GetRoles(serverId);
-        public DiscordChannel[] GetChannels(ulong serverId) => ServerCollection.GetChannels(serverId);
-        public DiscordChannel[] GetChannels(ulong serverId, DiscordChannelType? channelType) => ServerCollection.GetChannels(serverId, channelType);
-
-        private OptionBuilderFunc optionBuilder;
-        public void ManipulateStream(OptionBuilderFunc optionBuilder) {
-            this.optionBuilder = optionBuilder;
-        }
-
-        public void Dispose() {
-            this.client.Dispose();
-        }
-
-        public async ValueTask DisposeAsync() {
-            await this.client.DisposeAsync();
-        }
-
-        private Task Client_Log(LogMessage message) {
-            logger.Log(message.Message, MapSeverity(message.Severity));
-            return Task.CompletedTask;
-        }
-
-        private async Task Client_Ready() {
-
+            logger.LogInformation("Connected.");
             List<DiscordServer> servers = new List<DiscordServer>();
             foreach (var server in client.Guilds) {
                 servers.Add(new DiscordServer() {
@@ -105,10 +72,55 @@ namespace HB.NETF.Discord.NET.Toolkit.Services.EntityService {
 
             logger.LogInformation($"{servers.Count} servers data downloaded from Discord API.");
             ServerCollection = new DiscordServerCollection(servers);
+        }
+
+        public async Task Disconnect() {
+            if (!Ready) {
+                logger.LogError("Cannot disconnect, connection timed out.");
+                return;
+            }
 
             await client.StopAsync();
             await client.LogoutAsync();
-            operationDone = true;
+            logger.LogInformation("Disconnected.");
+        }
+
+
+        public async Task<bool> ReadFromFile(string fileName) {
+            bool fileExists = File.Exists(fileName);
+            if (fileExists)
+                ServerCollection = await Task.Run(() => streamHandler.WithOptions(optionBuilder).ReadFromFile<DiscordServerCollection>(fileName));
+
+            return fileExists;
+        }
+        public async Task SaveToFile(string fileName) {
+            await Task.Run(() => streamHandler.WithOptions(optionBuilder).WriteToFile<DiscordServerCollection>(fileName, ServerCollection));
+        }
+
+        public DiscordEntity GetEntity(ulong entityId) => ServerCollection.GetEntity(entityId);
+        public DiscordServer[] GetServers() => ServerCollection.GetServers();
+        public DiscordUser[] GetUsers(ulong serverId) => ServerCollection.GetUsers(serverId);
+        public DiscordRole[] GetRoles(ulong serverId) => ServerCollection.GetRoles(serverId);
+        public DiscordChannel[] GetChannels(ulong serverId) => ServerCollection.GetChannels(serverId);
+        public DiscordChannel[] GetChannels(ulong serverId, DiscordChannelType? channelType) => ServerCollection.GetChannels(serverId, channelType);
+
+        private OptionBuilderFunc optionBuilder;
+
+        public void ManipulateStream(OptionBuilderFunc optionBuilder) {
+            this.optionBuilder = optionBuilder;
+        }
+
+        public void Dispose() {
+            this.client.Dispose();
+        }
+
+        public async ValueTask DisposeAsync() {
+            await this.client.DisposeAsync();
+        }
+
+        private Task Client_Ready() {
+            Ready = true;
+            return Task.CompletedTask;
         }
 
         #region Helper 
@@ -147,22 +159,6 @@ namespace HB.NETF.Discord.NET.Toolkit.Services.EntityService {
             return null;
         }
 
-        private HB.NETF.Services.Logging.LogSeverity MapSeverity(LogSeverity severity) {
-            switch (severity) {
-                case LogSeverity.Debug:
-                    return NETF.Services.Logging.LogSeverity.Debug;
-                case LogSeverity.Info:
-                    return NETF.Services.Logging.LogSeverity.Information;
-                case LogSeverity.Warning:
-                    return NETF.Services.Logging.LogSeverity.Warning;
-                case LogSeverity.Error:
-                    return NETF.Services.Logging.LogSeverity.Error;
-                case LogSeverity.Critical:
-                    return NETF.Services.Logging.LogSeverity.Critical;
-                default:
-                    return NETF.Services.Logging.LogSeverity.Trace;
-            }
-        }
         #endregion
 
     }
