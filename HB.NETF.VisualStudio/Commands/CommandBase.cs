@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.Shell;
 
 
-namespace HB.NETF.WPF.Base.CommandBase {
+namespace HB.NETF.VisualStudio.Commands {
     public abstract class CommandBase {
         protected AsyncPackage Package { get; }
-        protected abstract Guid CommandSet { get; set; }
-        protected abstract int CommandId { get; set; }
+        protected abstract Guid CommandSet { get; }
+        protected abstract int CommandId { get; }
 
         protected CommandBase(AsyncPackage package, OleMenuCommandService commandService) {
             this.Package = package ?? throw new ArgumentNullException(nameof(package)); ;
@@ -19,12 +19,12 @@ namespace HB.NETF.WPF.Base.CommandBase {
 
             CommandID menuCommandId = new CommandID(CommandSet, CommandId);
             OleMenuCommand menuCommand = new OleMenuCommand(this.Execute, menuCommandId);
+
             commandService.AddCommand(menuCommand);
         }
 
         protected abstract void Execute(object sender, EventArgs e);
         protected IAsyncServiceProvider AsyncServiceProvider => Package;
         protected IServiceProvider ServiceProvider => Package;
-
     }
 }
