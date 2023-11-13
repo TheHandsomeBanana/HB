@@ -5,6 +5,8 @@ using HB.NETF.Discord.NET.Toolkit.Models.Entities;
 
 namespace HB.NETF.Discord.NET.Toolkit.Models.Collections {
     public class DiscordServerCollection : Dictionary<ulong, DiscordServer> {
+        public static DiscordServerCollection Empty => new DiscordServerCollection();
+
         public DiscordServerCollection() { }
         public DiscordServerCollection(IEnumerable<DiscordServer> servers) {
             foreach(DiscordServer server in servers) {

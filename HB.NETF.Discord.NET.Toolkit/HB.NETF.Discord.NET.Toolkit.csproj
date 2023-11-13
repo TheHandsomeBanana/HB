@@ -117,6 +117,8 @@
     <Compile Include="Services\ApplicationService\DiscordApplicationService.cs" />
     <Compile Include="Services\ApplicationService\IDiscordApplicationService.cs" />
     <Compile Include="Services\EntityService\DiscordEntityService.cs" />
+    <Compile Include="Services\EntityService\Holder\IServerCollectionHolder.cs" />
+    <Compile Include="Services\EntityService\Holder\ServerCollectionHolder.cs" />
     <Compile Include="Services\EntityService\IDiscordEntityService.cs" />
     <Compile Include="Services\TokenService\DiscordTokenService.cs" />
     <Compile Include="Services\TokenService\IDiscordTokenService.cs" />

@@ -55,6 +55,8 @@
     <Compile Include="Handler\Options\StreamOptionBuilder.cs" />
     <Compile Include="Handler\Options\StreamOptions.cs" />
     <Compile Include="Handler\StreamHandler.cs" />
+    <Compile Include="Holder\DataHolder.cs" />
+    <Compile Include="Holder\IDataHolder.cs" />
     <Compile Include="Identifier\Identifier.cs" />
     <Compile Include="Identifier\IdentifierFactory.cs" />
     <Compile Include="Identifier\IIdentifierFactory.cs" />

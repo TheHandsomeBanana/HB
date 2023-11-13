@@ -27,8 +27,7 @@ namespace HB.NETF.Discord.NET.Toolkit.Services.EntityService {
 
         private readonly IAsyncStreamHandler streamHandler;
         private readonly ILogger<DiscordEntityService> logger;
-        
-        public DiscordServerCollection ServerCollection { get; private set; } = new DiscordServerCollection();
+
         public DiscordEntityService(ILoggerFactory loggerFactory, IAsyncStreamHandler streamHandler) {
             this.logger = loggerFactory.GetOrCreateLogger<DiscordEntityService>();
             this.streamHandler = streamHandler;
@@ -45,17 +44,17 @@ namespace HB.NETF.Discord.NET.Toolkit.Services.EntityService {
             logger.LogInformation("Connecting.");
 
             Stopwatch sw = Stopwatch.StartNew();
-            while(sw.ElapsedMilliseconds < Timeout && !Ready) { } // Wait for connection to establish
+            while (sw.ElapsedMilliseconds < Timeout && !Ready) { } // Wait for connection to establish
             if (!Ready)
                 OnTimeout.Invoke();
 
             sw.Stop();
         }
 
-        public async Task LoadEntities() {
+        public async Task<DiscordServerCollection> LoadEntities() {
             if (!Ready) {
                 logger.LogError("Cannot load entities, connection timed out.");
-                return;
+                return DiscordServerCollection.Empty;
             }
 
             logger.LogInformation("Connected.");
@@ -71,7 +70,7 @@ namespace HB.NETF.Discord.NET.Toolkit.Services.EntityService {
             }
 
             logger.LogInformation($"{servers.Count} servers data downloaded from Discord API.");
-            ServerCollection = new DiscordServerCollection(servers);
+            return new DiscordServerCollection(servers);
         }
 
         public async Task Disconnect() {
@@ -85,24 +84,15 @@ namespace HB.NETF.Discord.NET.Toolkit.Services.EntityService {
             logger.LogInformation("Disconnected.");
         }
 
-
-        public async Task<bool> ReadFromFile(string fileName) {
-            bool fileExists = File.Exists(fileName);
-            if (fileExists)
-                ServerCollection = await Task.Run(() => streamHandler.WithOptions(optionBuilder).ReadFromFile<DiscordServerCollection>(fileName));
-
-            return fileExists;
-        }
-        public async Task SaveToFile(string fileName) {
-            await Task.Run(() => streamHandler.WithOptions(optionBuilder).WriteToFile<DiscordServerCollection>(fileName, ServerCollection));
+        // Async stream handler currently not working if encrypted
+        public async Task<DiscordServerCollection> ReadFromFile(string fileName) {
+            return streamHandler.WithOptions(optionBuilder).ReadFromFile<DiscordServerCollection>(fileName);
         }
 
-        public DiscordEntity GetEntity(ulong entityId) => ServerCollection.GetEntity(entityId);
-        public DiscordServer[] GetServers() => ServerCollection.GetServers();
-        public DiscordUser[] GetUsers(ulong serverId) => ServerCollection.GetUsers(serverId);
-        public DiscordRole[] GetRoles(ulong serverId) => ServerCollection.GetRoles(serverId);
-        public DiscordChannel[] GetChannels(ulong serverId) => ServerCollection.GetChannels(serverId);
-        public DiscordChannel[] GetChannels(ulong serverId, DiscordChannelType? channelType) => ServerCollection.GetChannels(serverId, channelType);
+        // Async stream handler currently not working if encrypted
+        public async Task SaveToFile(string fileName, DiscordServerCollection serverCollection) { 
+            streamHandler.WithOptions(optionBuilder).WriteToFile<DiscordServerCollection>(fileName, serverCollection);
+        }
 
         private OptionBuilderFunc optionBuilder;
 

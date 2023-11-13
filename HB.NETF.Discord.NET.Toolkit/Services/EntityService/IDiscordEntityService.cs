@@ -16,18 +16,10 @@ namespace HB.NETF.Discord.NET.Toolkit.Services.EntityService {
         bool Ready { get; }
         Task Connect(string token);
 
-        Task LoadEntities();
+        Task<DiscordServerCollection> LoadEntities();
         Task Disconnect();
 
-
-        Task SaveToFile(string fileName);
-        Task<bool> ReadFromFile(string fileName);
-
-        DiscordServer[] GetServers();
-        DiscordUser[] GetUsers(ulong serverId);
-        DiscordRole[] GetRoles(ulong serverId);
-        DiscordChannel[] GetChannels(ulong serverId);
-        DiscordChannel[] GetChannels(ulong serverId, DiscordChannelType? channelType);
-        DiscordEntity GetEntity(ulong entityId);
+        Task SaveToFile(string fileName, DiscordServerCollection serverCollection);
+        Task<DiscordServerCollection> ReadFromFile(string fileName);
     }
 }
