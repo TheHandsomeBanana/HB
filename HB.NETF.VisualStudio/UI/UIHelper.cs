@@ -38,11 +38,31 @@ namespace HB.NETF.VisualStudio.UI {
                 OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
         }
 
+        public static void ShowInfo(string message) {
+            VsShellUtilities.ShowMessageBox(
+                Package,
+                message,
+                null,
+                OLEMSGICON.OLEMSGICON_INFO,
+                OLEMSGBUTTON.OLEMSGBUTTON_OK,
+                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+        }
+
         public static void ShowWarning(string message, string title) {
             VsShellUtilities.ShowMessageBox(
                 Package,
                 message,
                 title,
+                OLEMSGICON.OLEMSGICON_WARNING,
+                OLEMSGBUTTON.OLEMSGBUTTON_OK,
+                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+        }
+
+        public static void ShowWarning(string message) {
+            VsShellUtilities.ShowMessageBox(
+                Package,
+                message,
+                null,
                 OLEMSGICON.OLEMSGICON_WARNING,
                 OLEMSGBUTTON.OLEMSGBUTTON_OK,
                 OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
@@ -58,11 +78,31 @@ namespace HB.NETF.VisualStudio.UI {
                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
         }
 
+        public static void ShowError(string message) {
+            VsShellUtilities.ShowMessageBox(
+               Package,
+               message,
+               null,
+               OLEMSGICON.OLEMSGICON_CRITICAL,
+               OLEMSGBUTTON.OLEMSGBUTTON_OK,
+               OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+        }
+
         public static int ShowWarningWithCancel(string message, string title) {
             return VsShellUtilities.ShowMessageBox(
                 Package,
                 message,
                 title,
+                OLEMSGICON.OLEMSGICON_WARNING,
+                OLEMSGBUTTON.OLEMSGBUTTON_OKCANCEL,
+                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+        }
+
+        public static int ShowWarningWithCancel(string message) {
+            return VsShellUtilities.ShowMessageBox(
+                Package,
+                message,
+                null,
                 OLEMSGICON.OLEMSGICON_WARNING,
                 OLEMSGBUTTON.OLEMSGBUTTON_OKCANCEL,
                 OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);

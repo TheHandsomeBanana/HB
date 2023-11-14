@@ -13,7 +13,7 @@ namespace HB.NETF.VisualStudio.Commands {
         protected abstract Guid CommandSet { get; }
         protected abstract int CommandId { get; }
 
-        protected CommandBase(AsyncPackage package, OleMenuCommandService commandService) {
+        protected CommandBase(AsyncPackage package, IMenuCommandService commandService) {
             this.Package = package ?? throw new ArgumentNullException(nameof(package)); ;
             if (commandService == null) throw new ArgumentNullException(nameof(commandService));
 

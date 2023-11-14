@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.Shell;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace HB.NETF.VisualStudio.Commands {
         private readonly Action<Exception> onException;
         private bool isRunning = false;
 
-        protected AsyncCommandBase(AsyncPackage package, OleMenuCommandService commandService, Action<Exception> onException) : base(package, commandService) {
+        protected AsyncCommandBase(AsyncPackage package, IMenuCommandService commandService, Action<Exception> onException) : base(package, commandService) {
             this.onException = onException;
         }
 
