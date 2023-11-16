@@ -5,6 +5,10 @@ using System.Text;
 using System;
 using System.IO;
 using HB.NETF.Common.Extensions;
+using HB.NETF.Common.Threading;
+using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace HB.NETF.Services.Logging {
     internal class Logger<T> : Logger, ILogger<T> {
@@ -21,9 +25,8 @@ namespace HB.NETF.Services.Logging {
         protected Logger() {
             LogTargets = new LogTarget[0];
         }
-        internal Logger(string category) {
+        internal Logger(string category) : this() {
             Category = category;
-            LogTargets = new LogTarget[0];
         }
 
         public void Log(string message, LogSeverity severity) {
@@ -49,59 +52,79 @@ namespace HB.NETF.Services.Logging {
             }
         }
 
+        private static IEnumerable<LogTarget> GetBySeverity(LogTarget[] logTargets, LogSeverity severity) {
+            return logTargets.Where(e => {
+                if (e.ValidSeverities.Length == 0)
+                    return true;
+
+                return e.ValidSeverities.Contains(severity);
+            });
+        }
+
         public void LogDebug(string message) {
-            LogInternal(new LogStatement(GetCategory(), message, LogSeverity.Debug, GetCurrentTime()));
+            foreach (LogTarget target in GetBySeverity(LogTargets, LogSeverity.Debug))
+                LogInternal(target, new LogStatement(GetCategory(), message, LogSeverity.Debug, GetCurrentTime()));
         }
 
         public void LogTrace(string message) {
-            LogInternal(new LogStatement(GetCategory(), message, LogSeverity.Trace, GetCurrentTime()));
+            foreach (LogTarget target in GetBySeverity(LogTargets, LogSeverity.Trace))
+                LogInternal(target, new LogStatement(GetCategory(), message, LogSeverity.Trace, GetCurrentTime()));
         }
 
         public void LogInformation(string message) {
-            LogInternal(new LogStatement(GetCategory(), message, LogSeverity.Information, GetCurrentTime()));
+            foreach (LogTarget target in GetBySeverity(LogTargets, LogSeverity.Information))
+                LogInternal(target, new LogStatement(GetCategory(), message, LogSeverity.Information, GetCurrentTime()));
         }
 
         public void LogWarning(string message) {
-            LogInternal(new LogStatement(GetCategory(), message, LogSeverity.Warning, GetCurrentTime()));
+            foreach (LogTarget target in GetBySeverity(LogTargets, LogSeverity.Warning))
+                LogInternal(target, new LogStatement(GetCategory(), message, LogSeverity.Warning, GetCurrentTime()));
         }
 
         public void LogError(string message) {
-            LogInternal(new LogStatement(GetCategory(), message, LogSeverity.Error, GetCurrentTime()));
+            foreach (LogTarget target in GetBySeverity(LogTargets, LogSeverity.Error))
+                LogInternal(target, new LogStatement(GetCategory(), message, LogSeverity.Error, GetCurrentTime()));
+        }
+
+        public void LogError(Exception exception) {
+            LogError(exception.ToString());
         }
 
         public void LogCritical(string message) {
-            LogInternal(new LogStatement(GetCategory(), message, LogSeverity.Critical, GetCurrentTime()));
+            foreach (LogTarget target in GetBySeverity(LogTargets, LogSeverity.Critical))
+                LogInternal(target, new LogStatement(GetCategory(), message, LogSeverity.Critical, GetCurrentTime()));
         }
 
-        private void LogInternal(LogStatement log) {
-            foreach (LogTarget t in LogTargets) {
-                switch (t.Target) {
-                    case Action<LogStatement> logAction:
-                        logAction.Invoke(log);
-                        break;
-                    case Action<string> stringAction:
-                        stringAction.Invoke(log.ToString());
-                        break;
-                    case string str:
-                        HandleString(str, log);
-                        break;
-                    case Stream stream:
-                        HandleStream(stream, log);
-                        break;
-                }
+        private void LogInternal(LogTarget t, LogStatement log) {
+            switch (t.Target) {
+                case Action<LogStatement> logAction:
+                    logAction.Invoke(log);
+                    break;
+                case Action<string> stringAction:
+                    stringAction.Invoke(log.ToString());
+                    break;
+                case string str:
+                    HandleString(str, log);
+                    break;
+                case Stream stream:
+                    HandleStream(stream, log);
+                    break;
+
             }
         }
 
         #region LogHelper
-        private static object lockObject = new object();
+        private readonly static object lockObj = new object();
         private void HandleString(string str, LogStatement log) {
-            lock (lockObject) {
+            lock (lockObj) {
                 using (StreamWriter sw = new StreamWriter(str, true))
                     sw.WriteLine(log.ToString());
             }
         }
         private void HandleStream(Stream stream, LogStatement log) {
-            stream.Write(Encoding.UTF8.GetBytes(log.ToString() + "\r"));
+            lock (lockObj) {
+                stream.Write(Encoding.UTF8.GetBytes(log.ToString() + "\r"));
+            }
         }
         private DateTime GetCurrentTime() {
             switch (TimeKind) {

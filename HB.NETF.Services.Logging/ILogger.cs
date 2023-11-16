@@ -13,10 +13,10 @@ namespace HB.NETF.Services.Logging {
         void LogInformation(string message);
         void LogWarning(string message);
         void LogError(string message);
+        void LogError(Exception exception);
         void LogCritical(string message);
     }
 
     public interface ILogger<out T> : ILogger {
-        string Category { get; }
     }
 }

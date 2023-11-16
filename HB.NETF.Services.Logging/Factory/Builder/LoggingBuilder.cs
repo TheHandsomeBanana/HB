@@ -17,67 +17,66 @@ namespace HB.NETF.Services.Logging.Factory.Builder {
         }
 
         #region Target Handler
-        public ILoggingBuilder WithNoTargets() => this;
 
-        public ILoggingBuilder AddTarget(object target) {
+        public ILoggingBuilder AddTarget(object target, params LogSeverity[] severities) {
             LogTarget logTarget = new LogTarget(target);
             logTargets.Add(logTarget);
             return this;
         }
 
-        public ILoggingBuilder AddTarget(Action<LogStatement> action) {
+        public ILoggingBuilder AddTarget(Action<LogStatement> action, params LogSeverity[] severities) {
             LogTarget logTarget = new LogTarget(action);
             logTargets.Add(logTarget);
             return this;
         }
 
-        public ILoggingBuilder AddTarget(Action<string> action) {
+        public ILoggingBuilder AddTarget(Action<string> action, params LogSeverity[] severities) {
             LogTarget logTarget = new LogTarget(action);
             logTargets.Add(logTarget);
             return this;
         }
 
-        public ILoggingBuilder AddTarget(string file) {
+        public ILoggingBuilder AddTarget(string file, params LogSeverity[] severities) {
             LogTarget logTarget = new LogTarget(file);
             logTargets.Add(logTarget);
             return this;
         }
 
-        public ILoggingBuilder AddTarget(Stream stream) {
+        public ILoggingBuilder AddTarget(Stream stream, params LogSeverity[] severities) {
             LogTarget logTarget = new LogTarget(stream);
             logTargets.Add(logTarget);
             return this;
         }
 
-        public ILoggingBuilder AddTargets(params object[] targets) {
+        public ILoggingBuilder AddTargets(object[] targets, params LogSeverity[] severities) {
             foreach (object target in targets)
                 AddTarget(target);
 
             return this;
         }
 
-        public ILoggingBuilder AddTargets(params Action<LogStatement>[] actions) {
+        public ILoggingBuilder AddTargets(Action<LogStatement>[] actions, params LogSeverity[] severities) {
             foreach (Action<LogStatement> target in actions)
                 AddTarget(target);
 
             return this;
         }
 
-        public ILoggingBuilder AddTargets(params Action<string>[] actions) {
+        public ILoggingBuilder AddTargets(Action<string>[] actions, params LogSeverity[] severities) {
             foreach (Action<string> target in actions)
                 AddTarget(target);
 
             return this;
         }
 
-        public ILoggingBuilder AddTargets(params string[] files) {
+        public ILoggingBuilder AddTargets(string[] files, params LogSeverity[] severities) {
             foreach (string target in files)
                 AddTarget(target);
 
             return this;
         }
 
-        public ILoggingBuilder AddTargets(params Stream[] streams) {
+        public ILoggingBuilder AddTargets(Stream[] streams, params LogSeverity[] severities) {
             foreach (Stream target in streams)
                 AddTarget(target);
 

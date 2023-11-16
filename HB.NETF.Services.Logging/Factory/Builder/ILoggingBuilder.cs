@@ -9,18 +9,17 @@ using System.Threading.Tasks;
 
 namespace HB.NETF.Services.Logging.Factory.Builder {
     public interface ILoggingBuilder {
-        ILoggingBuilder WithNoTargets();
-        ILoggingBuilder AddTarget(object target);
-        ILoggingBuilder AddTarget(Action<LogStatement> action);
-        ILoggingBuilder AddTarget(Action<string> action);
-        ILoggingBuilder AddTarget(string file);
-        ILoggingBuilder AddTarget(Stream stream);
+        ILoggingBuilder AddTarget(object target, params LogSeverity[] severities);
+        ILoggingBuilder AddTarget(Action<LogStatement> action, params LogSeverity[] severities);
+        ILoggingBuilder AddTarget(Action<string> action, params LogSeverity[] severities);
+        ILoggingBuilder AddTarget(string file, params LogSeverity[] severities);
+        ILoggingBuilder AddTarget(Stream stream, params LogSeverity[] severities);
 
-        ILoggingBuilder AddTargets(params object[] targets);
-        ILoggingBuilder AddTargets(params Action<LogStatement>[] actions);
-        ILoggingBuilder AddTargets(params Action<string>[] actions);
-        ILoggingBuilder AddTargets(params string[] files);
-        ILoggingBuilder AddTargets(params Stream[] files);
+        ILoggingBuilder AddTargets(object[] targets, params LogSeverity[] severities);
+        ILoggingBuilder AddTargets(Action<LogStatement>[] actions, params LogSeverity[] severities);
+        ILoggingBuilder AddTargets(Action<string>[] actions, params LogSeverity[] severities);
+        ILoggingBuilder AddTargets(string[] files, params LogSeverity[] severities);
+        ILoggingBuilder AddTargets(Stream[] files, params LogSeverity[] severities);
 
     }
 }
