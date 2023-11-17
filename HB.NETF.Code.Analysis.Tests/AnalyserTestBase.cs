@@ -26,11 +26,11 @@ namespace HB.NETF.Code.Analysis.Tests {
 
         protected Project Project { get; private set; }
         protected Solution Solution { get; private set; }
-        protected SyntaxTree SyntaxTree { get; private set; }
-        protected SemanticModel SemanticModel { get; private set; }
-        protected SyntaxNode SyntaxNode { get; private set; }
+        protected SyntaxTree SyntaxTree { get; set; }
+        protected SemanticModel SemanticModel { get; set; }
+        protected SyntaxNode SyntaxNode { get; set; }
         
-        protected void Initialize(string solutionPath, string projectName) {
+        public void Initialize(string solutionPath, string projectName) {
             Solution = GetSolution(solutionPath);
             Project = Solution.Projects.FirstOrDefault(p => p.Name == projectName)
                 ?? throw new CodeAnalyserTestException($"Project {projectName} not found in Solution");
@@ -40,9 +40,9 @@ namespace HB.NETF.Code.Analysis.Tests {
             if (!MSBuildLocator.IsRegistered)
                 MSBuildLocator.RegisterDefaults();
             MSBuildWorkspace w;
-
             try {
                 w = MSBuildWorkspace.Create();
+                w.WorkspaceFailed += WorkspaceFailed;
                 return w.OpenSolutionAsync(solutionPath).Result;
             }
             catch (ReflectionTypeLoadException ex) {
@@ -65,6 +65,10 @@ namespace HB.NETF.Code.Analysis.Tests {
 
                 throw new CodeAnalyserTestException(sb.ToString(), ex);
             }
+        }
+
+        protected virtual void WorkspaceFailed(object sender, WorkspaceDiagnosticEventArgs e) {
+            Console.WriteLine(e.ToString());
         }
     }
 }

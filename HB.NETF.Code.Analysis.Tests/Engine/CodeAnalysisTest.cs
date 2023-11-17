@@ -7,28 +7,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HB.NETF.Code.Analysis.TestEngine {
-    public class CodeAnalysisTest<TValue> {
-        private readonly TValue presetValue;
+namespace HB.NETF.Code.Analysis.Tests.Engine {
+    public class CodeAnalysisTest<T> {
+        private readonly T presetValue;
 
         public Document Document { get; }
         public string SourceText { get; }
-        public Dictionary<string, TValue> ExpectedResults { get; }
+        public Dictionary<string, T> ExpectedResults { get; }
 
         internal CodeAnalysisTest(Document document) {
-            ExpectedResults = new Dictionary<string, TValue>();
+            ExpectedResults = new Dictionary<string, T>();
             Document = document;
             SourceText = File.ReadAllText(document.FilePath);
         }
 
-        internal CodeAnalysisTest(Document document, TValue presetValue) : this(document) {
+        internal CodeAnalysisTest(Document document, T presetValue) : this(document) {
             this.presetValue = presetValue;
         }
 
-        public CodeAnalysisTest<TValue> Add(string key, TValue value) {
-            if (presetValue != null)
-                throw new CodeAnalyserTestException("Cannot add custom value. Preset value is set.");
-
+        // Preset value is overriden
+        public CodeAnalysisTest<T> Add(string key, T value) {
             if (ExpectedResults.ContainsKey(key))
                 throw new CodeAnalyserTestException($"Expected results already contains {key}");
 
@@ -36,7 +34,7 @@ namespace HB.NETF.Code.Analysis.TestEngine {
             return this;
         }
 
-        public CodeAnalysisTest<TValue> Add(string key) {
+        public CodeAnalysisTest<T> Add(string key) {
             if (presetValue == null)
                 throw new CodeAnalyserTestException("Cannot use preset value. Preset value is not set set.");
 

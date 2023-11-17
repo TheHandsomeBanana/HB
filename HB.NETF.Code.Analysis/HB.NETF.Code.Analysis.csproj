@@ -173,8 +173,6 @@
     <Compile Include="Interface\ITypeAnalyser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resolver\LocationResolver.cs" />
-    <Compile Include="TestEngine\CodeAnalysisTest.cs" />
-    <Compile Include="TestEngine\CodeAnalysisTestEngine.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HB.NETF.Common\HB.NETF.Common.csproj">
