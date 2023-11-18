@@ -15,9 +15,13 @@ using System.Threading.Tasks;
 namespace HB.NETF.Code.Analysis.Analyser {
     public class VariableAnalyser : AnalyserBase, IVariableAnalyser {
         private readonly IAnalyserFactory analyserFactory;
-        private readonly IIdentifierAnalyser identifierAnalyser;
-        internal VariableAnalyser(Solution solution, Project project, SemanticModel semanticModel) : base(solution, project, semanticModel) {
+        private IIdentifierAnalyser identifierAnalyser;
+        internal VariableAnalyser() {
             analyserFactory = DIContainer.GetService<IAnalyserFactory>();
+        }
+
+        public override void Initialize(Solution solution, Project project, SemanticModel semanticModel) {
+            base.Initialize(solution, project, semanticModel);
             identifierAnalyser = analyserFactory.GetOrCreateAnalyser<IdentifierAnalyser>(solution, project, semanticModel);
         }
 
@@ -26,8 +30,6 @@ namespace HB.NETF.Code.Analysis.Analyser {
             this.resultValues.Clear();
             return new VariableResult(syntaxNode, resultValues);
         }
-
-        async Task<object> ICodeAnalyser.Run(SyntaxNode syntaxNode) => await Run(syntaxNode);
 
         public async Task<IdentifierNameSyntax[]> GetPossibleIdentifiersFromSnapshot(SyntaxNode node) {
             ImmutableArray<IdentifierResult> result = await identifierAnalyser.Run(node);
@@ -38,7 +40,6 @@ namespace HB.NETF.Code.Analysis.Analyser {
                     || e.Kind.Value == SymbolKind.Property))
                 .Select(e => e.Value).ToArray();
         }
-
 
         #region Resolve
         private readonly List<VariableResultValue> resultValues = new List<VariableResultValue>();

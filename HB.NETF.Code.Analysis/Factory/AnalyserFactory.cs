@@ -18,23 +18,13 @@ namespace HB.NETF.Code.Analysis.Factory {
         public IReadOnlyDictionary<AnalyserFactoryKey, ICodeAnalyser> AnalyserContainer => analyserContainer;
         public SemanticModelCache SemanticModelCache { get; set; }
 
-        public ICodeAnalyser GetOrCreateAnalyser(Type analyserType, Solution solution, Project project, SemanticModel semanticModel) {
-            if (analyserType.IsInterface)
-                analyserType = AnalyserTypeMapping.Get(analyserType);
-            
-            AnalyserFactoryKey key = new AnalyserFactoryKey(analyserType, semanticModel.SyntaxTree.FilePath);
-
-            if (AnalyserContainer.ContainsKey(key))
-                return analyserContainer[key];
-
-            ICodeAnalyser analyser = Activator.CreateInstance(analyserType, solution, project, semanticModel) as ICodeAnalyser;
-            analyserContainer.Add(key, analyser);
-            return analyser;
-        }
+        
 
         public TAnalyser GetOrCreateAnalyser<TAnalyser>(Solution solution, Project project, SemanticModel semanticModel) where TAnalyser : ICodeAnalyser {
             try {
-                return (TAnalyser)GetOrCreateAnalyser(typeof(TAnalyser), solution, project, semanticModel);
+                TAnalyser analyser = Activator.CreateInstance<TAnalyser>();
+                analyser.Initialize(solution, project, semanticModel);
+                return analyser;
             }
             catch {
                 return default;
@@ -63,13 +53,12 @@ namespace HB.NETF.Code.Analysis.Factory {
             if (AnalyserContainer.ContainsKey(key))
                 return (TypeAnalyser)analyserContainer[key];
 
-            ITypeAnalyser analyser = new TypeAnalyser(solution, project, semanticModel, typeFilter);
+            ITypeAnalyser analyser = new TypeAnalyser();
+            analyser.Initialize(solution, project, semanticModel);
+            analyser.TypeFilter = typeFilter;
+
             analyserContainer.Add(key, analyser);
             return analyser;
-        }
-
-        public IEnumerable<ICodeAnalyser> GetAnalysers(Type analyserType) {
-            return analyserContainer.Where(e => e.Key.AnalyserType == analyserType).Select(e => e.Value);
         }
 
         public IEnumerable<TAnalyser> GetAnalysers<TAnalyser>() where TAnalyser : ICodeAnalyser {
@@ -82,13 +71,6 @@ namespace HB.NETF.Code.Analysis.Factory {
 
         public IEnumerable<ICodeAnalyser<TResult>> GetAnalysers<TAnalyser, TResult>() where TAnalyser : ICodeAnalyser {
             return GetAnalysers<TResult>(typeof(TAnalyser));
-        }
-
-        public ICodeAnalyser GetAnalyser(AnalyserFactoryKey key) {
-            if (!analyserContainer.ContainsKey(key))
-                return null;
-
-            return analyserContainer[key];
         }
 
         public TAnalyser GetAnalyser<TAnalyser>(string filePath) {
@@ -106,6 +88,32 @@ namespace HB.NETF.Code.Analysis.Factory {
 
         public void Reset() {
             analyserContainer.Clear();
+        }
+
+        private ICodeAnalyser GetOrCreateAnalyser(Type analyserType, Solution solution, Project project, SemanticModel semanticModel) {
+            if (analyserType.IsInterface)
+                analyserType = AnalyserTypeMapping.Get(analyserType);
+
+            AnalyserFactoryKey key = new AnalyserFactoryKey(analyserType, semanticModel.SyntaxTree.FilePath);
+
+            if (AnalyserContainer.ContainsKey(key))
+                return analyserContainer[key];
+
+            ICodeAnalyser analyser = Activator.CreateInstance(analyserType) as ICodeAnalyser;
+            analyser.Initialize(solution, project, semanticModel);
+            analyserContainer.Add(key, analyser);
+            return analyser;
+        }
+
+        private ICodeAnalyser GetAnalyser(AnalyserFactoryKey key) {
+            if (!analyserContainer.ContainsKey(key))
+                return null;
+
+            return analyserContainer[key];
+        }
+
+        private IEnumerable<ICodeAnalyser> GetAnalysers(Type analyserType) {
+            return analyserContainer.Where(e => e.Key.AnalyserType == analyserType).Select(e => e.Value);
         }
 
         /// <summary>

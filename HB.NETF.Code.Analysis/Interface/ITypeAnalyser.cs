@@ -8,13 +8,12 @@ using System.Threading.Tasks;
 
 namespace HB.NETF.Code.Analysis.Interface {
     public interface ITypeAnalyser : ICodeAnalyser<TypeResult?> {
-        Type[] TypeFilter { get; }
+        Type[] TypeFilter { get; set; }
         Task<TypeResult?> GetFirstFromSnapshot(SyntaxNode syntaxNode);
         Task<TypeResult[]> GetAll(SyntaxTree syntaxTree);
     }
 
     public interface ITypeAnalyser<out T> : ICodeAnalyser<TypeResult?> {
-        Type TypeFilter { get; }
         Task<TypeResult?> GetFirstFromSnapshot(SyntaxNode syntaxNode);
         Task<TypeResult[]> GetAll(SyntaxTree syntaxTree);
     }

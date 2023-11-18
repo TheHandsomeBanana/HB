@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace HB.NETF.Code.Analysis.Analyser {
     public abstract class AnalyserBase {
-        protected Solution Solution { get; }
-        protected Project Project { get; }
-        protected IImmutableSet<Document> Documents { get; }
-        protected SemanticModel SemanticModel { get; }
-        protected SyntaxTree SyntaxTree { get; }
+        protected Solution Solution { get; private set; }
+        protected Project Project { get; private set; }
+        protected IImmutableSet<Document> Documents { get; private set; }
+        protected SemanticModel SemanticModel { get; private set; }
+        protected SyntaxTree SyntaxTree { get; private set; }
 
-        public AnalyserBase(Solution solution, Project project, SemanticModel semanticModel) {
+        public virtual void Initialize(Solution solution, Project project, SemanticModel semanticModel) {
             this.Solution = solution;
             this.Project = project;
             this.Documents = project.Documents.ToImmutableHashSet();

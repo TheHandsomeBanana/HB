@@ -14,7 +14,6 @@ namespace HB.NETF.Code.Analysis.Interface {
     public interface IAnalyserFactory {
         SemanticModelCache SemanticModelCache { get; }
         IReadOnlyDictionary<AnalyserFactoryKey, ICodeAnalyser> AnalyserContainer { get; }
-        ICodeAnalyser GetOrCreateAnalyser(Type analyserType, Solution solution, Project project, SemanticModel semanticModel);
         TAnalyser GetOrCreateAnalyser<TAnalyser>(Solution solution, Project project, SemanticModel semanticModel) where TAnalyser : ICodeAnalyser;
         ICodeAnalyser<TResult> GetOrCreateAnalyser<TResult>(Type analyserType, Solution solution, Project project, SemanticModel semanticModel);
 
@@ -24,11 +23,9 @@ namespace HB.NETF.Code.Analysis.Interface {
         void SetSemanticModelCache(Project project);
         void SetSemanticModelCache(Solution solution);
 
-        IEnumerable<ICodeAnalyser> GetAnalysers(Type analyserType);
         IEnumerable<TAnalyser> GetAnalysers<TAnalyser>() where TAnalyser : ICodeAnalyser;
         IEnumerable<ICodeAnalyser<TResult>> GetAnalysers<TResult>(Type analyserType);
 
-        ICodeAnalyser GetAnalyser(AnalyserFactoryKey key);
         TAnalyser GetAnalyser<TAnalyser>(string filePath);
         ICodeAnalyser<TResult> GetAnalyser<TResult>(AnalyserFactoryKey key);
 

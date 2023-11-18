@@ -12,9 +12,7 @@ using System.Xml.Linq;
 
 namespace HB.NETF.Code.Analysis.Analyser {
     public class IdentifierAnalyser : AnalyserBase, IIdentifierAnalyser {
-        internal IdentifierAnalyser(Solution solution, Project project, SemanticModel semanticModel) : base(solution, project, semanticModel) {
-        }
-
+        
         public ImmutableArray<IdentifierResult> FindIdentifiersFromSnapshot(SyntaxNode syntaxNode) {
             while (syntaxNode != null && !(syntaxNode.Parent is BlockSyntax) && !(syntaxNode.Parent is TypeDeclarationSyntax)) {
                 syntaxNode = syntaxNode.Parent;
@@ -30,6 +28,5 @@ namespace HB.NETF.Code.Analysis.Analyser {
 
         public async Task<ImmutableArray<IdentifierResult>> Run(SyntaxNode syntaxNode) => await Task.Run(() => FindIdentifiersFromSnapshot(syntaxNode));
 
-        async Task<object> ICodeAnalyser.Run(SyntaxNode syntaxNode) => await Run(syntaxNode);
     }
 }

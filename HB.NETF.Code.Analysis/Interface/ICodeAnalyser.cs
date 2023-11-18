@@ -7,13 +7,7 @@ using System.Threading.Tasks;
 
 namespace HB.NETF.Code.Analysis.Interface {
     public interface ICodeAnalyser {
-        /// <summary>
-        /// Runs analysis for only 1 file given through provided <see cref="SyntaxNode"/>.<br></br>
-        /// Analyser specific -> returns <see cref="object"/> closest to snapshot in most cases. 
-        /// </summary>
-        /// <param name="syntaxNode"></param>
-        /// <returns></returns>
-        Task<object> Run(SyntaxNode syntaxNode);
+        void Initialize(Solution solution, Project project, SemanticModel semanticModel);
     }
 
     public interface ICodeAnalyser<TResult> : ICodeAnalyser {
@@ -23,6 +17,6 @@ namespace HB.NETF.Code.Analysis.Interface {
         /// </summary>
         /// <param name="syntaxNode"></param>
         /// <returns></returns>
-        new Task<TResult> Run(SyntaxNode syntaxNode);
+        Task<TResult> Run(SyntaxNode syntaxNode);
     }
 }
