@@ -15,9 +15,13 @@ namespace HB.NETF.Code.Analysis.Analyser {
         protected SyntaxTree SyntaxTree { get; private set; }
 
         public virtual void Initialize(Solution solution, Project project, SemanticModel semanticModel) {
+            this.Initialize(solution, project, project.Documents.ToImmutableHashSet(), semanticModel);
+        }
+
+        public void Initialize(Solution solution, Project project, IImmutableSet<Document> documents, SemanticModel semanticModel) {
             this.Solution = solution;
             this.Project = project;
-            this.Documents = project.Documents.ToImmutableHashSet();
+            this.Documents = documents;
             this.SemanticModel = semanticModel;
             this.SyntaxTree = semanticModel.SyntaxTree;
         }
