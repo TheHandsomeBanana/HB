@@ -25,7 +25,7 @@ namespace HB.NETF.Common.Tests {
             dIBuilder.Services.AddSingleton<ILoggerFactory>(new LoggerFactory((b) => b.AddTarget(Output)))
                 .AddTransient<IStreamHandler, StreamHandler>()
                 .AddTransient<IAsyncStreamHandler, AsyncStreamHandler>()
-                .AddSingleton<IDiscordEntityService, DiscordEntityService>()
+                .AddSingleton<IDiscordEntityService, DiscordSocketEntityService>()
                 .AddTransient<IDataProtectionService, DataProtectionService>();
             DIContainer.BuildServiceProvider(dIBuilder);
         }

@@ -19,6 +19,7 @@ namespace HB.NETF.Discord.NET.Toolkit.Models.Entities {
         Thread,
         Guild,
         DM,
-        Group
+        Group,
+        Private
     }
 }
