@@ -68,6 +68,9 @@ namespace HB.NETF.Discord.NET.Toolkit.Models.Collections {
         }
 
         public DiscordServer[] GetServers() => this.Values.ToArray();
+        public DiscordRole[] GetRoles() => this.Values.SelectMany(e => e.RoleCollection.Values).ToArray();
+        public DiscordUser[] GetUsers() => this.Values.SelectMany(e => e.UserCollection.Values).ToArray();
+        public DiscordChannel[] GetChannels() => this.Values.SelectMany(e => e.ChannelCollection.Values).ToArray();
     }
 }
 
