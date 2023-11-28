@@ -76,6 +76,9 @@
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Threading\ThreadLocker.cs" />
     <Compile Include="Threading\TimeoutTask.cs" />
+    <Compile Include="TimeTracker\ITimeTracker.cs" />
+    <Compile Include="TimeTracker\TimeTracker.cs" />
+    <Compile Include="TimeTracker\TimeTrackerEngine.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
