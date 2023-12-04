@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace HB.NETF.Services.Serialization.Xml
-{
-    public class XmlSerializerSettings
-    {
+namespace HB.NETF.Services.Serialization.Xml {
+    public class XmlSerializerSettings {
         public XmlSerializerNamespaces XmlSerializerNamespaces { get; set; } = new XmlSerializerNamespaces();
         public XmlAttributeOverrides XmlAttributeOverrides { get; set; }
         public Type[] ExtraTypes { get; set; }

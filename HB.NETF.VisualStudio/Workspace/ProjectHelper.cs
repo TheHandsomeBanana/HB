@@ -5,9 +5,6 @@ using Microsoft.VisualStudio.Shell;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.UI.Design;
 
 namespace HB.NETF.VisualStudio.Workspace {
     public static class ProjectHelper {

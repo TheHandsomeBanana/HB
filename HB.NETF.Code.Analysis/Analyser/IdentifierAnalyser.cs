@@ -2,17 +2,13 @@
 using HB.NETF.Code.Analysis.Models;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace HB.NETF.Code.Analysis.Analyser {
     public class IdentifierAnalyser : AnalyserBase, IIdentifierAnalyser {
-        
+
         public ImmutableArray<IdentifierResult> FindIdentifiersFromSnapshot(SyntaxNode syntaxNode) {
             while (syntaxNode != null && !(syntaxNode.Parent is BlockSyntax) && !(syntaxNode.Parent is TypeDeclarationSyntax)) {
                 syntaxNode = syntaxNode.Parent;

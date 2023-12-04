@@ -1,16 +1,13 @@
 ﻿using HB.NETF.Code.Analysis.Interface;
 using HB.NETF.Code.Analysis.Models;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.FindSymbols;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Markup;
 
 namespace HB.NETF.Code.Analysis.Resolver {
     public static class LocationResolver {
@@ -47,8 +44,8 @@ namespace HB.NETF.Code.Analysis.Resolver {
         /// <param name="factory"></param>
         /// <returns></returns>
         public static IEnumerable<Tuple<TAnalyser, IEnumerable<SyntaxNode>>> GetAnalyserWithNodesToAnalyse<TAnalyser>(IEnumerable<Location> locations, Solution solution, Project project, IAnalyserFactory factory) where TAnalyser : ICodeAnalyser {
-            foreach(IGrouping<string, Location> group in locations.GroupBy(e => e.SourceTree.FilePath)) {
-                if(factory.SemanticModelCache.TryGet(group.Key, out SemanticModel semanticModel)) {
+            foreach (IGrouping<string, Location> group in locations.GroupBy(e => e.SourceTree.FilePath)) {
+                if (factory.SemanticModelCache.TryGet(group.Key, out SemanticModel semanticModel)) {
                     TAnalyser analyser = factory.GetOrCreateAnalyser<TAnalyser>(solution, project, semanticModel);
                     yield return new Tuple<TAnalyser, IEnumerable<SyntaxNode>>(analyser, group.Select(e => GetNodeFromLocation(e)));
                 }
@@ -58,7 +55,7 @@ namespace HB.NETF.Code.Analysis.Resolver {
         public static SyntaxNode GetNodeFromLocation(Location location) => location.SourceTree.GetRoot().FindNode(location.SourceSpan);
 
         public static IEnumerable<SyntaxNode> GetNodesFromLocations(this IEnumerable<Location> locations) {
-            foreach(Location location in locations) {
+            foreach (Location location in locations) {
                 yield return GetNodeFromLocation(location);
             }
         }

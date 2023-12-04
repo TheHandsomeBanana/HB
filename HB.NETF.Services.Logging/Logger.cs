@@ -1,14 +1,10 @@
-﻿using HB.NETF.Services.Logging.Factory.Target;
-using HB.NETF.Services.Logging.Exceptions;
-using System.Runtime.CompilerServices;
-using System.Text;
+﻿using HB.NETF.Common.Extensions;
+using HB.NETF.Services.Logging.Factory.Target;
 using System;
-using System.IO;
-using HB.NETF.Common.Extensions;
-using HB.NETF.Common.Threading;
-using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace HB.NETF.Services.Logging {
     internal class Logger<T> : Logger, ILogger<T> {

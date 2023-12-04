@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace HB.NETF.WPF.Commands {
@@ -14,7 +10,7 @@ namespace HB.NETF.WPF.Commands {
         }
 
         public abstract void Execute(object parameter);
-        public void OnCanExecuteChanged() { 
+        public void OnCanExecuteChanged() {
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
     }

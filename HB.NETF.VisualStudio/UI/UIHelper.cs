@@ -1,20 +1,12 @@
-﻿using HB.NETF.Common.DependencyInjection;
-using HB.NETF.Services.Logging;
+﻿using HB.NETF.Services.Logging;
 using HB.NETF.VisualStudio.Workspace;
 using Microsoft;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Internal.VisualStudio.PlatformUI;
-using Microsoft.Internal.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace HB.NETF.VisualStudio.UI {
     public static class UIHelper {

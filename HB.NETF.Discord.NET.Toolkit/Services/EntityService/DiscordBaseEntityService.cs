@@ -1,15 +1,11 @@
 ﻿using Discord;
-using Discord.Rest;
 using HB.NETF.Discord.NET.Toolkit.Models.Collections;
 using HB.NETF.Discord.NET.Toolkit.Models.Entities;
 using HB.NETF.Services.Data.Handler;
 using HB.NETF.Services.Data.Handler.Async;
 using HB.NETF.Services.Logging;
 using HB.NETF.Services.Logging.Factory;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Unity;
 
@@ -29,7 +25,7 @@ namespace HB.NETF.Discord.NET.Toolkit.Services.EntityService {
         public bool Ready { get; private set; }
         public int Timeout { get; set; } = 10000;
 
-       
+
         // Async stream handler currently not working if encrypted
         public async Task<DiscordServerCollection> ReadFromFile(string fileName) {
             return StreamHandler.WithOptions(optionBuilder).ReadFromFile<DiscordServerCollection>(fileName);

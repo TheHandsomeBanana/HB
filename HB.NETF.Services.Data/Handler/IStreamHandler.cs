@@ -1,12 +1,5 @@
-﻿using HB.NETF.Services.Data.Handler.Options;
-using HB.NETF.Services.Security.Cryptography.Keys;
-using HB.NETF.Services.Security.Cryptography.Settings;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HB.NETF.Services.Data.Handler {
     public interface IStreamHandler : IDisposable {

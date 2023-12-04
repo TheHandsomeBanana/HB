@@ -1,19 +1,16 @@
 ﻿using HB.NETF.Code.Analysis.Exceptions;
 using HB.NETF.Code.Analysis.Factory;
 using HB.NETF.Code.Analysis.Interface;
-using HB.NETF.Common.DependencyInjection;
 using HB.NETF.Common.Tests;
 using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.MSBuild;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace HB.NETF.Code.Analysis.Tests {
     [TestClass]
@@ -29,7 +26,7 @@ namespace HB.NETF.Code.Analysis.Tests {
         protected SyntaxTree SyntaxTree { get; set; }
         protected SemanticModel SemanticModel { get; set; }
         protected SyntaxNode SyntaxNode { get; set; }
-        
+
         public void Initialize(string solutionPath, string projectName) {
             Solution = GetSolution(solutionPath);
             Project = Solution.Projects.FirstOrDefault(p => p.Name == projectName)

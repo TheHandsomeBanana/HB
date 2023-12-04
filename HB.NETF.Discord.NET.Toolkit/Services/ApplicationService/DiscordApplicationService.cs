@@ -1,12 +1,6 @@
 ﻿using HB.NETF.Discord.NET.Toolkit.Models.Application;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Data.SqlClient;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HB.NETF.Discord.NET.Toolkit.Services.ApplicationService {

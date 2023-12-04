@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HB.NETF.Services.Data.Holder {
+﻿namespace HB.NETF.Services.Data.Holder {
     public interface IDataHolder {
         void Hold<T>(T data) where T : new();
         T Get<T>() where T : new();

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using HB.NETF.Discord.NET.Toolkit.Models.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using HB.NETF.Discord.NET.Toolkit.Models.Entities;
 
 namespace HB.NETF.Discord.NET.Toolkit.Models.Collections {
     public class DiscordServerCollection : Dictionary<ulong, DiscordServer> {
@@ -9,8 +9,8 @@ namespace HB.NETF.Discord.NET.Toolkit.Models.Collections {
 
         public DiscordServerCollection() { }
         public DiscordServerCollection(IEnumerable<DiscordServer> servers) {
-            foreach(DiscordServer server in servers) {
-                if(!this.ContainsKey(server.Id))
+            foreach (DiscordServer server in servers) {
+                if (!this.ContainsKey(server.Id))
                     this.Add(server.Id, server);
             }
         }
@@ -19,7 +19,7 @@ namespace HB.NETF.Discord.NET.Toolkit.Models.Collections {
             if (this.TryGetValue(entityId, out DiscordServer server))
                 return server;
 
-            foreach(Dictionary<ulong, DiscordRole> roles in this.Values.Select(e => e.RoleCollection)) {
+            foreach (Dictionary<ulong, DiscordRole> roles in this.Values.Select(e => e.RoleCollection)) {
                 if (roles.TryGetValue(entityId, out DiscordRole value))
                     return value;
             }
@@ -46,25 +46,27 @@ namespace HB.NETF.Discord.NET.Toolkit.Models.Collections {
         }
 
         public DiscordRole[] GetRoles(ulong serverId) {
-            DiscordRole[] users = Array.Empty<DiscordRole>();
+            DiscordRole[] roles = Array.Empty<DiscordRole>();
             if (this.TryGetValue(serverId, out DiscordServer server))
-                users = server.RoleCollection.Values.ToArray();
+                roles = server.RoleCollection.Values.ToArray();
 
-            return users;
+            return roles;
         }
 
         public DiscordChannel[] GetChannels(ulong serverId) {
-            DiscordChannel[] users = Array.Empty<DiscordChannel>();
+            DiscordChannel[] channels = Array.Empty<DiscordChannel>();
             if (this.TryGetValue(serverId, out DiscordServer server))
-                users = server.ChannelCollection.Values.ToArray();
+                channels = server.ChannelCollection.Values.ToArray();
 
-            return users;
+            return channels;
         }
 
         public DiscordChannel[] GetChannels(ulong serverId, DiscordChannelType? channelType) {
-            return channelType.HasValue 
-                ? GetChannels(serverId).Where(e => e.ChannelType == channelType).ToArray()
-                : GetChannels(serverId);
+            DiscordChannel[] channels = GetChannels(serverId);
+            if (channelType.HasValue && channels.Any(e => e.ChannelType == channelType))
+                channels = channels.Where(e => e.ChannelType == channelType).ToArray();
+
+            return channels;
         }
 
         public DiscordServer[] GetServers() => this.Values.ToArray();

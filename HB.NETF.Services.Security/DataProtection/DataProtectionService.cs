@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Security.Cryptography;
 
 namespace HB.NETF.Services.Security.DataProtection {
     public class DataProtectionService : IDataProtectionService {
@@ -22,7 +17,7 @@ namespace HB.NETF.Services.Security.DataProtection {
         }
 
         public byte[] Unprotect(byte[] data) {
-            return ProtectedData.Unprotect(data, entropy, scope);            
+            return ProtectedData.Unprotect(data, entropy, scope);
         }
     }
 }

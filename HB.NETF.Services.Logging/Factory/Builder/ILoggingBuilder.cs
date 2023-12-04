@@ -1,11 +1,5 @@
-﻿using HB.NETF.Services.Logging;
-using HB.NETF.Services.Logging.Factory.Target;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HB.NETF.Services.Logging.Factory.Builder {
     public interface ILoggingBuilder {

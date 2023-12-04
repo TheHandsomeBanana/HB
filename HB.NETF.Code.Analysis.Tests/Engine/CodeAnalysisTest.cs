@@ -1,11 +1,7 @@
 ﻿using HB.NETF.Code.Analysis.Exceptions;
 using Microsoft.CodeAnalysis;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HB.NETF.Code.Analysis.Tests.Engine {
     public class CodeAnalysisTest<T> {

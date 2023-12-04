@@ -1,7 +1,4 @@
-﻿using HB.NETF.Common.DependencyInjection;
-using HB.NETF.Services.Data.Handler;
-using HB.NETF.Services.Security.Cryptography;
-using HB.NETF.Services.Security.Cryptography.Interfaces;
+﻿using HB.NETF.Services.Security.Cryptography.Interfaces;
 using HB.NETF.Services.Security.Cryptography.Keys;
 using HB.NETF.Services.Security.Cryptography.Settings;
 using HB.NETF.Services.Security.DataProtection;
@@ -9,8 +6,6 @@ using HB.NETF.Services.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HB.NETF.Discord.NET.Toolkit.Services.TokenService {
     public class DiscordTokenService : IDiscordTokenService {
@@ -65,6 +60,6 @@ namespace HB.NETF.Discord.NET.Toolkit.Services.TokenService {
             => tokens.Select(e => EncryptToken(e, encryptionMode, key)).ToArray();
 
         public string[] DecryptTokens(IEnumerable<string> tokens, EncryptionMode encryptionMode, IKey key = null)
-            => tokens.Select(e => DecryptToken(e, encryptionMode, key)).ToArray();       
+            => tokens.Select(e => DecryptToken(e, encryptionMode, key)).ToArray();
     }
 }

@@ -1,21 +1,12 @@
 ﻿using Discord;
 using Discord.WebSocket;
-using HB.NETF.Common.DependencyInjection;
-using HB.NETF.Discord.NET.Toolkit.Exceptions;
 using HB.NETF.Discord.NET.Toolkit.Models.Collections;
 using HB.NETF.Discord.NET.Toolkit.Models.Entities;
-using HB.NETF.Services.Data.Handler;
 using HB.NETF.Services.Data.Handler.Async;
-using HB.NETF.Services.Logging;
 using HB.NETF.Services.Logging.Factory;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Runtime.Remoting.Channels;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace HB.NETF.Discord.NET.Toolkit.Services.EntityService {

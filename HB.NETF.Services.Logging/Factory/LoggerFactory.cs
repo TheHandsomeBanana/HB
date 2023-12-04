@@ -1,18 +1,15 @@
 ﻿using HB.NETF.Services.Logging.Exceptions;
+using HB.NETF.Services.Logging.Factory.Builder;
+using HB.NETF.Services.Logging.Factory.Target;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HB.NETF.Services.Logging.Factory.Builder;
-using HB.NETF.Services.Logging;
-using HB.NETF.Services.Logging.Factory.Target;
 
 namespace HB.NETF.Services.Logging.Factory {
     public class LoggerFactory : ILoggerFactory {
         public LogTarget[] GlobalLogTargets { get; private set; }
         public Dictionary<string, ILogger> LoggerContainer { get; set; } = new Dictionary<string, ILogger>();
- 
+
         public LoggerFactory() {
             GlobalLogTargets = new LogTarget[0];
         }
@@ -29,7 +26,7 @@ namespace HB.NETF.Services.Logging.Factory {
         }
 
         public ILogger CreateLogger(string category, Action<ILoggingBuilder> builder) {
-            if(category is null)
+            if (category is null)
                 throw new ArgumentNullException(nameof(category));
 
             if (LoggerContainer.ContainsKey(category))
@@ -45,7 +42,7 @@ namespace HB.NETF.Services.Logging.Factory {
             return logger;
         }
 
-        public ILogger<T> CreateLogger<T>(Action<ILoggingBuilder> builder){
+        public ILogger<T> CreateLogger<T>(Action<ILoggingBuilder> builder) {
             if (builder is null)
                 throw new ArgumentNullException(nameof(builder));
 
@@ -62,7 +59,7 @@ namespace HB.NETF.Services.Logging.Factory {
         }
 
         public ILogger GetOrCreateLogger(string category) {
-            if(LoggerContainer.ContainsKey(category))
+            if (LoggerContainer.ContainsKey(category))
                 return LoggerContainer[category];
 
             Logger logger = new Logger(category);
@@ -72,7 +69,7 @@ namespace HB.NETF.Services.Logging.Factory {
         }
 
         public ILogger<T> GetOrCreateLogger<T>() {
-            if(LoggerContainer.ContainsKey(typeof(T).FullName))
+            if (LoggerContainer.ContainsKey(typeof(T).FullName))
                 return (ILogger<T>)LoggerContainer[typeof(T).FullName];
 
             Logger<T> logger = new Logger<T>();

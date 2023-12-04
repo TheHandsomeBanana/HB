@@ -1,9 +1,5 @@
 ﻿using HB.NETF.WPF.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HB.NETF.WPF.Navigation {
     public class NavigationService<TViewModel> where TViewModel : ViewModelBase {

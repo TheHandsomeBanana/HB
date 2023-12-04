@@ -1,23 +1,14 @@
 ﻿using HB.NETF.Common;
-using HB.NETF.Common.DependencyInjection;
 using HB.NETF.Common.Extensions;
 using HB.NETF.Services.Data.Exceptions;
 using HB.NETF.Services.Data.Handler.Options;
 using HB.NETF.Services.Security.Cryptography.Interfaces;
-using HB.NETF.Services.Security.Cryptography.Keys;
 using HB.NETF.Services.Security.Cryptography.Settings;
 using HB.NETF.Services.Security.DataProtection;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.Remoting.Contexts;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Resources;
 using Unity;
 
 namespace HB.NETF.Services.Data.Handler {
@@ -166,7 +157,7 @@ namespace HB.NETF.Services.Data.Handler {
 
             byte[] buffer = Stream.Read();
 
-            if(Options.UseEncryption)
+            if (Options.UseEncryption)
                 buffer = DecryptBuffer(buffer);
 
             if (Options.UseBase64)

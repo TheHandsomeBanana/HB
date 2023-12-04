@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
 namespace HB.NETF.WPF.ViewModels {
     public class WindowCloser {
@@ -22,7 +17,7 @@ namespace HB.NETF.WPF.ViewModels {
             DependencyProperty.RegisterAttached("MyProperty", typeof(bool), typeof(WindowCloser), new PropertyMetadata(false, OnEnableWindowClosingChanged));
 
         private static void OnEnableWindowClosingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            if(d is Window window) {
+            if (d is Window window) {
                 window.Loaded += (s, o) => {
                     if (window.DataContext is ICloseableWindow vm) {
                         vm.Close += () => {

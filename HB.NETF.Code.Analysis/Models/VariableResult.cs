@@ -1,17 +1,7 @@
-﻿using HB.NETF.Code.Analysis.Models;
-using HB.NETF.Common.Exceptions;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Classification;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
+﻿using Microsoft.CodeAnalysis;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HB.NETF.Code.Analysis.Models {
     public readonly struct VariableResult : IEquatable<VariableResult> {
@@ -98,7 +88,7 @@ namespace HB.NETF.Code.Analysis.Models {
         public override string ToString() {
             return $"{Value} ({Location.SourceTree.FilePath} [{Location.SourceSpan}])";
         }
-    
+
 
         public bool Equals(VariableResultValue other) {
             return this.Location.IsInSource

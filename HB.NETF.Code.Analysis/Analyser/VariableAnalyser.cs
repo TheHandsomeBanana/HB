@@ -1,15 +1,12 @@
 ﻿using HB.NETF.Code.Analysis.Interface;
 using HB.NETF.Code.Analysis.Models;
 using HB.NETF.Code.Analysis.Resolver;
-using HB.NETF.Common.DependencyInjection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.FindSymbols;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Unity;
 
@@ -45,9 +42,9 @@ namespace HB.NETF.Code.Analysis.Analyser {
         #region Resolve
         private readonly List<VariableResultValue> resultValues = new List<VariableResultValue>();
         private async Task<ImmutableArray<VariableResultValue>> ResolveInternal(SyntaxNode syntaxNode) {
-            switch(syntaxNode) {
+            switch (syntaxNode) {
                 case IdentifierNameSyntax identifier:
-                    await ResolveIdentifier(identifier); 
+                    await ResolveIdentifier(identifier);
                     break;
             }
 
@@ -102,12 +99,12 @@ namespace HB.NETF.Code.Analysis.Analyser {
 
             List<VariableResultValue> recAnalyserResult = new List<VariableResultValue>();
 
-            foreach(Tuple<VariableAnalyser, IEnumerable<SyntaxNode>> analyserTuple in analyserTuples) {
+            foreach (Tuple<VariableAnalyser, IEnumerable<SyntaxNode>> analyserTuple in analyserTuples) {
                 VariableAnalyser analyser = analyserTuple.Item1;
                 IEnumerable<SyntaxNode> nodes = analyserTuple.Item2;
 
                 List<Task<ImmutableArray<VariableResultValue>>> analyserTasks = new List<Task<ImmutableArray<VariableResultValue>>>();
-                foreach(SyntaxNode node in nodes)
+                foreach (SyntaxNode node in nodes)
                     analyserTasks.Add(analyser.ResolveInternal(node));
 
                 recAnalyserResult.AddRange((await Task.WhenAll(analyserTasks)).SelectMany(e => e));
@@ -117,7 +114,7 @@ namespace HB.NETF.Code.Analysis.Analyser {
         }
 
         private async Task ResolvePropertyDeclaration(PropertyDeclarationSyntax propertyDeclaration) {
-            if(propertyDeclaration.Initializer == null) 
+            if (propertyDeclaration.Initializer == null)
                 return;
 
             resultValues.Add(new VariableResultValue(propertyDeclaration.Initializer.Value));

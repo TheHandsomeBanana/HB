@@ -1,16 +1,10 @@
 ﻿using HB.NETF.Code.Analysis.Analyser;
-using HB.NETF.Code.Analysis.Exceptions;
 using HB.NETF.Code.Analysis.Interface;
 using HB.NETF.Code.Analysis.Models;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HB.NETF.Code.Analysis.Factory {
     public class AnalyserFactory : IAnalyserFactory {
@@ -18,7 +12,7 @@ namespace HB.NETF.Code.Analysis.Factory {
         public IReadOnlyDictionary<AnalyserFactoryKey, ICodeAnalyser> AnalyserContainer => analyserContainer;
         public SemanticModelCache SemanticModelCache { get; set; }
 
-        
+
 
         public TAnalyser GetOrCreateAnalyser<TAnalyser>(Solution solution, Project project, SemanticModel semanticModel) where TAnalyser : ICodeAnalyser {
             try {
@@ -121,7 +115,7 @@ namespace HB.NETF.Code.Analysis.Factory {
         /// </summary>
         static class AnalyserTypeMapping {
             public static Type Get(Type type) {
-                switch(type.Name) {
+                switch (type.Name) {
                     case nameof(IVariableAnalyser): return typeof(VariableAnalyser);
                     case nameof(IIdentifierAnalyser): return typeof(IdentifierAnalyser);
                     case nameof(ITypeAnalyser): return typeof(TypeAnalyser);

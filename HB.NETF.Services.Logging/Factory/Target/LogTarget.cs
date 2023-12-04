@@ -1,21 +1,13 @@
-﻿using HB.NETF.Services.Logging;
-using HB.NETF.Services.Logging.Exceptions;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.IO.Pipes;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices.ComTypes;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HB.NETF.Services.Logging.Factory.Target {
     public readonly struct LogTarget {
         public object Target { get; }
         public LogSeverity[] ValidSeverities { get; }
-        
+
         public LogTarget(object target, params LogSeverity[] severities) {
             Target = target;
             ValidSeverities = severities;

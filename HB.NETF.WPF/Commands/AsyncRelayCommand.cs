@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HB.NETF.WPF.Commands {
@@ -17,8 +14,8 @@ namespace HB.NETF.WPF.Commands {
             return canExecute != null ? canExecute(parameter) && base.CanExecute(parameter) : base.CanExecute(parameter);
         }
 
-        protected override async Task ExecuteAsync(object parameter) => await callback(); 
-        
-        
+        protected override async Task ExecuteAsync(object parameter) => await callback();
+
+
     }
 }

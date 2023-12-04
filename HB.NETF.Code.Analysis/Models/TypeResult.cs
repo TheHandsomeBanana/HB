@@ -1,10 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HB.NETF.Code.Analysis.Models {
     public readonly struct TypeResult : IEquatable<TypeResult>, IComparable<TypeResult> {
@@ -13,7 +8,7 @@ namespace HB.NETF.Code.Analysis.Models {
         public Location Location { get; }
 
         public TypeResult(SyntaxNode syntaxNode, ITypeSymbol typeInfo) {
-            this.SyntaxNode = syntaxNode; 
+            this.SyntaxNode = syntaxNode;
             this.TypeInfo = typeInfo;
             this.Location = syntaxNode.GetLocation();
         }

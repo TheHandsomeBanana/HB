@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace HB.NETF.Code.Analysis.Tests {
     [TestClass]

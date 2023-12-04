@@ -1,10 +1,7 @@
 ﻿using EnvDTE;
 using Microsoft.VisualStudio.Shell;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HB.NETF.VisualStudio.Workspace {
     public static class SolutionHelper {
@@ -17,7 +14,7 @@ namespace HB.NETF.VisualStudio.Workspace {
         public static Project GetCurrentProject() {
             DTE dte = WorkspaceHelper.GetDTE();
 
-            if ((dte.SelectedItems.Item(1).Project == null && dte.SelectedItems.Item(1).ProjectItem?.ContainingProject == null) || dte.SelectedItems.Count == 0 )
+            if ((dte.SelectedItems.Item(1).Project == null && dte.SelectedItems.Item(1).ProjectItem?.ContainingProject == null) || dte.SelectedItems.Count == 0)
                 return dte.ActiveDocument?.ProjectItem?.ContainingProject;
             else
                 return (dte.SelectedItems.Item(1).Project == null) ? dte.SelectedItems.Item(1).ProjectItem.ContainingProject : dte.SelectedItems.Item(1).Project;

@@ -3,11 +3,6 @@ using HB.NETF.Discord.NET.Toolkit.Services.EntityService;
 using HB.NETF.Discord.NET.Toolkit.Services.EntityService.Holder;
 using HB.NETF.Discord.NET.Toolkit.Services.TokenService;
 using HB.NETF.Unity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Unity;
 
 namespace HB.NETF.Discord.NET.Toolkit {

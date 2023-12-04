@@ -1,10 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
-using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HB.NETF.Code.Analysis.Models {
     public class SemanticModelCache {
@@ -12,8 +7,8 @@ namespace HB.NETF.Code.Analysis.Models {
         public SemanticModelCache() { }
 
         public SemanticModelCache(IEnumerable<Document> documents) {
-            foreach(Document document in documents) {
-                if(document.FilePath != null && document.TryGetSemanticModel(out SemanticModel semanticModel)) {
+            foreach (Document document in documents) {
+                if (document.FilePath != null && document.TryGetSemanticModel(out SemanticModel semanticModel)) {
                     modelCache.Add(document.FilePath, semanticModel);
                 }
             }
