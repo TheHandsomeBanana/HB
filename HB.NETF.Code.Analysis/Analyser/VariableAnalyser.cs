@@ -11,18 +11,19 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unity;
 
 namespace HB.NETF.Code.Analysis.Analyser {
     public class VariableAnalyser : AnalyserBase, IVariableAnalyser {
-        private readonly IAnalyserFactory analyserFactory;
+        [Dependency]
+        public IAnalyserFactory AnalyserFactory { get; }
+
         private IIdentifierAnalyser identifierAnalyser;
-        internal VariableAnalyser() {
-            analyserFactory = DIContainer.GetService<IAnalyserFactory>();
-        }
+        internal VariableAnalyser() { }
 
         public override void Initialize(Solution solution, Project project, SemanticModel semanticModel) {
             base.Initialize(solution, project, semanticModel);
-            identifierAnalyser = analyserFactory.GetOrCreateAnalyser<IdentifierAnalyser>(solution, project, semanticModel);
+            identifierAnalyser = AnalyserFactory.GetOrCreateAnalyser<IdentifierAnalyser>(solution, project, semanticModel);
         }
 
         public async Task<VariableResult?> Run(SyntaxNode syntaxNode) {
@@ -65,7 +66,7 @@ namespace HB.NETF.Code.Analysis.Analyser {
             SyntaxNode declaration = await declarationReference.GetSyntaxAsync();
 
             IEnumerable<Location> locations = await LocationResolver.FindReferenceLocations(identifierSymbol, Solution, Documents);
-            IEnumerable<Tuple<VariableAnalyser, IEnumerable<SyntaxNode>>> analyserTuples = LocationResolver.GetAnalyserWithNodesToAnalyse<VariableAnalyser>(locations, Solution, Project, analyserFactory);
+            IEnumerable<Tuple<VariableAnalyser, IEnumerable<SyntaxNode>>> analyserTuples = LocationResolver.GetAnalyserWithNodesToAnalyse<VariableAnalyser>(locations, Solution, Project, AnalyserFactory);
 
             foreach (Tuple<VariableAnalyser, IEnumerable<SyntaxNode>> analyserTuple in analyserTuples) {
                 VariableAnalyser analyser = analyserTuple.Item1;
@@ -97,7 +98,7 @@ namespace HB.NETF.Code.Analysis.Analyser {
                 return;
 
             IEnumerable<Location> locations = await LocationResolver.FindCallerLocations(declaredSymbol, Solution, Documents);
-            IEnumerable<Tuple<VariableAnalyser, IEnumerable<SyntaxNode>>> analyserTuples = LocationResolver.GetAnalyserWithNodesToAnalyse<VariableAnalyser>(locations, Solution, Project, analyserFactory);
+            IEnumerable<Tuple<VariableAnalyser, IEnumerable<SyntaxNode>>> analyserTuples = LocationResolver.GetAnalyserWithNodesToAnalyse<VariableAnalyser>(locations, Solution, Project, AnalyserFactory);
 
             List<VariableResultValue> recAnalyserResult = new List<VariableResultValue>();
 
