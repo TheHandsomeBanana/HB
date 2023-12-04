@@ -8,12 +8,14 @@ using HB.NETF.Services.Security.Cryptography;
 using HB.NETF.Services.Security.Cryptography.Interfaces;
 using HB.NETF.Services.Security.Cryptography.Keys;
 using HB.NETF.Services.Security.DataProtection;
+using HB.NETF.Unity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unity;
 
 namespace HB.NETF.Package {
     /// <summary>
@@ -21,19 +23,12 @@ namespace HB.NETF.Package {
     /// <br>Uses <see cref="DIContainer"/> -> overrides previous dependencies.</br>
     /// </summary>
     public static class HBPackage {
+        public static IUnityContainer UnityContainer { get; private set; }
         public static void PreparePackage() {
-            DIBuilder diBuilder = new DIBuilder();
-            diBuilder.Services.AddTransient<IStreamHandler, StreamHandler>();
-            diBuilder.Services.AddTransient<IAsyncStreamHandler, AsyncStreamHandler>();
-            diBuilder.Services.AddTransient<IIdentifierFactory, IdentifierFactory>();
-            diBuilder.Services.AddTransient<IAesCryptoService, AesCryptoService>();
-            diBuilder.Services.AddTransient<IRsaCryptoService, RsaCryptoService>();
-            diBuilder.Services.AddTransient<IDataProtectionService, DataProtectionService>();
-            diBuilder.Services.AddSingleton<IAnalyserFactory, AnalyserFactory>();
-
-            DIContainer.BuildServiceProvider(diBuilder);
+            UnityContainer = UnityBase.UnityContainer.CreateChildContainer();
+            UnityBase.Boot(UnityContainer, new UnitySetup());
         }
 
-        public static T GetService<T>() => DIContainer.GetService<T>();
+        public static T GetService<T>() => UnityContainer.Resolve<T>();
     }
 }

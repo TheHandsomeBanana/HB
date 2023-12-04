@@ -53,7 +53,6 @@
     <Compile Include="IUnitySetup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnityBase.cs" />
-    <Compile Include="UnityBoot.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

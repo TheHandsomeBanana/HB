@@ -54,10 +54,17 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Unity.Abstractions, Version=5.11.7.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.11.10\lib\net47\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.11.11.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.11.10\lib\net47\Unity.Container.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HBPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitySetup.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HB.NETF.Code.Analysis\HB.NETF.Code.Analysis.csproj">
@@ -87,6 +94,10 @@
     <ProjectReference Include="..\HB.NETF.Services.Serialization\HB.NETF.Services.Serialization.csproj">
       <Project>{802de704-2f70-48aa-9734-ca9c0d1e2d38}</Project>
       <Name>HB.NETF.Services.Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HB.NETF.Unity\HB.NETF.Unity.csproj">
+      <Project>{e2106acf-1416-4f8e-b00d-6b36f3ad21da}</Project>
+      <Name>HB.NETF.Unity</Name>
     </ProjectReference>
     <ProjectReference Include="..\HB.NETF.VisualStudio\HB.NETF.VisualStudio.csproj">
       <Project>{f017e1b9-c8e3-4c09-bc41-4c6e6f8e7c98}</Project>
