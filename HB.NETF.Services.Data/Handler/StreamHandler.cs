@@ -18,25 +18,27 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Resources;
+using Unity;
 
 namespace HB.NETF.Services.Data.Handler {
 
     public delegate IStreamHandler OptionBuilderFunc(IStreamOptionBuilder optionBuilder);
     public class StreamHandler : IStreamHandler {
-        private readonly IAesCryptoService aesCryptoService;
-        private readonly IRsaCryptoService rsaCryptoService;
-        private readonly IDataProtectionService dataProtectionService;
+        [Dependency]
+        public IAesCryptoService AesCryptoService { get; set; }
+        [Dependency]
+        public IRsaCryptoService RsaCryptoService { get; set; }
+        [Dependency]
+        public IDataProtectionService DataProtectionService { get; set; }
 
         internal StreamOptions Options { get; set; } = new StreamOptions();
         public FileStream Stream { get; private set; }
 
+        [InjectionConstructor]
         public StreamHandler() {
-            aesCryptoService = DIContainer.GetService<IAesCryptoService>();
-            rsaCryptoService = DIContainer.GetService<IRsaCryptoService>();
-            dataProtectionService = DIContainer.GetService<IDataProtectionService>();
         }
 
-        public StreamHandler(FileStream fs) : this() {
+        public StreamHandler(FileStream fs) {
             Stream = fs;
         }
 
@@ -232,17 +234,17 @@ namespace HB.NETF.Services.Data.Handler {
         protected byte[] DecryptBuffer(byte[] buffer) {
             switch (Options.EncryptionMode) {
                 case EncryptionMode.WindowsDataProtectionAPI:
-                    return dataProtectionService.Unprotect(buffer);
+                    return DataProtectionService.Unprotect(buffer);
                 case EncryptionMode.AES:
                     if (Options.Key == null)
                         throw new StreamHandlerException($"No key for aes decryption provided.");
 
-                    return aesCryptoService.Decrypt(buffer, Options.Key);
+                    return AesCryptoService.Decrypt(buffer, Options.Key);
                 case EncryptionMode.RSA:
                     if (Options.Key == null)
                         throw new StreamHandlerException($"No key for rsa decryption provided.");
 
-                    return rsaCryptoService.Decrypt(buffer, Options.Key);
+                    return RsaCryptoService.Decrypt(buffer, Options.Key);
             }
 
             return buffer;
@@ -251,17 +253,17 @@ namespace HB.NETF.Services.Data.Handler {
         protected byte[] EncryptBuffer(byte[] buffer) {
             switch (Options.EncryptionMode) {
                 case EncryptionMode.WindowsDataProtectionAPI:
-                    return dataProtectionService.Protect(buffer);
+                    return DataProtectionService.Protect(buffer);
                 case EncryptionMode.AES:
                     if (Options.Key == null)
                         throw new StreamHandlerException($"No key for aes decryption provided.");
 
-                    return aesCryptoService.Encrypt(buffer, Options.Key);
+                    return AesCryptoService.Encrypt(buffer, Options.Key);
                 case EncryptionMode.RSA:
                     if (Options.Key == null)
                         throw new StreamHandlerException($"No key for rsa decryption provided.");
 
-                    return rsaCryptoService.Encrypt(buffer, Options.Key);
+                    return RsaCryptoService.Encrypt(buffer, Options.Key);
             }
 
             return buffer;

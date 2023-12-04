@@ -14,9 +14,12 @@ using Newtonsoft.Json;
 using HB.NETF.Common;
 using Microsoft.Win32;
 using System.Security.Cryptography;
+using Unity;
 
 namespace HB.NETF.Services.Data.Handler.Async {
     public class AsyncStreamHandler : StreamHandler, IAsyncStreamHandler {
+
+        [InjectionConstructor]
         public AsyncStreamHandler() : base() {
         }
 

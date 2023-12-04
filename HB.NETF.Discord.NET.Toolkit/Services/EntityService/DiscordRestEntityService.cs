@@ -30,7 +30,12 @@ namespace HB.NETF.Discord.NET.Toolkit.Services.EntityService {
             Logger.LogInformation("Connecting");
 
             ((DiscordRestClient)Client).LoggedIn += Client_Ready;
-            ((DiscordRestClient)Client).LoginAsync(TokenType.Bot, token).Wait(Timeout);
+            await ((DiscordRestClient)Client).LoginAsync(TokenType.Bot, token);
+            
+            Stopwatch sw = Stopwatch.StartNew();
+            while(!Ready && sw.ElapsedMilliseconds <= Timeout) { } // Wait for connection
+            sw.Stop();
+
             if (!Ready)
                 OnTimeout?.Invoke();
         }

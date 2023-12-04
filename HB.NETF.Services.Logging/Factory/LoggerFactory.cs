@@ -10,22 +10,17 @@ using HB.NETF.Services.Logging.Factory.Target;
 
 namespace HB.NETF.Services.Logging.Factory {
     public class LoggerFactory : ILoggerFactory {
-        public LogTarget[] GlobalLogTargets { get; }
+        public LogTarget[] GlobalLogTargets { get; private set; }
         public Dictionary<string, ILogger> LoggerContainer { get; set; } = new Dictionary<string, ILogger>();
  
         public LoggerFactory() {
             GlobalLogTargets = new LogTarget[0];
         }
 
-
-        /// <summary>
-        /// Adds Global Log Targets to factory (each logger will write to these targets)
-        /// </summary>
-        /// <param name="builder"></param>
-        public LoggerFactory(Action<ILoggingBuilder> builder) {
+        public void InvokeLoggingBuilder(Action<ILoggingBuilder> builder) {
             if (builder is null)
                 throw new ArgumentNullException(nameof(builder));
-            
+
 
             LoggingBuilder loggingBuilder = new LoggingBuilder();
             builder.Invoke(loggingBuilder);

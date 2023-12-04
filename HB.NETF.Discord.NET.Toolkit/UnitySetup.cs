@@ -1,5 +1,6 @@
 ﻿using HB.NETF.Discord.NET.Toolkit.Services.ApplicationService;
 using HB.NETF.Discord.NET.Toolkit.Services.EntityService;
+using HB.NETF.Discord.NET.Toolkit.Services.EntityService.Holder;
 using HB.NETF.Discord.NET.Toolkit.Services.TokenService;
 using HB.NETF.Unity;
 using System;
@@ -15,7 +16,8 @@ namespace HB.NETF.Discord.NET.Toolkit {
             container.RegisterType<IDiscordEntityService, DiscordRestEntityService>(nameof(DiscordRestEntityService))
                 .RegisterType<IDiscordEntityService, DiscordSocketEntityService>(nameof(DiscordSocketEntityService))
                 .RegisterType<IDiscordApplicationService, DiscordApplicationService>()
-                .RegisterType<IDiscordTokenService, DiscordTokenService>();
+                .RegisterType<IDiscordTokenService, DiscordTokenService>()
+                .RegisterSingleton<IServerCollectionHolder, ServerCollectionHolder>();
         }
     }
 }

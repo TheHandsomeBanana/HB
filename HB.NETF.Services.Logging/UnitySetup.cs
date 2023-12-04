@@ -10,7 +10,7 @@ using Unity;
 namespace HB.NETF.Services.Logging {
     public class UnitySetup : IUnitySetup {
         public void Build(IUnityContainer container) {
-            container.RegisterType<ILoggerFactory, LoggerFactory>();
+            container.RegisterSingleton<ILoggerFactory, LoggerFactory>();
         }
     }
 }

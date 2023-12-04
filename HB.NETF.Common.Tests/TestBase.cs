@@ -21,13 +21,8 @@ namespace HB.NETF.Common.Tests {
         
         [ClassInitialize(InheritanceBehavior.BeforeEachDerivedClass)]
         public static void Initialize(TestContext context) {
-            DIBuilder dIBuilder = new DIBuilder();
-            dIBuilder.Services.AddSingleton<ILoggerFactory>(new LoggerFactory((b) => b.AddTarget(Output)))
-                .AddTransient<IStreamHandler, StreamHandler>()
-                .AddTransient<IAsyncStreamHandler, AsyncStreamHandler>()
-                .AddSingleton<IDiscordEntityService, DiscordSocketEntityService>()
-                .AddTransient<IDataProtectionService, DataProtectionService>();
-            DIContainer.BuildServiceProvider(dIBuilder);
+            
+
         }
 
         public static void Output(LogStatement log) {

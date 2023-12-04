@@ -11,17 +11,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unity;
 
 namespace HB.NETF.Discord.NET.Toolkit.Services.EntityService {
     public abstract class DiscordBaseEntityService {
+        [Dependency]
 
-        private readonly IAsyncStreamHandler streamHandler;
+        public IAsyncStreamHandler StreamHandler;
         protected IDiscordClient Client { get; set; }
         protected ILogger<IDiscordEntityService> Logger { get; }
 
         public DiscordBaseEntityService(ILoggerFactory loggerFactory, IAsyncStreamHandler streamHandler) {
             this.Logger = loggerFactory.GetOrCreateLogger<IDiscordEntityService>();
-            this.streamHandler = streamHandler;
+            this.StreamHandler = streamHandler;
         }
 
         public bool Ready { get; private set; }
@@ -30,12 +32,12 @@ namespace HB.NETF.Discord.NET.Toolkit.Services.EntityService {
        
         // Async stream handler currently not working if encrypted
         public async Task<DiscordServerCollection> ReadFromFile(string fileName) {
-            return streamHandler.WithOptions(optionBuilder).ReadFromFile<DiscordServerCollection>(fileName);
+            return StreamHandler.WithOptions(optionBuilder).ReadFromFile<DiscordServerCollection>(fileName);
         }
 
         // Async stream handler currently not working if encrypted
         public async Task SaveToFile(string fileName, DiscordServerCollection serverCollection) {
-            streamHandler.WithOptions(optionBuilder).WriteToFile<DiscordServerCollection>(fileName, serverCollection);
+            StreamHandler.WithOptions(optionBuilder).WriteToFile<DiscordServerCollection>(fileName, serverCollection);
         }
 
         private OptionBuilderFunc optionBuilder;
