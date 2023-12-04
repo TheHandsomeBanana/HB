@@ -14,12 +14,12 @@ using System.Windows.Markup;
 
 namespace HB.NETF.Code.Analysis.Resolver {
     public static class LocationResolver {
-        public static async Task<IEnumerable<Location>> FindCallerLocations(ISymbol symbol, Solution solution, IImmutableSet<Document> documents, CancellationToken token = default) {
+        public static async Task<IEnumerable<Location>> FindCallerLocations(this ISymbol symbol, Solution solution, IImmutableSet<Document> documents, CancellationToken token = default) {
             IEnumerable<SymbolCallerInfo> callerInfo = await SymbolFinder.FindCallersAsync(symbol, solution, documents);
             return callerInfo.SelectMany(e => e.Locations);
         }
 
-        public static async Task<IEnumerable<Location>> FindReferenceLocations(ISymbol symbol, Solution solution, IImmutableSet<Document> documents, CancellationToken token = default) {
+        public static async Task<IEnumerable<Location>> FindReferenceLocations(this ISymbol symbol, Solution solution, IImmutableSet<Document> documents, CancellationToken token = default) {
             IEnumerable<ReferencedSymbol> references = await SymbolFinder.FindReferencesAsync(symbol, solution, documents, token);
             return references.SelectMany(l => l.Locations.Select(s => s.Location));
         }
@@ -28,11 +28,11 @@ namespace HB.NETF.Code.Analysis.Resolver {
             return locations.GroupBy(e => e.SourceTree.FilePath).Select(e => e.First());
         }
 
-        public static IEnumerable<Location> GetLocationsWithDifferentSemanticsThanSource(IEnumerable<Location> locations, string sourcePath) {
+        public static IEnumerable<Location> GetLocationsWithDifferentSemanticsThanSource(this IEnumerable<Location> locations, string sourcePath) {
             return locations.Where(e => e.SourceTree.FilePath != sourcePath);
         }
 
-        public static IEnumerable<Location> GetLocationsWithSameSemanticsAsSource(IEnumerable<Location> locations, string sourcePath) {
+        public static IEnumerable<Location> GetLocationsWithSameSemanticsAsSource(this IEnumerable<Location> locations, string sourcePath) {
             return locations.Where(e => e.SourceTree.FilePath == sourcePath);
         }
 
@@ -57,7 +57,7 @@ namespace HB.NETF.Code.Analysis.Resolver {
 
         public static SyntaxNode GetNodeFromLocation(Location location) => location.SourceTree.GetRoot().FindNode(location.SourceSpan);
 
-        public static IEnumerable<SyntaxNode> GetNodesFromLocations(IEnumerable<Location> locations) {
+        public static IEnumerable<SyntaxNode> GetNodesFromLocations(this IEnumerable<Location> locations) {
             foreach(Location location in locations) {
                 yield return GetNodeFromLocation(location);
             }
