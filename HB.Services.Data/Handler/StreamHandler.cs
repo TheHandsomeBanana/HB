@@ -1,7 +1,7 @@
 ﻿using HB.Common;
 using HB.Common.Extensions;
-using HB.DependencyInjection;
 using HB.DependencyInjection.Exceptions;
+using HB.DependencyInjection.MS;
 using HB.Services.Data.Exceptions;
 using HB.Services.Data.Handler.Options;
 using HB.Services.Security.Cryptography.Interfaces;
@@ -20,7 +20,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace HB.Services.Data.Handler {
+namespace HB.Services.Data.Handler
+{
 
     public delegate IStreamHandler OptionBuilderFunc(IStreamOptionBuilder optionBuilder);
     public class StreamHandler : IStreamHandler {

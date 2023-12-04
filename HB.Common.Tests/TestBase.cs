@@ -1,4 +1,4 @@
-﻿using HB.DependencyInjection;
+﻿using HB.DependencyInjection.MS;
 using HB.Services.Data.Handler;
 using HB.Services.Logging;
 using HB.Services.Logging.Factory;
@@ -12,7 +12,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HB.Common.Tests {
+namespace HB.Common.Tests
+{
     [TestClass]
     public abstract class TestBase {
         [TestInitialize]

@@ -8,11 +8,16 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Unity" Version="5.11.10" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\HB.Common\HB.Common.csproj" />
     <ProjectReference Include="..\HB.Services.Logging\HB.Services.Logging.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Unity\" />
   </ItemGroup>
 
 </Project>

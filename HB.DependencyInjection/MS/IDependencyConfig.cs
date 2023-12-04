@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HB.DependencyInjection {
-    public interface IDependencyConfig {
+namespace HB.DependencyInjection.MS
+{
+    public interface IDependencyConfig
+    {
         void Configure(DIBuilder builder);
     }
 }

@@ -6,20 +6,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HB.DependencyInjection {
-    public static class DIContainer {      
-        
+namespace HB.DependencyInjection.MS
+{
+    public static class DIContainer
+    {
+
         public static IServiceProvider? ServiceProvider { get; private set; }
 
-        public static void BuildServiceProvider(IServiceCollection services) {
+        public static void BuildServiceProvider(IServiceCollection services)
+        {
             ServiceProvider = services.BuildServiceProvider();
         }
 
-        public static void BuildServiceProvider(DIBuilder builder) { 
+        public static void BuildServiceProvider(DIBuilder builder)
+        {
             ServiceProvider = builder.Services.BuildServiceProvider();
         }
 
-        public static TService? GetService<TService>() {
+        public static TService? GetService<TService>()
+        {
             object? service = ServiceProvider?.GetService(typeof(TService));
             if (service == null)
                 return default;
