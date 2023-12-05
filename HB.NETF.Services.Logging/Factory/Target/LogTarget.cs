@@ -6,32 +6,32 @@ using System.Security.Cryptography;
 namespace HB.NETF.Services.Logging.Factory.Target {
     public readonly struct LogTarget {
         public object Target { get; }
-        public LogSeverity[] ValidSeverities { get; }
+        public LogSeverity MinLogSeverity { get; }
 
-        public LogTarget(object target, params LogSeverity[] severities) {
+        public LogTarget(object target, LogSeverity minSeverity) {
             Target = target;
-            ValidSeverities = severities;
+            MinLogSeverity = minSeverity;
             Validate(target);
         }
 
-        public LogTarget(string file, params LogSeverity[] severities) {
+        public LogTarget(string file, LogSeverity minSeverity) {
             Target = file;
-            ValidSeverities = severities;
+            MinLogSeverity = minSeverity;
         }
 
-        public LogTarget(Stream stream, params LogSeverity[] severities) {
+        public LogTarget(Stream stream, LogSeverity minSeverity) {
             Target = stream;
-            ValidSeverities = severities;
+            MinLogSeverity = minSeverity;
         }
 
-        public LogTarget(Action<LogStatement> action, params LogSeverity[] severities) : this((object)action, severities) {
+        public LogTarget(Action<LogStatement> action, LogSeverity minSeverity) : this((object)action, minSeverity) {
             Target = action;
-            ValidSeverities = severities;
+            MinLogSeverity = minSeverity;
         }
 
-        public LogTarget(Action<string> action, params LogSeverity[] severities) : this((object)action, severities) {
+        public LogTarget(Action<string> action, LogSeverity minSeverity) : this((object)action, minSeverity) {
             Target = action;
-            ValidSeverities = severities;
+            MinLogSeverity = minSeverity;
         }
 
         private readonly static Type[] validTypes = new Type[] { typeof(string), typeof(Action<LogStatement>), typeof(Action<string>),

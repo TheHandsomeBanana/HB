@@ -8,20 +8,24 @@ using System.Text;
 
 namespace HB.NETF.Services.Logging {
     internal class Logger<T> : Logger, ILogger<T> {
-        public Logger() : base() {
+        public Logger() {
             Category = typeof(T).Name;
         }
     }
 
     internal class Logger : ILogger {
-        internal LogTarget[] LogTargets { get; set; }
+        internal LogTarget[] TraceTargets { get; set; } = Array.Empty<LogTarget>();
+        internal LogTarget[] DebugTargets { get; set; } = Array.Empty<LogTarget>();
+        internal LogTarget[] InformationTargets { get; set; } = Array.Empty<LogTarget>();
+        internal LogTarget[] WarningTargets { get; set; } = Array.Empty<LogTarget>();
+        internal LogTarget[] ErrorTargets { get; set; } = Array.Empty<LogTarget>();
+        internal LogTarget[] CriticalTargets { get; set; } = Array.Empty<LogTarget>();
+
         public string Category { get; set; }
         public DateTimeKind TimeKind { get; private set; } = DateTimeKind.Local;
+        protected Logger() { }
 
-        protected Logger() {
-            LogTargets = new LogTarget[0];
-        }
-        internal Logger(string category) : this() {
+        internal Logger(string category) {
             Category = category;
         }
 
@@ -48,37 +52,28 @@ namespace HB.NETF.Services.Logging {
             }
         }
 
-        private static IEnumerable<LogTarget> GetBySeverity(LogTarget[] logTargets, LogSeverity severity) {
-            return logTargets.Where(e => {
-                if (e.ValidSeverities.Length == 0)
-                    return true;
-
-                return e.ValidSeverities.Contains(severity);
-            });
-        }
-
         public void LogDebug(string message) {
-            foreach (LogTarget target in GetBySeverity(LogTargets, LogSeverity.Debug))
+            foreach (LogTarget target in DebugTargets)
                 LogInternal(target, new LogStatement(GetCategory(), message, LogSeverity.Debug, GetCurrentTime()));
         }
 
         public void LogTrace(string message) {
-            foreach (LogTarget target in GetBySeverity(LogTargets, LogSeverity.Trace))
+            foreach (LogTarget target in TraceTargets)
                 LogInternal(target, new LogStatement(GetCategory(), message, LogSeverity.Trace, GetCurrentTime()));
         }
 
         public void LogInformation(string message) {
-            foreach (LogTarget target in GetBySeverity(LogTargets, LogSeverity.Information))
+            foreach (LogTarget target in InformationTargets)
                 LogInternal(target, new LogStatement(GetCategory(), message, LogSeverity.Information, GetCurrentTime()));
         }
 
         public void LogWarning(string message) {
-            foreach (LogTarget target in GetBySeverity(LogTargets, LogSeverity.Warning))
+            foreach (LogTarget target in WarningTargets)
                 LogInternal(target, new LogStatement(GetCategory(), message, LogSeverity.Warning, GetCurrentTime()));
         }
 
         public void LogError(string message) {
-            foreach (LogTarget target in GetBySeverity(LogTargets, LogSeverity.Error))
+            foreach (LogTarget target in ErrorTargets)
                 LogInternal(target, new LogStatement(GetCategory(), message, LogSeverity.Error, GetCurrentTime()));
         }
 
@@ -87,7 +82,7 @@ namespace HB.NETF.Services.Logging {
         }
 
         public void LogCritical(string message) {
-            foreach (LogTarget target in GetBySeverity(LogTargets, LogSeverity.Critical))
+            foreach (LogTarget target in CriticalTargets)
                 LogInternal(target, new LogStatement(GetCategory(), message, LogSeverity.Critical, GetCurrentTime()));
         }
 

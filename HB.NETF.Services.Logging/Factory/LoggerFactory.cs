@@ -18,7 +18,6 @@ namespace HB.NETF.Services.Logging.Factory {
             if (builder is null)
                 throw new ArgumentNullException(nameof(builder));
 
-
             LoggingBuilder loggingBuilder = new LoggingBuilder();
             builder.Invoke(loggingBuilder);
 
@@ -35,11 +34,7 @@ namespace HB.NETF.Services.Logging.Factory {
             LoggingBuilder loggingBuilder = new LoggingBuilder();
             builder.Invoke(loggingBuilder);
 
-            Logger logger = new Logger(category);
-            logger.LogTargets = loggingBuilder.LogTargets.Concat(GlobalLogTargets).ToArray();
-
-            LoggerContainer.Add(category, logger);
-            return logger;
+            return CreateLogger(category, loggingBuilder.LogTargets.Concat(GlobalLogTargets).ToArray());
         }
 
         public ILogger<T> CreateLogger<T>(Action<ILoggingBuilder> builder) {
@@ -52,20 +47,14 @@ namespace HB.NETF.Services.Logging.Factory {
             LoggingBuilder loggingBuilder = new LoggingBuilder();
             builder.Invoke(loggingBuilder);
 
-            Logger<T> logger = new Logger<T>();
-            logger.LogTargets = loggingBuilder.LogTargets.Concat(GlobalLogTargets).ToArray();
-            this.LoggerContainer.Add(typeof(T).FullName, logger);
-            return logger;
+            return CreateLogger<T>(loggingBuilder.LogTargets.Concat(GlobalLogTargets).ToArray());
         }
 
         public ILogger GetOrCreateLogger(string category) {
             if (LoggerContainer.ContainsKey(category))
                 return LoggerContainer[category];
 
-            Logger logger = new Logger(category);
-            logger.LogTargets = GlobalLogTargets;
-            this.LoggerContainer.Add(category, logger);
-            return logger;
+            return CreateLogger(category, GlobalLogTargets);
         }
 
         public ILogger<T> GetOrCreateLogger<T>() {
@@ -73,10 +62,41 @@ namespace HB.NETF.Services.Logging.Factory {
                 return (ILogger<T>)LoggerContainer[typeof(T).FullName];
 
             Logger<T> logger = new Logger<T>();
-            logger.LogTargets = GlobalLogTargets;
-
+            logger.TraceTargets = FilterLogTargets(GlobalLogTargets, LogSeverity.Trace);
+            logger.DebugTargets = FilterLogTargets(GlobalLogTargets, LogSeverity.Debug);
+            logger.InformationTargets = FilterLogTargets(GlobalLogTargets, LogSeverity.Information);
+            logger.WarningTargets = FilterLogTargets(GlobalLogTargets, LogSeverity.Warning);
+            logger.ErrorTargets = FilterLogTargets(GlobalLogTargets, LogSeverity.Error);
+            logger.CriticalTargets = FilterLogTargets(GlobalLogTargets, LogSeverity.Critical);
             this.LoggerContainer.Add(typeof(T).FullName, logger);
             return logger;
         }
+
+        private Logger CreateLogger(string category, LogTarget[] logTargets) {
+            Logger logger = new Logger(category);
+            logger.TraceTargets = FilterLogTargets(logTargets, LogSeverity.Trace);
+            logger.DebugTargets = FilterLogTargets(logTargets, LogSeverity.Debug);
+            logger.InformationTargets = FilterLogTargets(logTargets, LogSeverity.Information);
+            logger.WarningTargets = FilterLogTargets(logTargets, LogSeverity.Warning);
+            logger.ErrorTargets = FilterLogTargets(logTargets, LogSeverity.Error);
+            logger.CriticalTargets = FilterLogTargets(logTargets, LogSeverity.Critical);
+
+            this.LoggerContainer.Add(category, logger);
+            return logger;
+        }
+
+        private Logger<T> CreateLogger<T>(LogTarget[] logTargets) {
+            Logger<T> logger = new Logger<T>();
+            logger.TraceTargets = FilterLogTargets(logTargets, LogSeverity.Trace);
+            logger.DebugTargets = FilterLogTargets(logTargets, LogSeverity.Debug);
+            logger.InformationTargets = FilterLogTargets(logTargets, LogSeverity.Information);
+            logger.WarningTargets = FilterLogTargets(logTargets, LogSeverity.Warning);
+            logger.ErrorTargets = FilterLogTargets(logTargets, LogSeverity.Error);
+            logger.CriticalTargets = FilterLogTargets(logTargets, LogSeverity.Critical);
+            this.LoggerContainer.Add(typeof(T).FullName, logger);
+            return logger;
+        }
+
+        private LogTarget[] FilterLogTargets(LogTarget[] logTargets, LogSeverity severity) => logTargets.Where(e => e.MinLogSeverity == severity).ToArray();
     }
 }

@@ -19,7 +19,7 @@ namespace HB.NETF.Unity {
             if (UnityContainer.IsRegistered<IUnityContainer>(name))
                 return UnityContainer.Resolve<IUnityContainer>(name);
 
-            throw new Exception($"Child container {name} not registered.");
+            return null;
         }
 
         public static IUnityContainer CreateChildContainer(string name) {
