@@ -97,6 +97,6 @@ namespace HB.NETF.Services.Logging.Factory {
             return logger;
         }
 
-        private LogTarget[] FilterLogTargets(LogTarget[] logTargets, LogSeverity severity) => logTargets.Where(e => e.MinLogSeverity == severity).ToArray();
+        private LogTarget[] FilterLogTargets(LogTarget[] logTargets, LogSeverity severity) => logTargets.Where(e => e.MinLogSeverity >= severity).ToArray();
     }
 }
