@@ -9,11 +9,11 @@ namespace HB.NETF.Services.Logging.Factory.Builder {
         ILoggingBuilder AddTarget(string file, LogSeverity minSeverity = LogSeverity.Trace);
         ILoggingBuilder AddTarget(Stream stream, LogSeverity minSeverity = LogSeverity.Trace);
 
-        ILoggingBuilder AddTargets(object[] targets, LogSeverity minSeverity = LogSeverity.Trace);
-        ILoggingBuilder AddTargets(Action<LogStatement>[] actions, LogSeverity minSeverity = LogSeverity.Trace);
-        ILoggingBuilder AddTargets(Action<string>[] actions, LogSeverity minSeverity = LogSeverity.Trace);
-        ILoggingBuilder AddTargets(string[] files, LogSeverity minSeverity = LogSeverity.Trace);
-        ILoggingBuilder AddTargets(Stream[] files, LogSeverity minSeverity = LogSeverity.Trace);
+        ILoggingBuilder AddTargets(LogSeverity minSeverity = LogSeverity.Trace, params object[] targets);
+        ILoggingBuilder AddTargets(LogSeverity minSeverity = LogSeverity.Trace, params Action<LogStatement>[] actions);
+        ILoggingBuilder AddTargets(LogSeverity minSeverity = LogSeverity.Trace, params Action<string>[] actions);
+        ILoggingBuilder AddTargets(LogSeverity minSeverity = LogSeverity.Trace, params string[] files);
+        ILoggingBuilder AddTargets(LogSeverity minSeverity = LogSeverity.Trace, params Stream[] files);
 
     }
 }

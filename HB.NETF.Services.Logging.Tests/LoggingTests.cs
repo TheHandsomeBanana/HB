@@ -60,8 +60,7 @@ namespace HB.NETF.Services.Logging.Tests {
         [TestMethod]
         public void CreateExistingLogger_ThrowsException() {
             ILoggerFactory factory = new LoggerFactory();
-            factory.CreateLogger<LoggingTests>(b => b.WithNoTargets());
-            Assert.ThrowsException<LoggerException>(() => factory.CreateLogger<LoggingTests>(b => b.WithNoTargets()));
+            Assert.ThrowsException<LoggerException>(() => factory.CreateLogger<LoggingTests>(e => e.AddTarget(new object())));
         }
     }
 }

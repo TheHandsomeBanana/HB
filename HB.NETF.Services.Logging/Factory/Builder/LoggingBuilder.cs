@@ -44,35 +44,35 @@ namespace HB.NETF.Services.Logging.Factory.Builder {
             return this;
         }
 
-        public ILoggingBuilder AddTargets(object[] targets, LogSeverity minSeverity = LogSeverity.Trace) {
+        public ILoggingBuilder AddTargets(LogSeverity minSeverity = LogSeverity.Trace, params object[] targets) {
             foreach (object target in targets)
                 AddTarget(target, minSeverity);
 
             return this;
         }
 
-        public ILoggingBuilder AddTargets(Action<LogStatement>[] actions, LogSeverity minSeverity = LogSeverity.Trace) {
+        public ILoggingBuilder AddTargets(LogSeverity minSeverity = LogSeverity.Trace, params Action<LogStatement>[] actions) {
             foreach (Action<LogStatement> target in actions)
                 AddTarget(target, minSeverity);
 
             return this;
         }
 
-        public ILoggingBuilder AddTargets(Action<string>[] actions, LogSeverity minSeverity = LogSeverity.Trace) {
+        public ILoggingBuilder AddTargets(LogSeverity minSeverity = LogSeverity.Trace, params Action<string>[] actions) {
             foreach (Action<string> target in actions)
                 AddTarget(target, minSeverity);
 
             return this;
         }
 
-        public ILoggingBuilder AddTargets(string[] files, LogSeverity minSeverity = LogSeverity.Trace) {
+        public ILoggingBuilder AddTargets(LogSeverity minSeverity = LogSeverity.Trace, params string[] files) {
             foreach (string target in files)
                 AddTarget(target, minSeverity);
 
             return this;
         }
 
-        public ILoggingBuilder AddTargets(Stream[] streams, LogSeverity minSeverity = LogSeverity.Trace) {
+        public ILoggingBuilder AddTargets(LogSeverity minSeverity = LogSeverity.Trace, params Stream[] streams) {
             foreach (Stream target in streams)
                 AddTarget(target, minSeverity);
 

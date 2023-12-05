@@ -59,6 +59,12 @@
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Abstractions, Version=5.11.7.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.11.10\lib\net47\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.11.11.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.11.10\lib\net47\Unity.Container.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -88,6 +94,10 @@
     <ProjectReference Include="..\HB.NETF.Services.Security\HB.NETF.Services.Security.csproj">
       <Project>{884D9597-BFBB-41C0-BDCF-37D1EF0DDF3A}</Project>
       <Name>HB.NETF.Services.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HB.NETF.Unity\HB.NETF.Unity.csproj">
+      <Project>{E2106ACF-1416-4F8E-B00D-6B36F3AD21DA}</Project>
+      <Name>HB.NETF.Unity</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

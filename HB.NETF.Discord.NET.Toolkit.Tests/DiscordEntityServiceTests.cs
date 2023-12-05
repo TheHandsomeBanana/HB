@@ -12,7 +12,7 @@ namespace HB.NETF.Discord.NET.Toolkit.Tests {
         [TestMethod]
         public async Task DiscordEntityServiceTest() {
 
-            IDiscordEntityService entityService = DIContainer.GetService<IDiscordEntityService>();
+            IDiscordEntityService entityService = <IDiscordEntityService>();
             await entityService.Connect("");
             await entityService.LoadEntities();
         }
