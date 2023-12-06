@@ -4,6 +4,7 @@ using HB.NETF.Discord.NET.Toolkit.Services.EntityService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Threading.Tasks;
+using Unity;
 
 namespace HB.NETF.Discord.NET.Toolkit.Tests {
     [TestClass]
@@ -12,7 +13,7 @@ namespace HB.NETF.Discord.NET.Toolkit.Tests {
         [TestMethod]
         public async Task DiscordEntityServiceTest() {
 
-            IDiscordEntityService entityService = <IDiscordEntityService>();
+            IDiscordEntityService entityService = UnityContainer.Resolve<IDiscordEntityService>();
             await entityService.Connect("");
             await entityService.LoadEntities();
         }
