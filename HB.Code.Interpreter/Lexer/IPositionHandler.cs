@@ -1,6 +1,5 @@
 ﻿namespace HB.Code.Interpreter.Lexer;
-public interface IPositionHandler<TPosition> where TPosition : IPosition
-{
+public interface IPositionHandler<TPosition> where TPosition : IPosition {
     public string Content { get; }
     public TPosition CurrentPosition { get; }
     public void Init(string content);
