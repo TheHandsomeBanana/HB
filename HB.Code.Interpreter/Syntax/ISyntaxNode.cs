@@ -1,6 +1,4 @@
-﻿using HB.Code.Interpreter.Location;
-
-namespace HB.Code.Interpreter.Syntax;
+﻿namespace HB.Code.Interpreter.Syntax;
 public interface ISyntaxNode {
     public TextSpan Span { get; }
     public ISyntaxNode? Parent { get; }
