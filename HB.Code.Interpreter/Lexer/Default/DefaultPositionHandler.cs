@@ -13,10 +13,13 @@ public class DefaultPositionHandler : IPositionHandler<DefaultPosition> {
         Content = content;
         CurrentPosition = DefaultPosition.Init();
     }
-
+    
     public void MoveNext(int steps) {
         DefaultPosition old = CurrentPosition;
-        CurrentPosition = DefaultPosition.Create(old, CurrentPosition.Index + steps, CurrentPosition.Line, CurrentPosition.LineIndex + steps);
+        CurrentPosition = DefaultPosition.Create(old, 
+            GetPossibleIndex(steps, CurrentPosition.Index), 
+            CurrentPosition.Line, 
+            GetPossibleIndex(steps, CurrentPosition.LineIndex));
     }
 
     public void MoveNextWhile(int steps, Predicate<DefaultPosition> predicate) {
@@ -24,11 +27,13 @@ public class DefaultPositionHandler : IPositionHandler<DefaultPosition> {
         CurrentPosition = DefaultPosition.Create(old);
 
         while (predicate.Invoke(CurrentPosition)) {
-            if (CurrentPosition.GetValue(Content) == CommonCharCollection.NULL)
+            if (CurrentPosition.Index >= Content.Length) {
+                CurrentPosition.Index = Content.Length - 1;
                 return;
+            }
 
-            CurrentPosition.Index += steps;
-            CurrentPosition.LineIndex += steps;
+            CurrentPosition.Index = GetPossibleIndex(steps, CurrentPosition.Index);
+            CurrentPosition.LineIndex = GetPossibleIndex(steps, CurrentPosition.LineIndex);
         }
     }
 
@@ -37,11 +42,11 @@ public class DefaultPositionHandler : IPositionHandler<DefaultPosition> {
         CurrentPosition = DefaultPosition.Create(old);
 
         do {
-            if (CurrentPosition.GetValue(Content) == CommonCharCollection.NULL)
+            if (CurrentPosition.Index >= Content.Length)
                 return;
 
-            CurrentPosition.Index += steps;
-            CurrentPosition.LineIndex += steps;
+            CurrentPosition.Index = GetPossibleIndex(steps, CurrentPosition.Index);
+            CurrentPosition.LineIndex = GetPossibleIndex(steps, CurrentPosition.LineIndex);
         } while (predicate.Invoke(CurrentPosition));
     }
 
@@ -50,12 +55,17 @@ public class DefaultPositionHandler : IPositionHandler<DefaultPosition> {
     }
 
     public void Skip(int steps) {
-        CurrentPosition.Index += steps;
-        CurrentPosition.LineIndex += steps;
+        CurrentPosition.Index = GetPossibleIndex(steps, CurrentPosition.Index);
+        CurrentPosition.LineIndex = GetPossibleIndex(steps, CurrentPosition.LineIndex);
     }
 
     public void NewLine() {
         DefaultPosition old = CurrentPosition;
-        CurrentPosition = DefaultPosition.Create(old, old.Index + 2, old.Line + 1, -1);
+        CurrentPosition = DefaultPosition.Create(old, old.Index + 2, old.Line + 1, 0);
+    }
+
+    private int GetPossibleIndex(int steps, int currentIndex) {
+        int newIndex = currentIndex + steps;
+        return newIndex >= Content.Length ? Content.Length : newIndex;
     }
 }
