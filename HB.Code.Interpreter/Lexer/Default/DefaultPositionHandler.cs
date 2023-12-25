@@ -37,6 +37,23 @@ public class DefaultPositionHandler : IPositionHandler<DefaultPosition> {
         }
     }
 
+    public void MoveNextWhile(int steps, int skipsBeforePredicate, Predicate<DefaultPosition> predicate) {
+        DefaultPosition old = CurrentPosition;
+        CurrentPosition = DefaultPosition.Create(old);
+
+        Skip(skipsBeforePredicate);
+
+        while (predicate.Invoke(CurrentPosition)) {
+            if (CurrentPosition.Index >= Content.Length) {
+                CurrentPosition.Index = Content.Length - 1;
+                return;
+            }
+
+            CurrentPosition.Index = GetPossibleIndex(steps, CurrentPosition.Index);
+            CurrentPosition.LineIndex = GetPossibleIndex(steps, CurrentPosition.LineIndex);
+        }
+    }
+
     public void MoveNextDoWhile(int steps, Predicate<DefaultPosition> predicate) {
         DefaultPosition old = CurrentPosition;
         CurrentPosition = DefaultPosition.Create(old);
