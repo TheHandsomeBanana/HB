@@ -7,17 +7,35 @@ using System.Threading.Tasks;
 
 namespace HB.Code.Interpreter.Parser.Default;
 public class DefaultTokenReader<TToken, TSyntaxKind> : ITokenReader<TToken> {
-    public DefaultTokenPosition<TToken, TSyntaxKind>? RootTokenPosition { get; private set; }
+    public int CurrentIndex { get; private set; }
+    public TToken? CurrentToken => CurrentIndex < tokens.Length ? tokens[CurrentIndex] : default;
+    private ImmutableArray<TToken> tokens = [];
     public void Init(ImmutableArray<TToken> tokens) {
-        RootTokenPosition = new DefaultTokenPosition<TToken, TSyntaxKind>(tokens[0], 0);
-        DefaultTokenPosition<TToken, TSyntaxKind> currentPosition = RootTokenPosition;
+        this.tokens = tokens;
+        this.CurrentIndex = 0;
+    }
 
-        // Build double linked list
-        for (int i = 1; i < tokens.Length; i++) {
-            DefaultTokenPosition<TToken, TSyntaxKind> temp = currentPosition;
-            currentPosition.Next = new DefaultTokenPosition<TToken, TSyntaxKind>(tokens[i], i);
-            currentPosition = currentPosition.Next;
-            currentPosition.Previous = temp;
+    public void MoveNext() {
+        if (CanMoveNext())
+            CurrentIndex++;
+    }
+
+    public bool CanMoveNext() => CurrentIndex < tokens.Length - 1;
+
+    public ITokenReaderResult<TToken> PeekNextToken() {
+        TToken? foundToken = GetTokenAt(CurrentIndex + 1);
+        int tokenIndex = foundToken is null ? -1 : CurrentIndex + 1;
+        return new DefaultTokenReaderResult<TToken>(foundToken, tokenIndex, 0);
+    }
+
+    private TToken? GetTokenAt(int index) => CanMoveNext() ? tokens[index] : default;
+
+    public void FinishPeek(ITokenReaderResult<TToken> tokenResult) {
+        for(int i = 0; i < ((DefaultTokenReaderResult<TToken>)tokenResult).PeekCounter; i++) {
+            if (!CanMoveNext())
+                break;
+
+            MoveNext();
         }
     }
 }

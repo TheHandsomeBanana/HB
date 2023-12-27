@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 namespace HB.Code.Interpreter.Parser.Default;
 public class DefaultTokenMapping<TTokenKind, TSyntaxKind> : ITokenMapping<TTokenKind, TSyntaxKind> where TTokenKind : notnull {
     private readonly Dictionary<TTokenKind, TSyntaxKind[]> succeedingKinds = [];
-    public IReadOnlyDictionary<TTokenKind, TSyntaxKind[]> SucceedingKinds => succeedingKinds;
     private readonly Dictionary<TTokenKind, TSyntaxKind[]> predecessingKinds = [];
+    public IReadOnlyDictionary<TTokenKind, TSyntaxKind[]> SucceedingKinds => succeedingKinds;
     public IReadOnlyDictionary<TTokenKind, TSyntaxKind[]> PredecessingKinds => predecessingKinds;
 
-    public void AddPredecessingMap(TTokenKind tokenKind, TSyntaxKind[] possibleKinds) {
+    public void AddPredecessingMap(TTokenKind tokenKind, params TSyntaxKind[] possibleKinds) {
         predecessingKinds[tokenKind] = possibleKinds;
     }
 
-    public void AddSucceedingMap(TTokenKind tokenKind, TSyntaxKind[] possibleKinds) {
+    public void AddSucceedingMap(TTokenKind tokenKind, params TSyntaxKind[] possibleKinds) {
         succeedingKinds[tokenKind] = possibleKinds;
     }
 

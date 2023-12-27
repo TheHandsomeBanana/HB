@@ -11,4 +11,8 @@ public class DefaultSyntaxError(int line, TextSpan fullSpan, TextSpan lineSpan, 
     public TextSpan FullSpan { get; } = fullSpan;
     public TextSpan LineSpan { get; } = lineSpan;
     public string Affected { get; } = affected;
+
+    public override string ToString() {
+        return $"Syntax error at line {Line} {LineSpan} ({FullSpan}): {Affected}";
+    }
 }
