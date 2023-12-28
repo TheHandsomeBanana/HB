@@ -20,7 +20,7 @@ public class DefaultPosition : IPosition {
     public static DefaultPosition Create(DefaultPosition current, int index, int line, int lineIndex)
         => new DefaultPosition { Parent = current, Index = index, Line = line, LineIndex = lineIndex };
 
-    public static DefaultPosition Create(DefaultPosition current) 
+    public static DefaultPosition Create(DefaultPosition current)
         => new DefaultPosition { Parent = current, Index = current.Index, Line = current.Line, LineIndex = current.LineIndex };
 
     public char GetValue(string content) {
@@ -31,6 +31,25 @@ public class DefaultPosition : IPosition {
     }
 
     public TextSpan GetSpanToParent() => new TextSpan(Parent?.Index ?? Index, Index - (Parent?.Index ?? Index));
+
+    public LineSpan GetLineSpanToParent() {
+        int start;
+        int length;
+        if (Parent == null) {
+            start = 0;
+            length = LineIndex;
+        }
+        else if(Parent.Line < Line) {
+            start = 0;
+            length = LineIndex;
+        }
+        else {
+            start = Parent.LineIndex;
+            length = LineIndex;
+        }
+
+        return new LineSpan(Line, start, length);
+    }
 
     public string GetStringToParent(string content) {
         StringBuilder sb = new StringBuilder();

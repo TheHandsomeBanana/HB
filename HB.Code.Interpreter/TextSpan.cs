@@ -67,7 +67,7 @@ public readonly struct TextSpan : IEquatable<TextSpan>, IComparable<TextSpan>
 
     public override string ToString()
     {
-        return $"[{Start}..{End})";
+        return $"[{Start}..{End}]";
     }
 
     public int CompareTo(TextSpan other)

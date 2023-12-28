@@ -6,13 +6,18 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HB.Code.Interpreter.Lexer.Default;
-public class DefaultSyntaxError(int line, TextSpan fullSpan, TextSpan lineSpan, string affected) : ISyntaxError {
-    public int Line { get; } = line;
+public class DefaultSyntaxError(TextSpan fullSpan, LineSpan? lineSpan = null, string? affected = null) : ISyntaxError {
     public TextSpan FullSpan { get; } = fullSpan;
-    public TextSpan LineSpan { get; } = lineSpan;
-    public string Affected { get; } = affected;
+    public LineSpan? LineSpan { get; } = lineSpan;
+    public string? Affected { get; private set; } = affected;
 
     public override string ToString() {
-        return $"Syntax error at line {Line} {LineSpan} ({FullSpan}): {Affected}";
+        return LineSpan != null 
+            ? $"Syntax error at line {LineSpan} ({FullSpan}): {Affected}"
+            : $"Syntax error at {FullSpan}: {Affected}";
+    }
+
+    public void SetAffected(string fullContent) {
+        Affected = fullContent.Substring(FullSpan.Start, FullSpan.Length);
     }
 }

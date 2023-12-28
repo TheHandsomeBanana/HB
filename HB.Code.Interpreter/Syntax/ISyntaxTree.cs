@@ -1,9 +1,9 @@
 ﻿namespace HB.Code.Interpreter.Syntax;
-public interface ISyntaxTree {
-    public ISyntaxNode? Root { get; }
-    public string? FilePath { get; }
+public interface ISyntaxTree { // Flag for constraint
 }
 
 public interface ISyntaxTree<TNode> : ISyntaxTree where TNode : ISyntaxNode {
-    new public TNode? Root { get; }
+    public TNode? Root { get; }
+    public string? FilePath { get; }
+
 }

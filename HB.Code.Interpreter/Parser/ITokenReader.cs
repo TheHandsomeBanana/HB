@@ -7,10 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HB.Code.Interpreter.Parser;
-public interface ITokenReader<TToken> {
+public interface ITokenReader<TToken> where TToken : ISyntaxToken {
     public void Init(ImmutableArray<TToken> tokens);
     public void MoveNext();
     public bool CanMoveNext();
-    public ITokenReaderResult<TToken> PeekNextToken();
-    public void FinishPeek(ITokenReaderResult<TToken> tokenResult);
+    public TToken? GetNextToken();
+    public TextSpan? GetCurrentFullSpan();
+    public TToken GetLastValidToken();
 }
