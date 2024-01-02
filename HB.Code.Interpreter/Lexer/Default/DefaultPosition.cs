@@ -45,7 +45,7 @@ public class DefaultPosition : IPosition {
         }
         else {
             start = Parent.LineIndex;
-            length = LineIndex;
+            length = LineIndex - Parent.LineIndex;
         }
 
         return new LineSpan(Line, start, length);
