@@ -30,7 +30,7 @@ public class DefaultTokenReader<TToken, TSyntaxKind> : ITokenReader<TToken> wher
         return CurrentToken;
     }
 
-    private TToken? GetTokenAt(int index) => CanMoveNext() ? tokens[index] : default;
+    private TToken? GetTokenAt(int index) => CurrentIndex < tokens.Length ? tokens[index] : default;
 
     public TextSpan? GetCurrentFullSpan() => CurrentToken?.FullSpan;
     public LineSpan? GetCurrentLineSpan() => CurrentToken?.LineSpan;
@@ -41,5 +41,10 @@ public class DefaultTokenReader<TToken, TSyntaxKind> : ITokenReader<TToken> wher
             index--;
 
         return GetTokenAt(index)!;
+    }
+
+    public TToken? GetPreviousToken() {
+        CurrentIndex--;
+        return CurrentToken;
     }
 }
