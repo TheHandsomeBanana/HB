@@ -8,4 +8,5 @@ namespace HB.Code.Interpreter.Syntax;
 public interface ISyntaxError {
     public TextSpan FullSpan { get; }
     public string? Affected { get; }
+    public string? Message { get; }
 }

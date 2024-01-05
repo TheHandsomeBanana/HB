@@ -9,4 +9,6 @@ public interface ISyntaxNode<TNode, TToken> : ISyntaxNode where TNode : ISyntaxN
     public IReadOnlyList<TToken> ChildTokens { get; }
     public void AddChildNode(TNode node);
     public void AddChildToken(TToken token);
+
+    public TNode[] GetDescendantNodes();
 }

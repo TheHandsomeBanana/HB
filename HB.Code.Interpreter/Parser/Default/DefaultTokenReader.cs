@@ -43,8 +43,16 @@ public class DefaultTokenReader<TToken, TSyntaxKind> : ITokenReader<TToken> wher
         return GetTokenAt(index)!;
     }
 
+    public bool CanMoveBack() => CurrentIndex - 1 > 0;
+    public void MoveBack() {
+        if (CanMoveBack())
+            CurrentIndex--;
+    }
+
     public TToken? GetPreviousToken() {
         CurrentIndex--;
         return CurrentToken;
     }
+
+    public TToken? PeekNextToken() => GetTokenAt(CurrentIndex + 1);
 }
